@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kidsMapper">
+
+    <resultMap id="kidsResult" type="Kid">
+        <result property="id" column="id"/>
+        <result property="code" column="code"/>
+    </resultMap>
+
+    <select id="selectAllKids" resultMap="kidsResult">
+        SELECT * FROM Kid WHERE archived = FALSE ORDER BY code
+    </select>
+
+    <resultMap id="kidWithEdgesProgramsAndPeriodsResult" type="Kid" extends="kidsResult">
+        <collection property="programs" column="id" select="programsMapper.selectProgramByKidId"/>
+        <collection property="periods" column="id" select="periodsMapper.selectPeriodByKidId"/>
+    </resultMap>
+
+    <select id="selectKidWithEdgesProgramsAndPeriods" resultMap="kidWithEdgesProgramsAndPeriodsResult" >
+        SELECT *
+        FROM Kid
+        WHERE id = #{value}
+    </select>
+
+    <insert id="insertKid">
+        insert into Kid (code)
+        values (#{code})
+        <selectKey order="AFTER" keyProperty="id" resultType="int" >
+            SELECT currval('kid_id_seq');
+        </selectKey>
+    </insert>
+
+    <delete id="deleteKid">
+        DELETE FROM Kid WHERE id = #{id} OR (code = #{code})
+    </delete>
+</mapper>

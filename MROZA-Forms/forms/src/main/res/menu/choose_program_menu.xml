@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:combat="http://schemas.android.com/apk/res-auto">
+
+
+    <item android:id="@+id/action_search"
+          android:icon="@drawable/ic_search_white_24dp"
+          android:title="@string/action_search"
+          combat:showAsAction="collapseActionView|ifRoom"
+          combat:actionViewClass="android.support.v7.widget.SearchView"/>
+
+    <item
+            android:id="@+id/choose_letter"
+            android:icon="@drawable/ic_text_format_white_24dp"
+            combat:showAsAction="ifRoom"
+            android:title="@string/choose_letter_settings"
+            android:menuCategory="system">
+
+        <menu android:id="@+id/choose_letter_submenu">
+
+            <group android:id="@+id/choose_letter_group">
+
+            <item
+                    android:id="@+id/choose_letter_A"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_A"/>
+
+            <item
+                    android:id="@+id/choose_letter_B"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_B"/>
+
+            <item
+                    android:id="@+id/choose_letter_C"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_C"/>
+            <item
+                    android:id="@+id/choose_letter_D"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_D"/>
+            <item
+                    android:id="@+id/choose_letter_E"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_E"/>
+            <item
+                    android:id="@+id/choose_letter_F"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_F"/>
+            <item
+                    android:id="@+id/choose_letter_G"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_G"/>
+            <item
+                    android:id="@+id/choose_letter_H"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_H"/>
+            <item
+                    android:id="@+id/choose_letter_I"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_I"/>
+            <item
+                    android:id="@+id/choose_letter_J"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_J"/>
+            <item
+                    android:id="@+id/choose_letter_K"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_K"/>
+            <item
+                    android:id="@+id/choose_letter_L"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_L"/>
+            <item
+                    android:id="@+id/choose_letter_M"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_M"/>
+            <item
+                    android:id="@+id/choose_letter_N"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_N"/>
+            <item
+                    android:id="@+id/choose_letter_O"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_O"/>
+            <item
+                    android:id="@+id/choose_letter_P"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_P"/>
+            <item
+                    android:id="@+id/choose_letter_Q"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_Q"/>
+            <item
+                    android:id="@+id/choose_letter_R"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_R"/>
+            <item
+                    android:id="@+id/choose_letter_S"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_S"/>
+            <item
+                    android:id="@+id/choose_letter_T"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_T"/>
+            <item
+                    android:id="@+id/choose_letter_U"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_U"/>
+            <item
+                    android:id="@+id/choose_letter_V"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_V"/>
+            <item
+                    android:id="@+id/choose_letter_W"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_W"/>
+            <item
+                    android:id="@+id/choose_letter_X"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_X"/>
+            <item
+                    android:id="@+id/choose_letter_Y"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_Y"/>
+            <item
+                    android:id="@+id/choose_letter_Z"
+                    combat:showAsAction="always"
+                    android:title="@string/choose_letter_Z"/>
+
+r            </group>
+        </menu>
+    </item>
+
+    <item
+            android:id="@+id/filter"
+            android:icon="@drawable/ic_filter_list_white_24dp"
+            combat:showAsAction="ifRoom"
+            android:title="@string/filter_settings"
+            android:menuCategory="system">
+
+        <menu android:id="@+id/setting_submenu">
+
+            <item
+                    android:id="@+id/teraching_title"
+                    combat:showAsAction="ifRoom"
+                    android:title="@string/teaching_title"/>
+
+            <group android:checkableBehavior="all"
+                    android:enabled="true">
+                <item android:id="@+id/teaching_not_started"
+                      android:title="@string/teaching_not_started" />
+                <item android:id="@+id/teaching_saved"
+                      android:title="@string/teaching_saved" />
+                <item android:id="@+id/teaching_ended"
+                      android:title="@string/teaching_ended" />
+            </group>
+
+            <item
+                    android:id="@+id/general_title"
+                    combat:showAsAction="ifRoom"
+                    android:title="@string/general_title"/>
+
+            <group android:checkableBehavior="all"
+                   android:enabled="true">
+                <item android:id="@+id/general_not_started"
+                      android:title="@string/general_not_started" />
+                <item android:id="@+id/general_saved"
+                      android:title="@string/general_saved" />
+                <item android:id="@+id/general_ended"
+                      android:title="@string/general_ended" />
+            </group>
+
+        </menu>
+
+    </item>
+
+    <item
+            android:id="@+id/action_sync"
+            android:icon="@drawable/ic_sync_white_24dp"
+            combat:showAsAction="ifRoom"
+            android:title="@string/sync_title"
+            android:menuCategory="system">
+
+        <menu android:id="@+id/action_sync_submenu">
+
+            <group android:id="@+id/choose_action_sync">
+
+                <item
+                        android:id="@+id/sync_now"
+                        combat:showAsAction="always"
+                        android:title="@string/sync_now"/>
+                <item
+                        android:id="@+id/sync_date"
+                        combat:showAsAction="always"
+                        android:title="@string/sync_date"/>
+            </group>
+        </menu>
+
+    </item>
+</menu>

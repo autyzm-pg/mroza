@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewParam name="programId" value="#{newProgramsBean.program.id}" />
+    <f:event type="preRenderView" listener="#{newProgramsBean.initView()}"/>
+</f:metadata>
+
+<body>
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:define name="content">
+        <div class="b-page-header">
+            <hr/>
+            <h:outputText value="${msg['newProgramsView.title']}" rendered="#{empty newProgramsBean.program.id}"/>
+            <h:outputText value="${msg['editProgramView.title']}" rendered="#{not empty newProgramsBean.program.id}"/>
+            <hr/>
+        </div>
+
+        <h:form>
+            <div class="b-main-content">
+                <p:messages autoUpdate="true" closable="true" />
+
+                <p:panelGrid columns="2" styleClass="customPanel">
+                    <p:column>
+                        <p:outputLabel value="${msg['newProgramsView.name']}" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{newProgramsBean.program.name}" label="${msg['newProgramsView.name']}"
+                                     required="true"/>
+                    </p:column>
+
+                    <p:column>
+                        <p:outputLabel value="${msg['newProgramsView.symbol']}" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="symbolInput" value="#{newProgramsBean.program.symbol}" label="${msg['newProgramsView.symbol']}"
+                                     required="true" disabled="#{not empty newProgramsBean.program.id}">
+                            <p:ajax event="change" listener="#{newProgramsBean.validateSymbol}"/>
+                        </p:inputText>
+                    </p:column>
+
+                    <p:column>
+                        <p:outputLabel value="${msg['newProgramsView.description']}" />
+                    </p:column>
+                    <p:column>
+                        <p:inputTextarea value="#{newProgramsBean.program.description}" label="${msg['newProgramsView.description']}"
+                                         rows="6" cols="33" />
+                    </p:column>
+                </p:panelGrid>
+
+                <div class="action-buttons-container">
+                    <p:button value="${msg['main.cancel']}" outcome="programsDirectoryView.xhtml"/>
+                    <p:commandButton value="${msg['main.save']}" action="#{newProgramsBean.saveProgram}"
+                                     rendered="#{empty newProgramsBean.program.id}"/>
+                    <p:commandButton value="${msg['main.save']}" action="#{newProgramsBean.updateProgram}"
+                                     rendered="#{not empty newProgramsBean.program.id}"/>
+                </div>
+            </div>
+
+            <h:outputScript name="schedulePl.js" library="js" />
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+</body>
+</html>

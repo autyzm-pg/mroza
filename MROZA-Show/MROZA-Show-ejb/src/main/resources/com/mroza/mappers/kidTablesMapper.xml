@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kidTablesMapper">
+
+    <resultMap id="kidTableResult" type="KidTable" >
+        <result property="id" column="id"/>
+        <result property="collectingLearning" column="collecting_learning"/>
+        <result property="collectingGeneralization" column="collecting_generalization"/>
+        <result property="finishedLearning" column="finished_learning"/>
+        <result property="finishedGeneralization" column="finished_generalization"/>
+        <result property="generalizationFillDate" column="generalization_fill_date"/>
+        <result property="learningFillDate" column="learning_fill_date"/>
+        <result property="note" column="note"/>
+        <result property="isIOA" column="ioa"/>
+        <result property="isPretest" column="pretest"/>
+        <result property="lastModDate" column="last_edit_datetime"/>
+        <result property="tableId" column="tab_id"/>
+        <result property="periodId" column="resolve_period_id"/>
+    </resultMap>
+
+    <select id="selectKidTableById" resultMap="kidTableResult">
+        SELECT *
+        FROM kidtab
+        WHERE id = #{value}
+    </select>
+
+    <select id="selectAllKidTables" resultMap="kidTableResult">
+        SELECT *
+        FROM kidtab
+    </select>
+
+    <select id="selectKidTablesByNote" resultMap="kidTableResult" parameterType="java.lang.String">
+        SELECT *
+        FROM kidtab
+        WHERE kidtab.note = #{value}
+    </select>
+
+    <select id="selectKidTablesByTableName" resultMap="kidTableResult" parameterType="java.lang.String">
+        SELECT kidtab.id, kidtab.collecting_learning, kidtab.collecting_generalization, kidtab.finished_learning,
+            kidtab.finished_generalization, kidtab.note, kidtab.ioa, kidtab.pretest, kidtab.last_edit_datetime,
+            kidtab.tab_id, kidtab.resolve_period_id
+        FROM kidtab, tab
+        WHERE kidtab.tab_id = tab.id AND tab.name = #{value}
+    </select>
+
+    <resultMap id="kidTableWithEdgeTableResult" type="KidTable">
+        <result property="id" column="id"/>
+        <result property="collectingLearning" column="collecting_learning"/>
+        <result property="collectingGeneralization" column="collecting_generalization"/>
+        <result property="finishedLearning" column="finished_learning"/>
+        <result property="finishedGeneralization" column="finished_generalization"/>
+        <result property="note" column="note"/>
+        <result property="isIOA" column="ioa"/>
+        <result property="isPretest" column="pretest"/>
+        <result property="lastModDate" column="last_edit_datetime"/>
+        <result property="tableId" column="tab_id"/>
+        <result property="periodId" column="resolve_period_id"/>
+        <association property="table" column="id" select="tablesMapper.selectTableByKidTabId"/>
+    </resultMap>
+
+    <select id="selectKidTableByIdWithEdgeTable" resultMap="kidTableWithEdgeTableResult">
+        SELECT *
+        FROM kidtab
+        WHERE kidtab.id = #{value}
+    </select>
+
+    <resultMap id="kidTableWithEdgeTableProgramResult" type="KidTable">
+        <result property="id" column="id"/>
+        <result property="collectingLearning" column="collecting_learning"/>
+        <result property="collectingGeneralization" column="collecting_generalization"/>
+        <result property="finishedLearning" column="finished_learning"/>
+        <result property="finishedGeneralization" column="finished_generalization"/>
+        <result property="note" column="note"/>
+        <result property="isIOA" column="ioa"/>
+        <result property="isPretest" column="pretest"/>
+        <result property="lastModDate" column="last_edit_datetime"/>
+        <result property="tableId" column="tab_id"/>
+        <result property="periodId" column="resolve_period_id"/>
+        <association property="table" column="id" select="tablesMapper.selectTableByKidTabIdWithEdgeProgram"/>
+    </resultMap>
+
+    <select id="selectKidTableByPeriodIdWithEdgeTableProgram" resultMap="kidTableWithEdgeTableProgramResult">
+        SELECT *
+        FROM kidtab
+        WHERE kidtab.resolve_period_id = #{value}
+    </select>
+
+    <resultMap id="kidTableWithEdgeTableRowFieldProgramResult" type="KidTable">
+        <result property="id" column="id"/>
+        <result property="collectingLearning" column="collecting_learning"/>
+        <result property="collectingGeneralization" column="collecting_generalization"/>
+        <result property="finishedLearning" column="finished_learning"/>
+        <result property="finishedGeneralization" column="finished_generalization"/>
+        <result property="note" column="note"/>
+        <result property="isIOA" column="ioa"/>
+        <result property="isPretest" column="pretest"/>
+        <result property="lastModDate" column="last_edit_datetime"/>
+        <result property="tableId" column="tab_id"/>
+        <result property="periodId" column="resolve_period_id"/>
+        <association property="table" column="id" select="tablesMapper.selectTableByKidTabIdWithEdgeRowFieldProgram"/>
+    </resultMap>
+
+    <select id="selectKidTableByPeriodIdWithEdgeTableRowFieldProgram" resultMap="kidTableWithEdgeTableRowFieldProgramResult">
+        SELECT *
+        FROM kidtab
+        WHERE kidtab.resolve_period_id = #{value}
+    </select>
+
+
+
+    <resultMap id="kidTableWithEdgeResolvedFieldsResult" type="KidTable">
+        <result property="id" column="id"/>
+        <result property="collectingLearning" column="collecting_learning"/>
+        <result property="collectingGeneralization" column="collecting_generalization"/>
+        <result property="finishedLearning" column="finished_learning"/>
+        <result property="finishedGeneralization" column="finished_generalization"/>
+        <result property="note" column="note"/>
+        <result property="isIOA" column="ioa"/>
+        <result property="isPretest" column="pretest"/>
+        <result property="lastModDate" column="last_edit_datetime"/>
+        <collection property="resolvedFields" column="id" select="resolvedFieldsMapper.selectResolvedFieldsByKidTableId"/>
+    </resultMap>
+
+    <select id="selectKidTableWithEdgeResolvedFields" resultMap="kidTableWithEdgeResolvedFieldsResult" parameterType="java.lang.Integer">
+        SELECT *
+        FROM kidtab
+        WHERE kidtab.id = #{value}
+    </select>
+
+    <resultMap id="simplifiedResolvedKidTabResult" type="SimplifiedResolvedTabRow">
+        <id column="tr_id"/>
+        <result property="title" column="title"/>
+        <collection property="row" ofType="java.lang.Boolean" javaType="ArrayList">
+            <result column="field_value"/>
+            <result column="tf_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectSimplifiedResolvedKidTab" resultMap="simplifiedResolvedKidTabResult" parameterType="ResolvedTabQuery">
+        SELECT tr.id AS tr_id, tf.id AS tf_id, tr.value AS title, (CASE WHEN tfr.value = 'OK' THEN true ELSE false END) AS field_value
+        FROM kidtab kt
+        JOIN tab t ON kt.tab_id = t.id
+        JOIN tabrow tr ON tr.tab_id = t.id
+        JOIN tabfield tf ON tf.row_id = tr.id
+        JOIN tabfieldresolve tfr ON tfr.kid_tab_id = kt.id AND tfr.tab_field_id = tf.id
+        WHERE kt.id = #{kidTabId}
+          AND tf.type = #{type}::fieldtype
+        ORDER BY tr.ord, tf.ord
+    </select>
+
+    <insert id="insertKidTable" parameterType="KidTable">
+        INSERT INTO kidtab (
+        collecting_learning,
+        collecting_generalization,
+        finished_learning,
+        finished_generalization,
+        note,
+        ioa,
+        pretest,
+        tab_id,
+        resolve_period_id,
+        last_edit_datetime
+        )
+        VALUES (
+        #{collectingLearning},
+        #{collectingGeneralization},
+        #{finishedLearning},
+        #{finishedGeneralization},
+        #{note},
+        #{isIOA},
+        #{isPretest},
+        <if test="tableId != null">
+            #{tableId},
+        </if>
+        <if test="tableId == null">
+            #{table.id},
+        </if>
+        <if test="tableId != null">
+            #{periodId},
+        </if>
+        <if test="tableId == null">
+            #{period.id},
+        </if>
+        NOW()
+        )
+
+        <selectKey order="AFTER" keyProperty="id" resultType="int" >
+            SELECT currval('kidtab_id_seq');
+        </selectKey>
+    </insert>
+
+    <update id="updateKidTableIOA" parameterType="KidTable">
+        UPDATE kidtab
+        SET ioa = #{isIOA},
+        last_edit_datetime = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateKidTable" parameterType="KidTable">
+        UPDATE kidtab
+        SET collecting_learning = #{collectingLearning},
+            collecting_generalization = #{collectingGeneralization},
+            finished_learning = #{finishedLearning},
+            finished_generalization = #{finishedGeneralization},
+            note = #{note},
+            ioa = #{isIOA},
+            pretest = #{isPretest},
+            last_edit_datetime = #{lastModDate},
+            generalization_fill_date = #{generalizationFillDate},
+            learning_fill_date = #{learningFillDate},
+            tab_id = #{tableId},
+            resolve_period_id = #{periodId}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteKidTableById">
+        DELETE FROM kidtab WHERE id = #{value}
+    </delete>
+
+    <delete id="deleteKidTables" parameterType="java.util.List">
+        DELETE FROM kidtab
+        WHERE id IN (
+        <foreach collection="list" item="id" separator=",">
+          #{id}
+        </foreach>
+        )
+    </delete>
+
+</mapper>

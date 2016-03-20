@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewParam name="chosenKidTableId" value="#{kidsChooseTableBean.chosenKidTableId}" />
+    <f:event type="preRenderView" listener="#{kidsChooseTableBean.initView()}"/>
+</f:metadata>
+
+<body>
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="head">
+            <h:outputStylesheet name="choose-table.css" library="css" />
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="choose-table-form">
+            <div id="choose-table-header" class="b-page-header">
+                <hr/>
+                    <h:outputText
+                            id="choose-table-header-txt"
+                            value="#{msg['kidsChooseTableView.title']} #{kidsChooseTableBean.chosenTable.name}"/>
+                <hr/>
+                <h:outputText
+                        value="#{msg['kidsChooseTableView.progamTile']} #{kidsChooseTableBean.program.symbol}"/>
+                <hr/>
+            </div>
+            <div class="b-main-content">
+
+            <p:dataGrid id="program-tables-grid"
+                        value="#{kidsChooseTableBean.tables}" var="table"
+                        columns="1" style="width: 50%;">
+
+                <h:commandLink>
+                <p:panel header="#{table.name}" style="text-align:center">
+                    <p:dataTable var="tableRow"
+                                 value="#{table.tableRows}"
+                                 rowStyleClass="#{table.id == kidsChooseTableBean.chosenTable.id ? 'kid-table-selected': 'kid-table-unselected'}">
+
+                        <p:column headerText="#{table.name}" styleClass="description-cell">
+                            <h:outputText value="#{tableRow.name}"/>
+                        </p:column>
+                        <p:column headerText="U: #{table.numberOfLearningCols}" styleClass="checkbox-cell">
+                            <p:selectBooleanCheckbox disabled="True"/>
+                        </p:column>
+
+                        <p:column headerText="G:#{table.numberOfGeneralizationCols} " styleClass="checkbox-cell">
+                            <p:selectBooleanCheckbox disabled="True"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:panel>
+                    <p:ajax
+                            listener="#{kidsChooseTableBean.changeTableSelection(table.id)}"
+                            update="program-tables-grid choose-table-form:choose-table-header-txt" />
+                </h:commandLink>
+
+            </p:dataGrid>
+                    <div class="action-buttons-container">
+                        <p:commandButton value="${msg['main.cancel']}"
+                                         oncomplete="window.history.back();"/>
+                        <p:commandButton value="${msg['main.save']}"
+                                         action="#{kidsChooseTableBean.saveChanges}" />
+                    </div>
+
+
+            </div>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</body>
+</html>
+

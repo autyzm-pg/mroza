@@ -1,0 +1,26 @@
+[
+  {
+    "id": 0,
+    "symbol": "CW.GT.2",
+    "name": "Pretest - nowa gra NAGRAŃ",
+    "finished": true
+  },
+  {
+    "id": 1,
+    "symbol": "CW.M.2",
+    "name": "Budowanie",
+    "finished": false
+  },
+  {
+    "id": 2,
+    "symbol": "IW.5.3",
+    "name": "Imitacja werbalna słów",
+    "finished": false
+  },
+  {
+    "id": 3,
+    "symbol": "IW.FZ.1",
+    "name": "Imitacja werbalna fraz i zdań",
+    "finished": true
+  }
+]

@@ -1,0 +1,94 @@
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:combat="http://schemas.android.com/apk/res-auto">
+
+   <item android:id="@+id/action_search"
+          android:icon="@drawable/ic_search_white_24dp"
+          android:title="@string/action_search"
+          combat:showAsAction="collapseActionView|ifRoom"
+          combat:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item
+
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_settings_white_24dp"
+            combat:showAsAction="ifRoom"
+            android:title="@string/sync_title"
+            android:menuCategory="system">
+
+        <menu android:id="@+id/action_settings_submenu">
+
+            <group android:id="@+id/choose_action_settings">
+
+                <item
+                        android:id="@+id/settings_server_mroza"
+                        combat:showAsAction="always"
+                        android:title="@string/settings_server_mroza"/>
+
+                <item
+                        android:id="@+id/settings_server_app_update"
+                        combat:showAsAction="always"
+                        android:title="@string/settings_server_app_update"/>
+
+            </group>
+        </menu>
+
+
+    </item>
+
+    <item android:id="@+id/action_update"
+          android:icon="@drawable/ic_update_24dp"
+          android:title="@string/action_update"
+          combat:showAsAction="ifRoom"
+          android:menuCategory="system" />
+
+    <item
+            android:id="@+id/action_sync"
+            android:icon="@drawable/ic_sync_white_24dp"
+            combat:showAsAction="ifRoom"
+            android:title="@string/sync_title"
+            android:menuCategory="system">
+
+        <menu android:id="@+id/action_sync_submenu">
+
+            <group android:id="@+id/choose_action_sync">
+
+                <item
+                        android:id="@+id/sync_now"
+                        combat:showAsAction="always"
+                        android:title="@string/sync_now"/>
+
+                <item
+                    android:id="@+id/sync_date"
+                    combat:showAsAction="always"
+                    android:title="@string/sync_date"/>
+
+                <item
+                        android:id="@+id/sync_all_with_server"
+                        combat:showAsAction="always"
+                        android:title="@string/sync_all_with_server"/>
+
+             </group>
+        </menu>
+    </item>
+
+
+
+</menu>

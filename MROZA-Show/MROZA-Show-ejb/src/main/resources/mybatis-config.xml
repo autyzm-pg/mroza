@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <properties resource="jdbc.properties" />
+    <typeAliases>
+        <typeAlias type="com.mroza.models.Kid" alias="Kid"/>
+        <typeAlias type="com.mroza.models.Program" alias="Program"/>
+        <typeAlias type="com.mroza.models.Period" alias="Period"/>
+        <typeAlias type="com.mroza.models.KidTable" alias="KidTable"/>
+        <typeAlias type="com.mroza.models.Table" alias="Table"/>
+        <typeAlias type="com.mroza.models.TableRow" alias="TableRow"/>
+        <typeAlias type="com.mroza.models.TableField" alias="TableField"/>
+        <typeAlias type="com.mroza.models.ResolvedField" alias="ResolvedField"/>
+
+        <typeAlias type="com.mroza.models.charts.ResolvedTabData" alias="ResolvedTabData"/>
+        <typeAlias type="com.mroza.models.charts.SimplifiedResolvedTabRow" alias="SimplifiedResolvedTabRow"/>
+
+        <typeAlias type="com.mroza.models.queries.ResolvedTabQuery" alias="ResolvedTabQuery"/>
+
+        <typeAlias type="com.mroza.models.transfermodels.TransferChild" alias="TransferChild"/>
+        <typeAlias type="com.mroza.models.transfermodels.TransferChildTable" alias="TransferChildTable"/>
+        <typeAlias type="com.mroza.models.transfermodels.TransferProgram" alias="TransferProgram"/>
+        <typeAlias type="com.mroza.models.transfermodels.TransferTableField" alias="TransferTableField"/>
+        <typeAlias type="com.mroza.models.transfermodels.TransferTableFieldFilling" alias="TransferTableFieldFilling"/>
+        <typeAlias type="com.mroza.models.transfermodels.TransferTableRow" alias="TransferTableRow"/>
+        <typeAlias type="com.mroza.models.transfermodels.TransferTableTemplate" alias="TransferTableTemplate"/>
+        <typeAlias type="com.mroza.models.transfermodels.TransferTermSolution" alias="TransferTermSolution"/>
+
+    </typeAliases>
+    <typeHandlers>
+        <typeHandler handler="com.mroza.handlers.LocalDateTypeHandler"/>
+    </typeHandlers>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driverClassName}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="com/mroza/mappers/kidsMapper.xml"/>
+        <mapper resource="com/mroza/mappers/programsMapper.xml"/>
+        <mapper resource="com/mroza/mappers/periodsMapper.xml"/>
+        <mapper resource="com/mroza/mappers/tablesMapper.xml"/>
+        <mapper resource="com/mroza/mappers/kidTablesMapper.xml"/>
+        <mapper resource="com/mroza/mappers/tableRowsMapper.xml"/>
+        <mapper resource="com/mroza/mappers/tableFieldsMapper.xml"/>
+        <mapper resource="com/mroza/mappers/resolvedFieldsMapper.xml"/>
+        <mapper resource="com/mroza/mappers/deleteHistoryMapper.xml"/>
+    </mappers>
+</configuration>

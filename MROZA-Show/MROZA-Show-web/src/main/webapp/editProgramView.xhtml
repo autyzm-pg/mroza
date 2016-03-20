@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewParam name="programId" value="#{programEditBean.programId}" />
+    <f:event type="preRenderView" listener="#{programEditBean.initView()}"/>
+</f:metadata>
+
+<body>
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="content">
+            <h:form id="programEditForm">
+                <div id="programEditHeader" class="b-page-header">
+                        <hr/>
+                            <p:commandLink oncomplete="window.history.back();">
+                                <h:graphicImage styleClass="kidProgramsViewBackArrow" value="/resources/img/ic_arrow_back_white_24dp_2x.png" />
+                            </p:commandLink>
+                        <h:outputText value="${msg['editProgramView.addTablesTitle']}"/>
+                        <hr/>
+                        <h:outputText value="#{programEditBean.program.symbol}"/> -
+                        <h:outputText value="#{programEditBean.program.name}"/>
+                        <hr/>
+                </div>
+
+                <div class="b-main-content">
+                    <p:messages autoUpdate="true" closable="true" />
+
+                    <p:dataGrid id="program-tables-grid" value="#{programEditBean.programTables}" var="table" columns="1" style="width: 50%;">
+                        <p:dataTable value="#{table.tableRows}" var="tableRow">
+                            <f:facet name="header">
+                                <h:outputText value="#{table.name}" rendered="#{!table.edited}"/>
+                                <p:inputText value="#{table.name}" rendered="#{table.edited}"/>
+                            </f:facet>
+
+                            <p:column headerText="#{table.name}" styleClass="description-cell">
+                                <h:outputText value="#{tableRow.name}"
+                                              rendered="#{!table.edited}"/>
+                                <p:inputText value="#{tableRow.name}" style="width:100%"
+                                             rendered="#{table.edited}"/>
+                            </p:column>
+
+                            <p:column styleClass="checkbox-cell">
+                                <f:facet name="header">
+                                    <h:outputText value="U: " />
+                                    <h:outputText value="#{table.numberOfLearningCols}" rendered="#{!table.edited}"/>
+                                    <p:spinner value="#{table.numberOfLearningCols}"
+                                               size="1" min="0"
+                                               rendered="#{table.edited}" />
+                                </f:facet>
+                                <p:selectBooleanCheckbox disabled="True"/>
+                            </p:column>
+
+                            <p:column styleClass="checkbox-cell">
+                                <f:facet name="header">
+                                    <h:outputText value="G: " />
+                                    <h:outputText value="#{table.numberOfGeneralizationCols}" rendered="#{!table.edited}"/>
+                                    <p:spinner value="#{table.numberOfGeneralizationCols}"
+                                               size="1" min="0"
+                                               rendered="#{table.edited}"/>
+                                </f:facet>
+                                <p:selectBooleanCheckbox disabled="True"/>
+                            </p:column>
+
+                            <p:column rendered="#{table.edited}">
+                                <p:commandButton value="${msg['main.delete']}" action="#{programEditBean.deleteRow(table, tableRow)}"
+                                                 update="programEditForm:program-tables-grid" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="${msg['editProgramView.addRow']}" action="#{programEditBean.addRow(table)}"
+                                         update="programEditForm:program-tables-grid" rendered="#{table.edited}" />
+                        <p:commandButton value="${msg['main.save']}" action="#{programEditBean.save(table)}"
+                                         update="programEditForm:program-tables-grid" rendered="#{table.edited}" />
+                        <p:commandButton value="${msg['main.edit']}" action="#{programEditBean.edit(table)}"
+                                         update="programEditForm:program-tables-grid" rendered="#{!table.edited}" />
+                        <p:commandButton value="${msg['editProgramView.copyTable']}" action="#{programEditBean.copy(table)}"
+                                         update="programEditForm:program-tables-grid" rendered="#{!table.edited}" />
+                        <br/>
+                    </p:dataGrid>
+
+                    <div class="action-buttons-container">
+                        <p:commandButton value="${msg['editProgramView.addTable']}" action="#{programEditBean.addNewTable()}"
+                                         update="programEditForm:program-tables-grid" />
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</body>
+</html>
+

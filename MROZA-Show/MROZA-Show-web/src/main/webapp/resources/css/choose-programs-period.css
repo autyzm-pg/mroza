@@ -1,0 +1,94 @@
+/*
+ * MROZA - supporting system of behavioral therapy of people with autism
+ *     Copyright (C) 2015-2016 autyzm-pg
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.b-main-content .search-bar {
+    width: 445px;
+    height: 24px;
+    margin-left: 20px;
+}
+
+.b-main-content .search-icon {
+    height: 23px;
+    width: 23px;
+}
+
+.b-main-content .b-left-tabview-top {
+    position: relative;
+    top: 120px;
+    margin-left: 10px;
+}
+
+.b-main-content .b-right-tabview-top {
+    position: relative;
+    bottom: 100px;
+    left: 530px;
+    max-width: 600px;
+}
+
+.b-main-content .b-tabview-left {
+    width: 680px;
+    position: relative;
+    bottom: 80px;
+}
+
+.b-main-content .b-tabview-right {
+    width: 600px;
+    height: 500px;
+    position: relative;
+    bottom: 512px;
+    left: 700px;
+}
+
+.b-main-content .kid-table-with-programs-container {
+    margin: 5px;
+}
+
+.b-main-content .kid-table-with-programs-container table {
+    width: auto !important;
+}
+
+.b-main-content .kid-table-with-programs-container tr {
+    background-color: rgb(255, 217, 158);
+}
+
+.b-main-content .kid-table-with-programs-container .checkbox-cell div {
+    margin: 2px;
+}
+
+.b-main-content .edit-icon {
+    height: 30px;
+    width: 23px;
+    margin-left: 2px;
+    margin-right: 5px;
+}
+
+.b-main-content .trash-icon {
+    height: 30px;
+    width: 30px;
+    margin-left: 5px;
+    margin-right: 2px;
+}
+
+/*.data-choose-container td {*/
+    /*padding: 5px !important;*/
+/*}*/
+
+/*.data-choose-panel.ui-panelgrid>*>tr,*/
+/*.data-choose-panel.ui-panelgrid .ui-panelgrid-cell {*/
+    /*border: none;*/
+/*}*/

@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" >
+
+<f:metadata>
+    <f:viewParam name="programId" value="#{amChartsBean.programId}" />
+</f:metadata>
+
+<body>
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:define name="head">
+        <h:outputScript name="amcharts/amcharts.js" library="js"/>
+        <h:outputScript name="amcharts/serial.js" library="js"/>
+        <h:outputScript name="amcharts/lang/pl.js" library="js"/>
+        <h:outputScript name="export/export.min.js" library="js"/>
+        <h:outputScript name="export/lang/pl.js" library="js"/>
+        <h:outputScript name="chart.js" library="js"/>
+        <h:outputStylesheet name="/amcharts/plugins/export/export.css" />
+    </ui:define>
+
+    <ui:define name="content">
+        <div id="choose-table-header" class="b-page-header">
+            <hr/>
+            <h:form>
+                <p:commandLink oncomplete="window.history.back();">
+                    <h:graphicImage styleClass="kidProgramsViewBackArrow" value="/resources/img/ic_arrow_back_white_24dp_2x.png" />
+                </p:commandLink>
+            </h:form>
+            <h:outputText
+                    value="#{msg['chartVisualisation.title']}"/>
+            <hr/>
+            <h:outputText id="program_title"
+                    value="#{msg['chartVisualisation.programTitle']} #{amChartsBean.program.symbol} - #{amChartsBean.program.name}"/>
+            <hr/>
+        </div>
+        <h:form>
+            <div class="b-main-content">
+                <p:remoteCommand name="onload" actionListener="#{amChartsBean.initView}"
+                                 update="program_title"
+                                 oncomplete="drawMyGraph(xhr, status, args);" />
+
+                <p:panel header="" >
+                    <div id="graphContainer" style="width: 100%; height: 500px"></div>
+                </p:panel>
+
+                <p:remoteCommand name="showTable"
+                                 action="#{amChartsBean.prepareFilledTable}"
+                                 update="filledKidTable kidTableDialog"
+                                 oncomplete="PF('kidTableDialogVar').show()"/>
+            </div>
+        </h:form>
+
+        <p:dialog id="kidTableDialog" widgetVar="kidTableDialogVar"
+                  header="#{amChartsBean.selectedTabHeader}"
+                  showEffect="clip" hideEffect="clip">
+
+            <p:dataTable id="filledKidTable" value="#{amChartsBean.resolvedTabModel.rows}" var="row"
+                         styleClass="light-dataTable">
+
+                <p:column styleClass="ui-widget-header" style="color: #4f4f4f; width: 300px; text-align: center;">
+                    <h:outputText value="#{row['title'].label}"/>
+                </p:column>
+
+                <p:columns value="#{amChartsBean.resolvedTabModel.columns}" var="column" style="width: 30px; text-align: center;">
+                    <p:selectBooleanCheckbox value="#{row[column].value}" disabled="True"/>
+                </p:columns>
+            </p:dataTable>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>
+</body>
+</html>

@@ -1,0 +1,52 @@
+/*
+ * MROZA - supporting system of behavioral therapy of people with autism
+ *     Copyright (C) 2015-2016 autyzm-pg
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package database.test;
+
+import database.Child;
+import database.ChildDao;
+import database.DaoMaster;
+import database.DaoSession;
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.test.AbstractDaoSessionTest;
+
+import java.util.Date;
+import java.util.List;
+
+public class ChildTests  extends AbstractDaoSessionTest<DaoMaster, DaoSession> {
+
+    public ChildTests() {
+        super(DaoMaster.class);
+    }
+
+    public void testAddingChild() {
+
+        Child child = new Child(null,"AK123", false);
+        daoSession.insert(child);
+        ChildDao childDao = daoSession.getChildDao();
+
+        Query query = childDao.queryBuilder().where(
+                ChildDao.Properties.Code.eq("AK123"))
+                .build();
+        List databaseChilds = query.list();
+        Child databaseChild = (Child)databaseChilds.get(0);
+
+        assertEquals(databaseChild, child);
+    }
+
+}

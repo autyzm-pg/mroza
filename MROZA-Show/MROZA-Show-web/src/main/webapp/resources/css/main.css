@@ -1,0 +1,94 @@
+/*
+ * MROZA - supporting system of behavioral therapy of people with autism
+ *     Copyright (C) 2015-2016 autyzm-pg
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+body {
+    background-color: #FFF;
+}
+
+#content{
+    width: 1024px;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.b-page-header {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    text-align: center;
+    background-color: #125491;
+    color: #FFF;
+}
+
+.b-main-content {
+    padding: 20px 20px 20px 60px;
+    width: 1420px;
+    margin: 0 auto;
+}
+
+.b-main-content {
+    padding: 20px 20px 20px 60px;
+    background-color: #FFF;
+}
+
+.b-main-content .action-buttons-container {
+    margin: 30px 40px 20px;
+}
+
+.b-main-content .action-buttons-container button {
+    margin: 15px;
+}
+
+.highlight-row {
+    background-color: #FFB4B4 !important;
+}
+
+.customPanel.ui-panelgrid>*>tr,
+.customPanel.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+    background: none;
+}
+
+.selected {
+    background-color: goldenrod !important;
+    border-color: goldenrod !important;
+    color: white !important;
+}
+
+.unselected {
+    background-color: #337ab7 !important;
+    border-color: #337ab7 !important;
+    color: white !important;
+}
+
+.vertical-text {
+    transform: rotate(-90deg);
+    text-align: center;
+}
+
+.light-dataTable thead {
+    display: none;
+}
+
+.light-dataTable table {
+    width: auto !important;
+}
+
+.kidProgramsViewBackArrow {
+    position: absolute;
+    left: 10px;
+}

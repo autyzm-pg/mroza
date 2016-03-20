@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="programsMapper">
+
+    <resultMap id="programsResult" type="Program">
+        <result property="id" column="id"/>
+        <result property="symbol" column="symbol"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="finished" column="finished"/>
+        <result property="kidId" column="kid_id"/>
+    </resultMap>
+
+    <select id="selectAllPrograms" resultMap="programsResult">
+        SELECT *
+        FROM program
+    </select>
+
+    <select id="selectProgramById" resultMap="programsResult">
+        SELECT *
+        FROM program
+        WHERE id = #{value}
+    </select>
+
+    <select id="selectProgramByKidId" resultMap="programsResult">
+        SELECT *
+        FROM program
+        WHERE kid_id = #{value}
+    </select>
+
+    <select id="selectProgramByTableId" resultMap="programsResult">
+        SELECT program.id, program.symbol, program.name, program.description, program.finished, program.kid_id
+        FROM program, tab
+        WHERE program.id = tab.program_id AND tab.id = #{value}
+    </select>
+
+    <select id="selectProgramBySymbol" parameterType="java.lang.String" resultMap="programsResult">
+        SELECT *
+        FROM Program
+        WHERE symbol = #{value}
+    </select>
+
+    <select id="selectAllTemplatePrograms" resultMap="programsResult">
+        SELECT *
+        FROM Program
+        WHERE kid_id IS NULL;
+    </select>
+
+    <select id="selectUnusedProgramsByKidId" resultMap="programsResult">
+        SELECT program.*
+        FROM Program program
+        WHERE program.kid_id IS NULL
+          AND program.finished = FALSE
+          AND program.symbol NOT IN
+            (SELECT assigned.symbol
+             FROM Program assigned
+             WHERE assigned.kid_id = #{value})
+    </select>
+
+    <select id="selectKidProgramsNotInPeriodByPeriodId" resultMap="programsResult">
+        SELECT *
+        FROM program AS program, resolveperiod AS resolve_period
+        WHERE resolve_period.id = #{value}
+        AND program.kid_id = resolve_period.kid_id
+        AND program.id NOT IN
+          (SELECT program_id FROM tab, kidtab
+          WHERE tab.id = kidtab.tab_id
+          AND kidtab.resolve_period_id = #{value}
+        )
+    </select>
+
+    <resultMap id="programsResultExt" type="Program" extends="programsResult">
+        <result property="collectedData" column="collectedDataNum"/>
+    </resultMap>
+
+    <select id="selectKidResolvedPrograms" resultMap="programsResultExt" parameterType="java.lang.Integer">
+        SELECT p.id, p.symbol, p.name, p.kid_id, p.finished,
+          sum(CASE WHEN finished_learning = true AND finished_generalization = true THEN 2
+              WHEN finished_learning = true OR finished_generalization = true THEN 1
+              ELSE 0 END) AS collectedDataNum
+        FROM program p
+        JOIN tab t ON p.id = t.program_id
+        JOIN kidtab kt ON kt.tab_id = t.id
+        WHERE kid_id = #{id}
+          AND kt.id IN (SELECT kid_tab_id FROM tabfieldresolve)
+        GROUP BY p.id, p.symbol, p.name, p.kid_id, p.finished
+    </select>
+
+    <resultMap id="programDataForChartResult" type="ResolvedTabData">
+        <result property="tabId" column="tab_id"/>
+        <result property="tabName" column="tab_name"/>
+        <result property="kidTabId" column="kid_tab_id"/>
+        <result property="correctFields" column="ok_fields"/>
+        <result property="numOfFields" column="fields_num"/>
+        <result property="pretest" column="pretest"/>
+        <result property="type" column="fields_type"/>
+        <result property="fillDate" column="fill_date"/>
+    </resultMap>
+
+    <select id="selectProgramDataForChart" resultMap="programDataForChartResult" parameterType="java.lang.Integer">
+        WITH num_of_fields AS (
+          SELECT t.id, tf.type, count(*)
+          FROM tab t
+           JOIN tabrow tr ON tr.tab_id = t.id
+           JOIN tabfield tf ON tf.row_id = tr.id
+          GROUP BY t.id, tf.type
+        )
+        SELECT
+          t.id tab_id,
+          t.name tab_name,
+          kt.id kid_tab_id,
+          count(CASE WHEN tfr.value = 'OK' THEN 1 ELSE null END) ok_fields,
+          (SELECT count FROM num_of_fields WHERE id = t.id AND type = tf.type) fields_num,
+          tf.type fields_type,
+          kt.pretest,
+          CASE WHEN tf.type = 'U' THEN kt.learning_fill_date ELSE kt.generalization_fill_date END AS fill_date
+        FROM tab t
+         JOIN kidtab kt ON kt.tab_id = t.id
+         JOIN tabfieldresolve tfr ON tfr.kid_tab_id = kt.id
+         JOIN tabfield tf ON tf.id = tfr.tab_field_id
+        WHERE t.program_id = #{id}
+          AND (	CASE WHEN tf.type = 'U'
+                THEN kt.learning_fill_date IS NOT NULL AND finished_learning = true
+                ELSE kt.generalization_fill_date IS NOT NULL AND finished_generalization = true
+                END)
+        GROUP BY t.id, t.name, kt.id, tf.type
+        ORDER BY tab_name DESC, fields_type DESC
+    </select>
+
+    <update id="updateProgramFinishedStatus" parameterType="Program">
+        UPDATE Program
+        SET finished = #{finished}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateProgramsWithSymbol" parameterType="Program">
+        UPDATE Program
+        SET name = #{name}, description = #{description}
+        WHERE symbol = #{symbol}
+    </update>
+
+    <insert id="insertProgram" parameterType="Program">
+        INSERT INTO program (symbol, name, description, finished, kid_id)
+        VALUES (#{symbol}, #{name}, #{description}, #{finished}, #{kidId})
+
+        <selectKey order="AFTER" keyProperty="id" resultType="int" >
+            SELECT currval('program_id_seq');
+        </selectKey>
+    </insert>
+
+    <delete id="deleteProgram" parameterType="Program">
+        DELETE FROM program
+        WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteProgramBySymbol" parameterType="java.lang.String">
+        DELETE FROM Program
+        WHERE symbol = #{value}
+    </delete>
+</mapper>

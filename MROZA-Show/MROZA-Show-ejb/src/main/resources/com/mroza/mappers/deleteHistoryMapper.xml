@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="deleteHistoryMapper">
+
+    <resultMap id="deletedChild" type="TransferChild">
+        <result property="id" column="deleted_id"/>
+    </resultMap>
+
+    <resultMap id="deletedChildTable" type="TransferChildTable">
+        <result property="id" column="deleted_id"/>
+    </resultMap>
+
+    <resultMap id="deletedProgram" type="TransferProgram">
+        <result property="id" column="deleted_id"/>
+    </resultMap>
+
+    <resultMap id="deletedTableField" type="TransferTableField">
+        <result property="id" column="deleted_id"/>
+    </resultMap>
+
+    <resultMap id="deletedTableFieldFilling" type="TransferTableFieldFilling">
+        <result property="id" column="deleted_id"/>
+    </resultMap>
+
+    <resultMap id="deletedTableRow" type="TransferTableRow">
+        <result property="id" column="deleted_id"/>
+    </resultMap>
+
+    <resultMap id="deletedTableTemplate" type="TransferTableTemplate">
+        <result property="id" column="deleted_id"/>
+    </resultMap>
+
+    <resultMap id="deletedTermSolution" type="TransferTermSolution">
+        <result property="id" column="deleted_id"/>
+    </resultMap>
+
+    <select id="selectDeletedChildrenAfterDate" resultMap="deletedChild" parameterType="java.util.Date">
+        SELECT * FROM KidDeleteHistory
+        WHERE delete_datetime >= #{value}
+    </select>
+
+    <select id="selectDeletedChildTablesAfterDate" resultMap="deletedChildTable" parameterType="java.util.Date">
+        SELECT * FROM KidTabDeleteHistory
+        WHERE delete_datetime >= #{value}
+    </select>
+
+    <select id="selectDeletedProgramsAfterDate" resultMap="deletedProgram" parameterType="java.util.Date">
+        SELECT * FROM ProgramDeleteHistory
+        WHERE delete_datetime >= #{value}
+    </select>
+
+    <select id="selectDeletedTableFieldsAfterDate" resultMap="deletedTableField" parameterType="java.util.Date">
+        SELECT * FROM TabFieldDeleteHistory
+        WHERE delete_datetime >= #{value}
+    </select>
+
+    <select id="selectDeletedTableFieldFillingsAfterDate" resultMap="deletedTableFieldFilling" parameterType="java.util.Date">
+        SELECT * FROM TabFieldResolveDeleteHistory
+        WHERE delete_datetime >= #{value}
+    </select>
+
+    <select id="selectDeletedTableRowsAfterDate" resultMap="deletedTableRow" parameterType="java.util.Date">
+        SELECT * FROM TabRowDeleteHistory
+        WHERE delete_datetime >= #{value}
+    </select>
+
+    <select id="selectDeletedTableTemplateAfterDate" resultMap="deletedTableTemplate" parameterType="java.util.Date">
+        SELECT * FROM TabDeleteHistory
+        WHERE delete_datetime >= #{value}
+    </select>
+
+    <select id="selectDeletedTermSolutionAfterDate" resultMap="deletedTermSolution" parameterType="java.util.Date">
+        SELECT * FROM ResolvePeriodDeleteHistory
+        WHERE delete_datetime >= #{value}
+    </select>
+
+    <delete id="clearDeleteHistory">
+        DELETE FROM KidDeleteHistory;
+        DELETE FROM KidTabDeleteHistory;
+        DELETE FROM ProgramDeleteHistory;
+        DELETE FROM TabFieldDeleteHistory;
+        DELETE FROM TabFieldResolveDeleteHistory;
+        DELETE FROM TabRowDeleteHistory;
+        DELETE FROM TabDeleteHistory;
+        DELETE FROM ResolvePeriodDeleteHistory;
+    </delete>
+
+</mapper>

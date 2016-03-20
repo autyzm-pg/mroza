@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:mroza="http://mroza.com/facelets">
+
+<body>
+    <h:form id="periodProgramsForm">
+        <p:messages id="messagesField" autoUpdate="false" closable="true" />
+
+        <h:panelGroup>
+            <p:outputPanel style="margin-top:20px; margin-bottom: 10px" id="data-choose-panel">
+                <h:outputText
+                        value="#{empty kidProgramsBean.model.selectedCalendarRepresentationOfPeriod ? msg['kidProgramsView.noCurrentChosenPeriod'] :
+                        msg['kidProgramsView.currentChosenPeriod']}"/>
+                <c:if test="#{not(empty kidProgramsBean.model.selectedCalendarRepresentationOfPeriod)}">
+                    <h:outputText value="${msg['main.from']}" style="margin-left: 10px"/>
+                    <p:calendar
+                        style="margin-left: 10px;"
+                        pattern="dd-MM-yyyy"
+                        widgetVar="beginOfCurrentPeriod"
+                        value="#{kidProgramsBean.model.currentSelectedPeriod.beginDate}" >
+                        <p:ajax
+                                event="dateSelect"
+                                listener="#{kidProgramsBean.onDateChange}"
+                                oncomplete="PF('periodSchedule').update();"
+                                update="data-choose-panel messagesField"
+                        />
+                    </p:calendar>
+
+                    <h:outputText value="${msg['main.to']}" style="margin-left: 10px;"/>
+                    <p:calendar
+                        style="margin-left: 10px;"
+                        pattern="dd-MM-yyyy"
+                        widgetVar="endOfCurrentPeriod"
+                        value="#{kidProgramsBean.model.currentSelectedPeriod.endDate}" >
+                        <p:ajax
+                            event="dateSelect"
+                            listener="#{kidProgramsBean.onDateChange}"
+                            oncomplete="PF('periodSchedule').update();"
+                            update="data-choose-panel messagesField"
+                        />
+                    </p:calendar>
+                </c:if>
+            </p:outputPanel>
+
+            <div style="width: 680px; float: left; position: relative; top: 10px;">
+                <h:panelGroup id="dataTablePanel">
+                    <mroza:dataTable id="programsPerPeriodTab"
+                                 widgetVar="programsPerPeriodTabVar"
+                                 widgetString="'programsPerPeriodTabVar'"
+                                 model="#{kidProgramsBean.model.kidTablesForPeriod}">
+
+                        <p:column headerText="${msg['kidProgramsView.symbol']}"
+                                  sortBy="#{item.table.program.symbol}"
+                                  filterBy="#{item.table.program.symbol}"
+                                  filterMatchMode="startsWith"
+                                  filterStyle="display:none" >
+                            <h:outputText value="#{item.table.program.symbol}" />
+                        </p:column>
+
+                        <p:column headerText="${msg['kidProgramsView.name']}"
+                                  sortBy="#{item.table.program.name}">
+                            <h:outputText value="#{item.table.program.name}" />
+                        </p:column>
+
+                        <p:column headerText="${msg['kidProgramsView.table']}"
+                                  sortBy="#{item.table.name}">
+                            <h:outputText value="#{item.table.name}" />
+                        </p:column>
+
+                        <p:column headerText="${msg['kidProgramsView.actions']}" >
+                            <p:commandLink action="#{kidProgramsBean.navigateToChangeKidTable(item)}"
+                                           update="kid-programs-tab-view:periodProgramsForm:messagesField">
+                                <h:graphicImage styleClass="edit-icon" value="/resources/img/edit-icon.png" />
+                            </p:commandLink>
+                            <p:commandLink action="#{kidProgramsBean.deleteKidTable(item)}" ajax="true"
+                                           update="kid-programs-tab-view:periodProgramsForm:dataTablePanel kid-programs-tab-view:periodProgramsForm:messagesField"
+                                           oncomplete="PF('programsPerPeriodTabVar').clearFilters();
+                                                       PF('periodSchedule').update();">
+                                <h:graphicImage styleClass="trash-icon" value="/resources/img/trash-icon.png" />
+                                <p:confirm header="${msg['kidProgramsView.deleteTableAssignedToPeriodMessageHeader']}" message="${msg['kidProgramsView.deleteTableAssignedToPeriodMessage']}" icon="ui-icon-alert" />
+                            </p:commandLink>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="${msg['main.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="${msg['main.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:column>
+
+                    </mroza:dataTable>
+                </h:panelGroup>
+            </div>
+
+            <h:outputStylesheet>
+                .fc-agendaWeek-button {
+                    display: none !important;
+                }
+
+                .fc-agendaDay-button {
+                    display: none !important;
+                }
+            </h:outputStylesheet>
+
+            <div style="width: 600px; height: 500px; float: left; position: relative; top: 10px; left: 10px;">
+                <h:panelGroup id="schedulePanel">
+                    <p:schedule value="#{kidProgramsBean.model.scheduleModel}" locale="pl"
+                                widgetVar="periodSchedule" timeZone="GMT+1" clientTimeZone="GMT+1"
+                                draggable="false"
+                            >
+                        <p:ajax event="eventSelect"
+                                listener="#{kidProgramsBean.onCalendarRepresentationOfPeriodSelect}"
+                                update="dataTablePanel data-choose-panel addProgramButton"
+                                oncomplete="PF('programsPerPeriodTabVar').filter();
+                                            PF('periodSchedule').update();" />
+
+                        <p:ajax event="dateSelect" listener="#{kidProgramsBean.onDateSelect}"
+                                update="eventDetails" oncomplete="PF('eventDialog').show();" />
+
+                    </p:schedule>
+                </h:panelGroup>
+            </div>
+
+            <p:dialog widgetVar="eventDialog" header="${msg['kidProgramsView.newPeriod']}" showEffect="clip" hideEffect="clip">
+                <h:panelGrid id="eventDetails" columns="2">
+                    <p:outputLabel for="from" value="${msg['main.from']}" />
+                    <p:calendar id="from" value="#{kidProgramsBean.model.newPeriod.beginDate}" timeZone="GMT+1" pattern="dd-MM-yyyy"/>
+
+                    <p:outputLabel for="to" value="${msg['main.to']}:" />
+                    <p:calendar id="to" value="#{kidProgramsBean.model.newPeriod.endDate}" timeZone="GMT+1" pattern="dd-MM-yyyy"/>
+
+                    <p:commandButton id="addButton" value="${msg['main.save']}"
+                                     actionListener="#{kidProgramsBean.addPeriod}" update="data-choose-panel messagesField addProgramButton"
+                                     oncomplete="PF('periodSchedule').update();
+                                                 PF('programsPerPeriodTabVar').clearFilters();
+                                                 PF('eventDialog').hide();" />
+                </h:panelGrid>
+            </p:dialog>
+
+
+            <div class="action-buttons-container">
+                <p:commandButton value="${msg['kidProgramsView.deletePeriod']}" action="#{kidProgramsBean.deleteCurrentlySelectedPeriod}"
+                                 update="data-choose-panel dataTablePanel messagesField"
+                                 oncomplete="PF('periodSchedule').update();
+                                             PF('eventDialog').hide();
+                                             PF('programsPerPeriodTabVar').filter();">
+                         <p:confirm header="${msg['kidProgramsView.deletePeriodMessageHeader']}" message="${msg['kidProgramsView.deletePeriodMessage']}" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="${msg['main.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="${msg['main.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+                <p:commandButton id="addProgramButton"
+                                 value="${msg['kidProgramsView.addProgram']}"
+                                 action="#{kidProgramsBean.refreshProgramsNotInCurrentPeriod()}"
+                                 disabled="#{(empty kidProgramsBean.model.selectedCalendarRepresentationOfPeriod)}"
+                                 update="addProgramsForPeriodDialog"
+                                 oncomplete="PF('addProgramsForPeriodDialogVar').show();
+                                             PF('programsNotInPeriodTabVar').filter();"  />
+            </div>
+        </h:panelGroup>
+
+        <h:outputScript name="schedulePl.js" library="js" />
+    </h:form>
+</body>
+</html>

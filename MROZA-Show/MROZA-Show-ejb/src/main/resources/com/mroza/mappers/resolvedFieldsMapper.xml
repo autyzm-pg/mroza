@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="resolvedFieldsMapper">
+
+    <resultMap id="resolvedFieldResult" type="ResolvedField">
+        <result property="id" column="id"/>
+        <result property="value" column="value"/>
+        <result property="kidTableId" column="kid_tab_id"/>
+        <result property="tableFieldId" column="tab_field_id"/>
+    </resultMap>
+
+    <select id="selectResolvedFieldById" resultMap="resolvedFieldResult">
+        SELECT *
+        FROM tabfieldresolve
+        WHERE id = #{value}
+    </select>
+
+    <select id="selectAllResolvedFields" resultMap="resolvedFieldResult">
+        SELECT *
+        FROM tabfieldresolve
+    </select>
+
+    <select id="selectResolvedFieldsByKidTableId" resultMap="resolvedFieldResult" parameterType="java.lang.Integer">
+        SELECT *
+        FROM tabfieldresolve
+        WHERE kid_tab_id = #{value}
+    </select>
+
+    <select id="selectNonEmptyResolvedFieldsByKidTableId" resultMap="resolvedFieldResult" parameterType="java.lang.Integer">
+        SELECT *
+        FROM tabfieldresolve
+        WHERE kid_tab_id = #{value} AND value != 'EMPTY'
+    </select>
+
+    <select id="selectNonEmptyResolvedFieldsByTableId" resultMap="resolvedFieldResult" parameterType="java.lang.Integer">
+        SELECT tabfieldresolve.*
+        FROM tabfieldresolve
+        JOIN kidtab kt on kid_tab_id = kt.id
+        WHERE tab_id = #{value}
+            AND value != 'EMPTY'
+    </select>
+
+    <insert id="insertResolvedField" parameterType="ResolvedField">
+        INSERT INTO tabfieldresolve (
+            <if test="value != null">
+                value,
+            </if>
+            kid_tab_id,
+            tab_field_id
+        )
+        VALUES (
+            <if test="value != null">
+                #{value}::resolvedfieldval,
+            </if>
+            <if test="kidTableId != null">
+                #{kidTableId},
+            </if>
+            <if test="kidTableId == null">
+                #{kidTable.id},
+            </if>
+            <if test="tableFieldId != null">
+                #{tableFieldId}
+            </if>
+            <if test="tableFieldId == null">
+                #{tableField.id}
+            </if>
+        )
+
+        <selectKey order="AFTER" keyProperty="id" resultType="int" >
+            SELECT currval('tabfieldresolve_id_seq');
+        </selectKey>
+    </insert>
+
+    <update id="updateResolvedField" parameterType="ResolvedField">
+        UPDATE tabfieldresolve
+        SET value = #{value}::resolvedfieldval,
+                kid_tab_id = #{kidTableId},
+                tab_field_id = #{tableFieldId}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,96 @@
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity"
+                android:background="@color/programListBackgroundColor">
+
+    <LinearLayout
+            android:id="@+id/LayoutGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/programListBackgroundColor">
+
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/LayoutGridDate">
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonChangePeriodHistorical"
+                    android:drawableBottom="@drawable/ic_fast_rewind_white_24dp"
+                    android:padding="5dp"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:elegantTextHeight="false"/>
+            <TextView
+                    android:id="@+id/termSolutionStartDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:padding="20dp"
+                    android:textSize="25dp"
+                    android:text="23.03.2003"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="-"
+                    android:id="@+id/textBetween"
+                    android:padding="20dp"
+                    android:textSize="30dp"
+                    />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/termSolutionEndDate"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:padding="20dp"
+                    android:textSize="25dp"
+                    android:text="23.03.2003"/>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonChangePeriodFuture"
+                    android:drawableBottom="@drawable/ic_fast_forward_white_24dp"
+                    android:padding="5dp" android:layout_gravity="center"
+                    />
+
+        </LinearLayout>
+        <ListView
+            android:id="@+id/childTable_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/LayoutGridDate"
+            android:clickable="true"
+                android:background="@color/programListBackgroundColor"/>
+
+    </LinearLayout>
+</RelativeLayout>

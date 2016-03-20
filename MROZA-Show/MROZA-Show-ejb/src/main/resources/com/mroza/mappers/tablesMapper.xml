@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="tablesMapper">
+
+    <resultMap id="tableResult" type="Table">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="archived" column="archived"/>
+        <result property="programId" column="program_id"/>
+    </resultMap>
+
+    <select id="selectAllTables" resultMap="tableResult">
+        SELECT *
+        FROM tab
+    </select>
+
+    <select id="selectTableByKidTabId" resultMap="tableResult">
+        SELECT
+        tab.id AS id,
+        tab.name AS name,
+        tab.description AS description,
+        tab.create_datetime AS create_datetime,
+        tab.archived AS archived,
+        tab.program_id AS program_id
+        FROM kidtab, tab
+        WHERE kidtab.id = #{value} AND kidtab.tab_id = tab.id
+    </select>
+
+    <resultMap id="tableWithEdgeProgramResult" type="Table">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="archived" column="archived"/>
+        <result property="programId" column="program_id"/>
+        <collection property="program" column="id" select="programsMapper.selectProgramByTableId"/>
+    </resultMap>
+
+    <select id="selectTableByKidTabIdWithEdgeProgram" resultMap="tableWithEdgeProgramResult">
+        SELECT tab.id, tab.name, tab.description, tab.create_datetime, tab.archived, tab.program_id
+        FROM tab, kidtab
+        WHERE tab.id = kidtab.tab_id AND kidtab.id = #{value}
+    </select>
+
+    <resultMap id="tableWithEdgeRowFieldProgramResult" type="Table">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="archived" column="archived"/>
+        <result property="programId" column="program_id"/>
+        <collection property="program" column="id" select="programsMapper.selectProgramByTableId"/>
+        <collection property="tableRows" column="id" select="tableRowsMapper.selectTableRowsByTableIdWithEdgeFields"/>
+    </resultMap>
+
+    <select id="selectTableByKidTabIdWithEdgeRowFieldProgram" resultMap="tableWithEdgeRowFieldProgramResult">
+        SELECT tab.id, tab.name, tab.description, tab.create_datetime, tab.archived, tab.program_id
+        FROM tab, kidtab
+        WHERE tab.id = kidtab.tab_id AND kidtab.id = #{value}
+    </select>
+
+    <resultMap id="tableWithEdgesRowsFieldsResult" type="Table">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="archived" column="archived"/>
+        <collection property="tableRows" column="id" select="tableRowsMapper.selectTableRowsByTableIdWithEdgeFields"/>
+    </resultMap>
+
+    <select id="selectTablesByProgramIdWithEdgesRowsFields" resultMap="tableWithEdgesRowsFieldsResult">
+        SELECT *
+        FROM tab
+        WHERE tab.program_id = #{value}
+    </select>
+
+    <insert id="insertTable" parameterType="Table">
+        INSERT INTO tab (name, description,
+        <if test="createDate != null">
+            create_datetime,
+        </if>
+        archived, program_id)
+        VALUES (#{name}, #{description},
+        <if test="createDate != null">
+            #{createDate},
+        </if>
+        #{archived}, #{program.id})
+
+        <selectKey order="AFTER" keyProperty="id" resultType="int" >
+            SELECT currval('tab_id_seq');
+        </selectKey>
+    </insert>
+
+    <update id="tablesMapper.updateTable" parameterType="Table">
+        UPDATE tab
+        SET description = #{description}, name = #{name}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

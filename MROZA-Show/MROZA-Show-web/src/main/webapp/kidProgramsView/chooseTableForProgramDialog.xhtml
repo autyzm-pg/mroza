@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<body>
+
+
+<p:dialog id="chooseTableForProgramDialog" widgetVar="chooseTableForProgramDialogVar"
+          width="650" height="400" resizable="false" closable="true" header="${msg['kidProgramsView.selectTable']}">
+    <h:form id="chooseTableForm">
+        <p:dataTable id="tablesInProgramTab" widgetVar="tablesInProgramTabVar"
+                     value="#{kidProgramsBean.model.tablesInProgram}" var="table"
+                     emptyMessage="${msg['main.emptyMessage']}"
+                     paginator="true" rows="10" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}
+                     {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15"
+                     style="margin: 10px 0">
+
+            <p:column headerText="${msg['kidProgramsView.tables']}" sortBy="#{table.name}">
+                <h:outputText value="#{table.name}" />
+            </p:column>
+
+            <p:column width="110" >
+                <p:commandButton value="${msg['main.select']}" action="#{kidProgramsBean.assignTableToPeriod(table)}"
+                                 update="kid-programs-tab-view:periodProgramsForm:programsPerPeriodTab"
+                                 oncomplete="
+                                 PF('chooseTableForProgramDialogVar').hide();
+                                 PF('programsPerPeriodTabVar').filter();" />
+            </p:column>
+        </p:dataTable>
+        <p:commandButton value="${msg['main.back']}"
+                         onclick="PF('addProgramsForPeriodDialogVar').show();
+                                 PF('programsNotInPeriodTabVar').filter();
+                                 PF('chooseTableForProgramDialogVar').hide();">
+        </p:commandButton>
+    </h:form>
+</p:dialog>
+
+
+
+</body>
+</html>

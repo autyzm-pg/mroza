@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+
+    <string name="app_name">MROZA</string>
+    <string name="hello">Hello MROZA-Forms!</string>
+    <string name="filter_settings">Filtr</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint_kids">Wpisz kod dziecka</string>
+    <string name="search_hint_programs">Wpisz symbol lub nazwę programu</string>
+    <string name="show_all_programs">Pokaż wszystkie programy</string>
+    <string name="show_all_kids">Pokaż wszystkie dzieci</string>
+
+    <string name="teaching_not_started">Nie rozpoczęte</string>
+    <string name="teaching_saved">Zapisane</string>
+    <string name="teaching_ended">Zakończone</string>
+    <string name="choose_letter_settings">Alfabet</string>
+    <string name="choose_letter_A">A</string>
+    <string name="choose_letter_B">B</string>
+    <string name="general_ended">Zakończono</string>
+    <string name="general_saved">Zapisano</string>
+    <string name="general_not_started">Nie rozpoczęto</string>
+    <string name="teaching_title">Uczenie</string>
+    <string name="general_title">Generalizacja</string>
+
+    <string name="warning">Uwaga!</string>
+    <string name="finish_teaching_warning">Czy na pewno chcesz zakończyć uczenie? Nie będzie już można wprowadzać żadnych zmian w polach dotyczących uczenia!</string>
+    <string name="finish_generalization_warning">Czy na pewno chcesz zakończyć generalizacje? Nie będzie już można wprowadzać żadnych zmian w polach dotyczących generalizacji!</string>
+    <string name="restart_table_warning">Czy na pewno chcesz wyczyścić tabelkę? Wszystkie zebrane wcześniej dane zostaną utracone!</string>
+    <string name="back_button_warning">W formularzu znajdują sie niezapisane zmiany. Czy na pewno chcesz go opuścić? Wszystkie niezapisane zmiany zostaną utracone.</string>
+
+    <string name="choose_letter_D">D</string>
+    <string name="choose_letter_E">E</string>
+    <string name="choose_letter_C">C</string>
+    <string name="choose_letter_S">S</string>
+    <string name="choose_letter_R">R</string>
+    <string name="choose_letter_P">P</string>
+    <string name="choose_letter_O">O</string>
+    <string name="choose_letter_Q">Q</string>
+    <string name="choose_letter_N">N</string>
+    <string name="choose_letter_M">M</string>
+    <string name="choose_letter_L">L</string>
+    <string name="choose_letter_K">K</string>
+    <string name="choose_letter_I">I</string>
+    <string name="choose_letter_J">J</string>
+    <string name="choose_letter_H">H</string>
+    <string name="choose_letter_G">G</string>
+    <string name="choose_letter_F">F</string>
+    <string name="choose_letter_X">X</string>
+    <string name="choose_letter_Z">Z</string>
+    <string name="choose_letter_Y">Y</string>
+    <string name="choose_letter_V">V</string>
+    <string name="choose_letter_W">W</string>
+    <string name="choose_letter_U">U</string>
+    <string name="choose_letter_T">T</string>
+    <string name="generalization">Generalizacja</string>
+    <string name="teaching">Uczenie</string>
+    <string name="save">Zapisz</string>
+    <string name="finish_teaching">Zakończ uczenie</string>
+    <string name="finish_generalization">Zakończ generalizację</string>
+    <string name="restart">Zacznij od nowa</string>
+    <string name="sync">Synchronizuj</string>
+    <string name="sync_now">Synchronizuj</string>
+    <string name="sync_title">Synchronizacja</string>
+    <string name="sync_date">Data synchonizacji</string>
+    <string name="action_update">Aktualizacja</string>
+    <string name="settings_server_mroza">Ustaw adres serwera</string>
+    <string name="settings_server_app_update">Ustaw adres serwera aktualizacji</string>
+    <string name="input_url_dialog">Wprowadź adres serwera</string>
+    <string name="cancel">Anuluj</string>
+    <string name="save_changes">OK</string>
+    <string name="sync_all_with_server">Aktualny stan serwera</string>
+
+
+    <item name="show_all_programs_button_id" type="id"/>
+    <item name="show_all_kids_button_id" type="id"/>
+
+    <string name="sync_had_not_been_done_yet">Dane nie były jeszcze synchronizowane</string>
+    <string name="sync_had_been_done">Data ostatniej synchronizacji: </string>
+    <string name="sync_succeed">Dane zostały zsynchronizowane</string>
+    <string name="application_update_error">Wystąpił błąd podczas aktualizacji.</string>
+
+
+    <string name="empty_term_solution">Brak programów w tym okresie</string>
+    <string name="between_dates">-</string>
+    <string name="empty"></string>
+    <string name="pretest_label"> - PRETEST</string>
+    <string name="empty_kids_list">BRAK DZIECI</string>
+    <string name="update_server_url">Adres serwera aktualizacji:</string>
+</resources>

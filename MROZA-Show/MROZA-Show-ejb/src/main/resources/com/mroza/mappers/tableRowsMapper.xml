@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="tableRowsMapper">
+
+    <resultMap id="tableRow" type="TableRow">
+        <result property="id" column="id"/>
+        <result property="name" column="value"/>
+        <result property="orderNum" column="ord"/>
+        <result property="tableId" column="tab_id"/>
+    </resultMap>
+
+    <resultMap id="tableRowWithEdgeFields" type="TableRow">
+        <result property="id" column="id"/>
+        <result property="name" column="value"/>
+        <result property="orderNum" column="ord"/>
+        <collection property="rowFields" column="id" select="tableFieldsMapper.selectFieldsByRowId"/>
+    </resultMap>
+
+    <select id="selectAllTableRows" resultMap="tableRow">
+        SELECT *
+        FROM tabrow
+    </select>
+
+    <select id="selectTableRowsByTableIdWithEdgeFields" resultMap="tableRowWithEdgeFields">
+        SELECT *
+        FROM tabrow
+        WHERE tab_id = #{value}
+    </select>
+
+    <insert id="insertTableRow" parameterType="TableRow">
+        INSERT INTO tabrow (value, ord, tab_id)
+        VALUES (#{name}, #{orderNum}, #{tableId})
+
+        <selectKey order="AFTER" keyProperty="id" resultType="int" >
+            SELECT currval('tabrow_id_seq');
+        </selectKey>
+    </insert>
+
+    <delete id="deleteTableRows" parameterType="java.lang.Integer">
+        DELETE FROM TabRow
+        WHERE tab_id = #{value}
+    </delete>
+</mapper>

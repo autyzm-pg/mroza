@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:mroza="http://mroza.com/facelets">
+
+<body>
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:define name="content">
+        <div class="b-page-header">
+            <hr/>
+            <h:outputText value="${msg['programsDirectoryView.programs']}" />
+            <hr/>
+        </div>
+
+        <h:form>
+            <div class="b-main-content">
+                <p:messages autoUpdate="true" closable="true" />
+
+                <mroza:dataTable id="systemProgramsTable"
+                                 widgetVar="systemProgramsTableVar"
+                                 widgetString="'systemProgramsTableVar'"
+                                 model="#{programsDirectoryBean.programs}">
+
+                    <p:column headerText="${msg['kidProgramsView.symbol']}" sortBy="#{item.symbol}"
+                              filterBy="#{item.symbol}" filterMatchMode="startsWith" filterStyle="display:none" >
+                        <h:outputText value="#{item.symbol}" />
+                    </p:column>
+
+                    <p:column headerText="${msg['kidProgramsView.name']}" sortBy="#{item.name}">
+                        <h:outputText value="#{item.name}" />
+                    </p:column>
+
+                    <p:column width="110" >
+                        <p:button value="${msg['main.edit']}"
+                                  outcome="newProgramsView.xhtml?programId=#{item.id}"/>
+                    </p:column>
+
+                    <p:column width="110" >
+                        <p:commandButton action="#{programsDirectoryBean.deleteProgram(item)}"
+                                         value="${msg['main.delete']}"
+                                         update="@form">
+                            <p:confirm header="${msg['main.deleteProgramMessageHeader']}" message="${msg['main.deleteProgramMessage']}" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="${msg['main.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="${msg['main.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+
+                    </p:column>
+                </mroza:dataTable>
+
+                <div class="action-buttons-container">
+                    <p:button value="${msg['kidProgramsView.addProgram']}"
+                              outcome="newProgramsView.xhtml"/>
+                    <p:button value="${msg['kidsView.kids']}"
+                              outcome="kidsView.xhtml"/>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+</body>
+</html>
