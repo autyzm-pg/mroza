@@ -17,9 +17,6 @@
  */
 
 package com.mroza.seleniumTests.KidsViewTests;
-
-
-import com.mroza.models.Kid;
 import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.SeleniumUtils;
 import org.junit.After;
