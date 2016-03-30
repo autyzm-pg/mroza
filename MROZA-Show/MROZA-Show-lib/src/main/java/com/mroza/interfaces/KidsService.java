@@ -28,4 +28,5 @@ public interface KidsService {
     List<Kid> getAllKids();
     Kid getKidDetailedData(int kidsId);
     void saveKid(Kid kid);
+    boolean existsKidWithCode(String code);
 }

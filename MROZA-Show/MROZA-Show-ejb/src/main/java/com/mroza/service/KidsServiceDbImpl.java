@@ -48,4 +48,10 @@ public class KidsServiceDbImpl implements Serializable, KidsService {
         kidsDao.insertKid(kid);
     }
 
+    @Override
+    public boolean existsKidWithCode(String code) {
+        List<Kid> kidsWithCode = kidsDao.selectKidsWithCode(code);
+        return kidsWithCode.size() > 0;
+    }
+
 }

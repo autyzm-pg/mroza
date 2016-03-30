@@ -43,6 +43,12 @@
         WHERE id = #{value}
     </select>
 
+    <select id="selectKidWithCode" resultMap="kidWithEdgesProgramsAndPeriodsResult" >
+        SELECT *
+        FROM Kid
+        WHERE code = #{value}
+    </select>
+
     <insert id="insertKid">
         insert into Kid (code)
         values (#{code})

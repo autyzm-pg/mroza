@@ -37,7 +37,7 @@ public class NewKidsViewAddKidTest {
     private NewKidsViewPage newKidsViewPage;
     private KidsViewPage kidsViewPage;
     private String expectedSymbol = "CODE_1", existedSymbol= "CODE_2";
-    private String expectedMessage = "Dziecko o danym kodzie już istnieje";
+    private String expectedMessage = "Dziecko o podanym kodzie już istnieje";
     private String expectedEmptyCodeMessage = "Kod: Wartość wymagana";
 
     @Before
