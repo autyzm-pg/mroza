@@ -41,11 +41,13 @@ public class KidsServiceDbImplTest {
 
     private static KidsDao kidsDao;
     private static List<Kid> exampleKids;
+    private static Kid exampleKid;
     private static SqlSession sqlSession;
     private static KidsService kidsService;
 
     @Before
     public void setup() {
+
         kidsDao = new KidsDao();
         exampleKids = new ArrayList<>();
         sqlSession = Utils.getSqlSession();
@@ -74,6 +76,17 @@ public class KidsServiceDbImplTest {
 
         Assert.assertEquals(exampleKids.get(0).getPrograms().size(), kidWithDetailedData.getPrograms().size());
         Assert.assertEquals(exampleKids.get(0).getPeriods().size(), kidWithDetailedData.getPeriods().size());
+    }
+
+    @Test
+    public void existsKidWithCode() {
+        List<String> codes = new ArrayList<String>(){{ add("QWE");}};
+        Utils.initWithBasicKidWithCode(exampleKids, codes);
+        Boolean addedKidExistence = kidsService.existsKidWithCode(codes.get(0));
+        Boolean notAddedKidExistence = kidsService.existsKidWithCode("ABC");
+
+        Assert.assertTrue("Added kid should be found as existed",addedKidExistence);
+        Assert.assertFalse("Not added kid should not be found as existed", notAddedKidExistence);
     }
 
 
