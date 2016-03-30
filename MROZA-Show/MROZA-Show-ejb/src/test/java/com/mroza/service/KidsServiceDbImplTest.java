@@ -41,7 +41,6 @@ public class KidsServiceDbImplTest {
 
     private static KidsDao kidsDao;
     private static List<Kid> exampleKids;
-    private static Kid exampleKid;
     private static SqlSession sqlSession;
     private static KidsService kidsService;
 

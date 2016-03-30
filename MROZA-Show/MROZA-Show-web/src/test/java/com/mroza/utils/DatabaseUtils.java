@@ -96,4 +96,15 @@ public class DatabaseUtils {
         return kid;
 
     }
+
+    public Program setUpProgram(String symbol, String name, String description) {
+        Program program = new Program();
+        program.setSymbol(symbol);
+        program.setName(name);
+        program.setDescription(description);
+        program.setFinished(false);
+        programsDao.insertProgram(program);
+        utilsSqlSession.commit();
+        return program;
+    }
 }
