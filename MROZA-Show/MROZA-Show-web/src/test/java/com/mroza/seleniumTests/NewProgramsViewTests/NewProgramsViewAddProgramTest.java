@@ -40,6 +40,7 @@ public class NewProgramsViewAddProgramTest {
     private String expectedSymbol = "SYMBOL_2";
     private String expectedMessage = "Symbol już istnieje - wprowadź inny";
     private String[] expectedMessages = {"Nazwa: Wartość wymagana","Symbol: Wartość wymagana"};
+    private String existingHeader = "Nowy program";
 
     @Before
     public void setUp() {
@@ -91,7 +92,7 @@ public class NewProgramsViewAddProgramTest {
 
         newProgramsViewPage.clickSaveNewProgram();
         List<String> controlMessages = newProgramsViewPage.getShowedMessages();
-        assertEquals("Message list should be equal empty name and symbol fields",controlMessages.size(), 2);
+        assertEquals("Message list should be equal empty name and symbol fields", controlMessages.size(), 2);
 
         Boolean found;
         for(String controlMessage : controlMessages) {
@@ -124,5 +125,11 @@ public class NewProgramsViewAddProgramTest {
 
     }
 
+    @Test
+    public void addingNewProgramShouldHaveEqualHeaderTest() {
 
+        String header = newProgramsViewPage.getHeader();
+        assertEquals("Adding new program view should be correct", existingHeader, header);
+
+    }
 }

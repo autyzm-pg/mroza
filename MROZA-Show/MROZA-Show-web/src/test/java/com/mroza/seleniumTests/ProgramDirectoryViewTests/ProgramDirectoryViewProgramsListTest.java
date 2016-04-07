@@ -36,6 +36,7 @@ public class ProgramDirectoryViewProgramsListTest {
     private ProgramDirectoryViewPage programDirectoryViewPage;
     private List<Program> expectedPrograms;
     private List<String> expectedSymbols;
+    private String expectedMessage = "Czy na pewno chcesz usunąć ten program?";
 
     @Before
     public void setUp() {
@@ -87,7 +88,7 @@ public class ProgramDirectoryViewProgramsListTest {
     }
 
     @Test
-    public void showExpectedProgramSymbolsOnListAfterLetterFilterTest() {
+    public void deleteProgramTest() {
         String expectedSearchedSymbol = expectedSymbols.get(0);
         programDirectoryViewPage.setLetterFilterValue("A");
         List<String> programSymbols = programDirectoryViewPage.getAllProgramsSymbols();

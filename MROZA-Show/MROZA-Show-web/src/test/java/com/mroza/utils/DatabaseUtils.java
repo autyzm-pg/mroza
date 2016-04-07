@@ -107,4 +107,12 @@ public class DatabaseUtils {
         utilsSqlSession.commit();
         return program;
     }
+
+    public Program setUpProgram(String symbol, String name, String description, Kid kid) {
+        Program program = setUpProgram(symbol,name,description);
+        program.setKidId(kid.getId());
+        programsDao.insertProgram(program);
+        utilsSqlSession.commit();
+        return program;
+    }
 }

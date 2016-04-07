@@ -28,7 +28,6 @@ import java.util.List;
 public class NewProgramsViewPage {
 
     protected WebDriver driver;
-
     public NewProgramsViewPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -60,6 +59,11 @@ public class NewProgramsViewPage {
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
+    public String getHeader() {
+        WebElement header = driver.findElement(By.className("b-page-header"));
+        return header.getText();
+    }
+
     public String getShowedMessage() {
         try {
             WebElement message = driver.findElement(By.className("ui-messages-error-summary"));
@@ -83,5 +87,21 @@ public class NewProgramsViewPage {
         {
             return new ArrayList<String>(){{add("NO MESSAGE SHOWN");}};
         }
+    }
+
+    public String getSymbol() {
+        WebElement symbolInputField = driver.findElement(By.id("j_idt19:symbolInput"));
+        return symbolInputField.getAttribute("value");
+    }
+
+    public String getName() {
+        WebElement nameInputField = driver.findElement(By.id("j_idt19:j_idt26"));
+        return nameInputField.getAttribute("value");
+
+    }
+
+    public String getDescription() {
+        WebElement descriptionInputField = driver.findElement(By.id("j_idt19:j_idt33"));
+        return descriptionInputField.getText();
     }
 }
