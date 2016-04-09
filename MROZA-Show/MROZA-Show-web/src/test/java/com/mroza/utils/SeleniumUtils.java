@@ -27,6 +27,7 @@ public class SeleniumUtils {
     public static final String programDirectoryViewPageUrl = "http://localhost:8080/web/faces/programsDirectoryView.xhtml";
     public static final String newProgramsViewUrl = "http://localhost:8080/web/faces/newProgramsView.xhtml";
     public static final String kidProgramsViewUrl = "http://localhost:8080/web/faces/kidProgramsView/kidProgramsView.xhtml?kidId=";
+    public static final String editProgramsViewUrl = "http://localhost:8080/web/faces/editProgramView.xhtml?programId=";
 
 
     public static void setUpDriverConnection()
