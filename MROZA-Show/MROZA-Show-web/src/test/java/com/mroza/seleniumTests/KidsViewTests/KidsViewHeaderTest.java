@@ -35,7 +35,7 @@ public class KidsViewHeaderTest {
     public void setUp() {
         SeleniumUtils.setUpDriverConnection();
         page = PageFactory.initElements(new ChromeDriver(), KidsViewPage.class);
-        page.open("http://localhost:8080/web/faces/kidsView.xhtml");
+        page.open(SeleniumUtils.kidsViewUrl);
     }
 
     @After

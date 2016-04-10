@@ -86,23 +86,35 @@ public class EditProgramViewPage {
     }
 
     public void inputTableName(String tableName) {
-        WebElement table = getTableWithHeader("");
+        WebElement table = getTableWithHeader("", true);
         WebElement tableHeader = table.findElement(By.className("ui-datatable-header"));
         tableHeader.findElement(By.tagName("input")).sendKeys(tableName);
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
-    private List<WebElement> getTablesList() {
-        WebElement tableAreaContent = getTableArea();
-        return tableAreaContent.findElements(By.className("ui-datagrid-row"));
+
+    public void changeTableName(String tableName, String oldTbleName) {
+        WebElement table = getTableWithHeader(oldTbleName, true);
+        WebElement tableHeader = table.findElement(By.className("ui-datatable-header"));
+        tableHeader.findElement(By.tagName("input")).clear();
+        tableHeader.findElement(By.tagName("input")).sendKeys(tableName);
+        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
     public void clickAddNewRowButtonForTable(String tableName) {
-        clickButtonForTable(tableName, "Dodaj wiersz");
+        clickButtonForTable(tableName, "Dodaj wiersz", true);
     }
 
-    private void clickButtonForTable(String tableName, String buttonName) {
-        WebElement table = getTableWithHeader(tableName);
+    public void clickSaveTableButton(String tableName) {
+        clickButtonForTable(tableName, "Zapisz", true);
+    }
+
+    public void clickEditTableButton(String tableName) {
+        clickButtonForTable(tableName, "Edytuj", false);
+    }
+
+    private void clickButtonForTable(String tableName, String buttonName, Boolean isEditing) {
+        WebElement table = getTableWithHeader(tableName, isEditing);
         List<WebElement> tableButtons = table.findElements(By.tagName("button"));
         for(WebElement button : tableButtons)
             if(button.findElement(By.tagName("span")).getText().equals(buttonName)) {
@@ -112,30 +124,15 @@ public class EditProgramViewPage {
             }
     }
 
-    private WebElement getTableWithHeader(String header) {
-        List<WebElement> tablesList = getTablesList();
-        for(WebElement table : tablesList) {
-            WebElement tableHeader = table.findElement(By.className("ui-datatable-header"));
-            WebElement tableHeaderInput = tableHeader.findElement(By.tagName("input"));
-            if(tableHeaderInput.getAttribute("value").equals(header))
-            {
-                return  table;
-            }
-        }
-        return null;
-    }
-
-    public void addTableRow(String tableName, String row_name) {
-        WebElement table = getTableWithHeader(tableName);
-        WebElement tableContent = table.findElement(By.className("ui-datatable-tablewrapper"));
-        WebElement tableContentRowsArea = tableContent.findElement(By.tagName("tbody"));
-        List<WebElement> tableRow = tableContentRowsArea.findElements(By.tagName("tr"));
-        List<WebElement> tableRowColumns = tableRow.get(0).findElements(By.tagName("td"));
-        tableRowColumns.get(0).findElement(By.tagName("input")).sendKeys(row_name);
+    public void changeTableRow(String tableName, String rowName, String oldRowName) {
+        WebElement tableRow = getRowForTable(tableName, oldRowName, true);
+        List<WebElement> tableRowColumns = tableRow.findElements(By.tagName("td"));
+        tableRowColumns.get(0).findElement(By.tagName("input")).clear();
+        tableRowColumns.get(0).findElement(By.tagName("input")).sendKeys(rowName);
     }
 
     public void setUpTableContentHeader(String tableName, int teachingNumber, int generalizationNumber){
-        WebElement table = getTableWithHeader(tableName);
+        WebElement table = getTableWithHeader(tableName, true);
         WebElement tableContent = table.findElement(By.className("ui-datatable-tablewrapper"));
         WebElement tableContentHeader = tableContent.findElement(By.tagName("thead"));
         List<WebElement> tableContentHeaderColumns = tableContentHeader.findElements(By.className("checkbox-cell"));
@@ -153,11 +150,95 @@ public class EditProgramViewPage {
 
     }
 
+    public void clickDeleteRow(String tableName, String rowsName) {
+        WebElement tableRow = getRowForTable(tableName, rowsName, true);
+        List<WebElement> tableRowColumns = tableRow.findElements(By.tagName("td"));
+        tableRowColumns.get(3).findElement(By.tagName("button")).click();
+        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+    }
+
+    public void clickCopyTableButton(String tableName) {
+        clickButtonForTable(tableName, "Skopiuj", false);
+    }
+
+    public List<String> getTableRowsNamesForTable(String newTableName, Boolean isEditing) {
+        WebElement table = getTableWithHeader(newTableName, isEditing);
+        WebElement tableContent = table.findElement(By.className("ui-datatable-tablewrapper"));
+        WebElement tableContentRowsArea = tableContent.findElement(By.tagName("tbody"));
+        List<WebElement> tableRows = tableContentRowsArea.findElements(By.tagName("tr"));
+        List<String> tableRowNames = new ArrayList<>();
+        for(WebElement tableRow : tableRows){
+            List<WebElement> tableRowColumns = tableRow.findElements(By.tagName("td"));
+            if(isEditing){
+                tableRowNames.add(tableRowColumns.get(0).findElement(By.tagName("input")).getAttribute("value"));
+            }
+            else {
+                tableRowNames.add(tableRowColumns.get(0).getText());
+            }
+        }
+        return tableRowNames;
+    }
+
+    public String getErrorMessage()
+    {
+        try{
+            WebElement messageArea = driver.findElement(By.className("ui-messages-error-summary"));
+            return messageArea.getText();
+        }
+        catch (Exception e)
+        {
+            return "MESSAGE NOT FOUND";
+        }
+
+    }
+
+
+    private List<WebElement> getTablesList() {
+        WebElement tableAreaContent = getTableArea();
+        return tableAreaContent.findElements(By.className("ui-datagrid-row"));
+    }
+
+    private WebElement getTableWithHeader(String header, Boolean isEditing) {
+        List<WebElement> tablesList = getTablesList();
+        for(WebElement table : tablesList) {
+            WebElement tableHeader = table.findElement(By.className("ui-datatable-header"));
+            if(isEditing){
+                WebElement tableHeaderInput = tableHeader.findElement(By.tagName("input"));
+                if(tableHeaderInput.getAttribute("value").equals(header))
+                    return  table;
+            }
+            else if(tableHeader.getText().equals(header))
+                return table;
+        }
+        return null;
+    }
+
     private void setUpHeaderParameter(WebElement tableContentHeaderColumnsElement, int number ){
         tableContentHeaderColumnsElement.findElement(By.tagName("input")).sendKeys(String.valueOf(number));
     }
 
-    public void clickSaveTableButton(String tableName) {
-        clickButtonForTable(tableName, "Zapisz");
+    private WebElement getRowForTable(String tableName, String rowName, Boolean isEditing)
+    {
+        WebElement table = getTableWithHeader(tableName, isEditing);
+        WebElement tableContent = table.findElement(By.className("ui-datatable-tablewrapper"));
+        WebElement tableContentRowsArea = tableContent.findElement(By.tagName("tbody"));
+        List<WebElement> tableRows = tableContentRowsArea.findElements(By.tagName("tr"));
+        for(WebElement tableRow : tableRows)
+        {
+            List<WebElement> tableRowColumns = tableRow.findElements(By.tagName("td"));
+
+            if(isEditing){
+                if( tableRowColumns.get(0).findElement(By.tagName("input")).getAttribute("value").equals(rowName)){
+                    return tableRow;
+                }
+            }
+            else {
+                if( tableRowColumns.get(0).getText().equals(rowName)){
+                    return tableRow;
+                }
+            }
+
+        }
+        return null;
     }
 }

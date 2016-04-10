@@ -36,7 +36,6 @@ public class ProgramDirectoryViewProgramsListTest {
     private ProgramDirectoryViewPage programDirectoryViewPage;
     private List<Program> expectedPrograms;
     private List<String> expectedSymbols;
-    private String expectedMessage = "Czy na pewno chcesz usunąć ten program?";
 
     @Before
     public void setUp() {

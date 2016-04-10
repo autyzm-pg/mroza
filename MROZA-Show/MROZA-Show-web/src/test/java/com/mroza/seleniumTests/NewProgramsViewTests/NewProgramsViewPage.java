@@ -39,23 +39,21 @@ public class NewProgramsViewPage {
     }
 
     public void clickSaveNewProgram() {
-        WebElement saveButton = driver.findElement(By.id("j_idt19:j_idt36"));
-        saveButton.click();
+        clickButtonNamed("Zapisz");
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
     public void setAddProgramFields(String symbol, String name, String description) {
-        WebElement symbolInputField = driver.findElement(By.id("j_idt19:symbolInput"));
+        WebElement symbolInputField = getInputFieldNamed("Symbol");
         symbolInputField.sendKeys(symbol);
-        WebElement nameInputField = driver.findElement(By.id("j_idt19:j_idt26"));
+        WebElement nameInputField = getInputFieldNamed("Nazwa");
         nameInputField.sendKeys(name);
-        WebElement descriptionInputField = driver.findElement(By.id("j_idt19:j_idt33"));
+        WebElement descriptionInputField = getTextAreaNamed("Opis");
         descriptionInputField.sendKeys(description);
     }
 
     public void clickCancelNewProgram() {
-        WebElement saveButton = driver.findElement(By.id("j_idt19:j_idt35"));
-        saveButton.click();
+        clickButtonNamed("Anuluj");
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
@@ -90,18 +88,55 @@ public class NewProgramsViewPage {
     }
 
     public String getSymbol() {
-        WebElement symbolInputField = driver.findElement(By.id("j_idt19:symbolInput"));
+        WebElement symbolInputField = getInputFieldNamed("Symbol");
         return symbolInputField.getAttribute("value");
     }
 
     public String getName() {
-        WebElement nameInputField = driver.findElement(By.id("j_idt19:j_idt26"));
+        WebElement nameInputField = getInputFieldNamed("Nazwa");
         return nameInputField.getAttribute("value");
 
     }
 
     public String getDescription() {
-        WebElement descriptionInputField = driver.findElement(By.id("j_idt19:j_idt33"));
+        WebElement descriptionInputField = getTextAreaNamed("Opis");
         return descriptionInputField.getText();
+    }
+
+    private WebElement getInputFieldNamed(String inputName){
+        WebElement tableWithInputFields = driver.findElement(By.tagName("table"));
+        WebElement tableBody = tableWithInputFields.findElement(By.tagName("tbody"));
+        List<WebElement> inputRows = tableBody.findElements(By.tagName("tr"));
+        for(WebElement inputRow : inputRows){
+            if(inputRow.findElements(By.tagName("td")).get(0).getText().equals(inputName)){
+                return inputRow.findElements(By.tagName("td")).get(1).findElement(By.tagName("input"));
+            }
+        }
+        return null;
+    }
+
+    private WebElement getTextAreaNamed(String inputName){
+        WebElement tableWithInputFields = driver.findElement(By.tagName("table"));
+        WebElement tableBody = tableWithInputFields.findElement(By.tagName("tbody"));
+        List<WebElement> inputRows = tableBody.findElements(By.tagName("tr"));
+        for(WebElement inputRow : inputRows){
+            if(inputRow.findElements(By.tagName("td")).get(0).getText().equals(inputName)){
+                return inputRow.findElements(By.tagName("td")).get(1).findElement(By.tagName("textArea"));
+            }
+        }
+        return null;
+    }
+
+    private void clickButtonNamed(String name)
+    {
+        WebElement buttonsArea = driver.findElement(By.className("action-buttons-container"));
+        List<WebElement> buttons = buttonsArea.findElements(By.tagName("button"));
+        for(WebElement button : buttons){
+            if(button.findElement(By.tagName("span")).getText().equals(name)) {
+                button.click();
+                break;
+            }
+        }
+
     }
 }

@@ -22,6 +22,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+
 public class NewKidsViewPage {
 
     protected WebDriver driver;
@@ -42,14 +44,12 @@ public class NewKidsViewPage {
     }
 
     public void clickSaveNewKid() {
-        WebElement saveButton = driver.findElement(By.id("j_idt17:j_idt27"));
-        saveButton.click();
+        clickButtonNamed("Zapisz");
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
     public void clickCancelNewKid() {
-        WebElement cancelButton = driver.findElement(By.id("j_idt17:j_idt26"));
-        cancelButton.click();
+        clickButtonNamed("Anuluj");
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
@@ -62,7 +62,18 @@ public class NewKidsViewPage {
         {
             return "NO MESSAGE SHOWN";
         }
+    }
 
+    private void clickButtonNamed(String name)
+    {
+        WebElement buttonsArea = driver.findElement(By.className("action-buttons-container"));
+        List<WebElement> buttons = buttonsArea.findElements(By.tagName("button"));
+        for(WebElement button : buttons){
+            if(button.findElement(By.tagName("span")).getText().equals(name)) {
+                button.click();
+                break;
+            }
+        }
 
     }
 }

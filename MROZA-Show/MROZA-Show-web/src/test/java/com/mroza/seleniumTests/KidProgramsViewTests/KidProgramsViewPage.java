@@ -45,14 +45,13 @@ public class KidProgramsViewPage {
         return header.getText();
     }
 
-    public void setSearchValue(String symbol) {
+    public void setSearchValue(String symbol){
         WebElement searchBoxInput = driver.findElement(By.className("ui-inputtext"));
         searchBoxInput.sendKeys(symbol);
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
-    public List<String> getProgramsSymbolsList()
-    {
+    public List<String> getProgramsSymbolsList(){
         return getColumnValues(0);
     }
 

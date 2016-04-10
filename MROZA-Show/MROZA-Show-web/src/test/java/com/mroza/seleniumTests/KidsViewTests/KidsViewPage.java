@@ -45,8 +45,9 @@ public class KidsViewPage {
 
 
     public List<String> getKidsSymbolsList() {
-        WebElement tableContent = driver.findElement(By.id("j_idt17:kidsTable_data"));
-        List<WebElement> tableRows = tableContent.findElements(By.className("ui-widget-content"));
+        WebElement tableContent = driver.findElement(By.className("ui-datatable-tablewrapper"));
+        WebElement tableBody = tableContent.findElement(By.tagName("tbody"));
+        List<WebElement> tableRows = tableBody.findElements(By.tagName("tr"));
         List<String> kidsSymbolsList = new ArrayList<>();
         for(WebElement tableRow : tableRows)
         {
@@ -59,7 +60,8 @@ public class KidsViewPage {
     }
 
     public void setSearchValue(String expectedSearchedSymbol) {
-        WebElement searchBoxInput = driver.findElement(By.id("j_idt17:kidsTable:globalFilter"));
+        WebElement searchboxArea = driver.findElement(By.className("ui-datatable-header"));
+        WebElement searchBoxInput = searchboxArea.findElement(By.tagName("input"));
         searchBoxInput.sendKeys(expectedSearchedSymbol);
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
