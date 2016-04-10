@@ -60,20 +60,7 @@ public class ProgramDirectoryViewProgramsListTest {
         List<String> foundSymbols = programDirectoryViewPage.getAllProgramsSymbols();
 
         assertEquals("Found symbols list should be the same size as expected", expectedSymbols.size(), foundSymbols.size());
-
-        Boolean found;
-        for(String expectedSymbol : expectedSymbols)
-        {
-            found = false;
-            for(String foundSymbol : foundSymbols)
-            {
-                if(expectedSymbol.equals(foundSymbol))
-                    found = true;
-            }
-            assertTrue("Expected symbol should be found on list", found);
-        }
-
-
+        assertTrue("Expected symbol should be found on list", foundSymbols.containsAll(expectedSymbols));
     }
 
     @Test
@@ -87,7 +74,7 @@ public class ProgramDirectoryViewProgramsListTest {
     }
 
     @Test
-    public void deleteProgramTest() {
+    public void showExpectedProgramSymbolsOnListAfterSearchByFilterTest() {
         String expectedSearchedSymbol = expectedSymbols.get(0);
         programDirectoryViewPage.setLetterFilterValue("A");
         List<String> programSymbols = programDirectoryViewPage.getAllProgramsSymbols();

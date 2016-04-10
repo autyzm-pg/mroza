@@ -1,13 +1,3 @@
-package com.mroza.seleniumTests.NewProgramsViewTests;
-
-import com.mroza.utils.SeleniumWaiter;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /*
  * MROZA - supporting system of behavioral therapy of people with autism
  *     Copyright (C) 2015-2016 autyzm-pg
@@ -25,6 +15,18 @@ import java.util.List;
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+package com.mroza.seleniumTests.NewProgramsViewTests;
+
+import com.mroza.utils.SeleniumWaiter;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class NewProgramsViewPage {
 
     protected WebDriver driver;

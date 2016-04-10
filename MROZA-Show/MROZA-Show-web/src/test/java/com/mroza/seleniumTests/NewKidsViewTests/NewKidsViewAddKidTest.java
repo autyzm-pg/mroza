@@ -20,6 +20,7 @@ package com.mroza.seleniumTests.NewKidsViewTests;
 import com.mroza.seleniumTests.KidsViewTests.KidsViewPage;
 import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.SeleniumUtils;
+import com.mroza.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class NewKidsViewAddKidTest {
     private NewKidsViewPage newKidsViewPage;
     private KidsViewPage kidsViewPage;
     private String expectedSymbol = "CODE_1", existedSymbol= "CODE_2";
-    private String expectedMessage = "Dziecko o podanym kodzie już istnieje";
+    private String expectedMessage = Utils.getMsgFromResources("newKidsView.codeDuplicatedMsg");
     private String expectedEmptyCodeMessage = "Kod: Wartość wymagana";
 
     @Before
@@ -67,17 +68,12 @@ public class NewKidsViewAddKidTest {
         List<String> foundSymbols = kidsViewPage.getKidsSymbolsList();
         kidsViewPage.close();
 
-        Boolean found = false;
-        for(String foundSymbol : foundSymbols)
-            if(foundSymbol.equals(expectedSymbol))
-                found = true;
-
-        assertTrue("New kid code should be on list", found);
+        assertTrue("New kid code should be on list", foundSymbols.contains(expectedSymbol));
 
     }
 
     @Test
-      public void addNewKidWithTheSameCodeTest() {
+    public void addNewKidWithTheSameCodeTest() {
         newKidsViewPage.setKidCode(existedSymbol);
         newKidsViewPage.clickSaveNewKid();
         String controlMessage = newKidsViewPage.getShowedMessage();
@@ -91,7 +87,7 @@ public class NewKidsViewAddKidTest {
         newKidsViewPage.clickSaveNewKid();
         String controlMessage = newKidsViewPage.getShowedMessage();
 
-        assertEquals("Message should show that that code is needed",expectedEmptyCodeMessage,controlMessage);
+        assertEquals("Message should show that that code is needed", expectedEmptyCodeMessage, controlMessage);
 
     }
 
@@ -105,11 +101,6 @@ public class NewKidsViewAddKidTest {
         List<String> foundSymbols = kidsViewPage.getKidsSymbolsList();
         kidsViewPage.close();
 
-        Boolean found = false;
-        for(String foundSymbol : foundSymbols)
-            if(foundSymbol.equals(expectedSymbol))
-                found = true;
-
-        assertFalse("Canceled kid code should not be on list", found);
+        assertFalse("Canceled kid code should not be on list", foundSymbols.contains(expectedSymbol));
     }
 }

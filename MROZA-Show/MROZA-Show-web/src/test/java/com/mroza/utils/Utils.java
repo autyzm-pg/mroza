@@ -23,6 +23,8 @@ import org.junit.Assert;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class Utils {
 
@@ -35,4 +37,10 @@ public class Utils {
             return null;
         }
     }
+
+    public static String getMsgFromResources(String msgKey) {
+        ResourceBundle messages = ResourceBundle.getBundle("messages");
+        return messages.getString(msgKey);
+    }
+
 }

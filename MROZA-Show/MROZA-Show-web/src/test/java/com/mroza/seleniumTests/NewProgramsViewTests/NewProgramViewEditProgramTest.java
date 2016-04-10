@@ -21,6 +21,7 @@ import com.mroza.models.Program;
 import com.mroza.seleniumTests.ProgramDirectoryViewTests.ProgramDirectoryViewPage;
 import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.SeleniumUtils;
+import com.mroza.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,11 +32,10 @@ import static org.junit.Assert.assertEquals;
 public class NewProgramViewEditProgramTest {
 
     private NewProgramsViewPage newProgramsViewPage;
-    private ProgramDirectoryViewPage programDirectoryViewPage;
     private String existingSymbol = "SYMBOL_1";
     private String existingName = "NAME";
-    private String existingDescription = "DESCRIPTION";;
-    private String expectingHeader = "Edycja programu";
+    private String existingDescription = "DESCRIPTION";
+    private String expectingHeader = Utils.getMsgFromResources("editProgramView.title");
 
     @Before
     public void setUp() {

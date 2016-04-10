@@ -20,12 +20,14 @@ package com.mroza.seleniumTests.NewProgramsViewTests;
 import com.mroza.seleniumTests.ProgramDirectoryViewTests.ProgramDirectoryViewPage;
 import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.SeleniumUtils;
+import com.mroza.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,9 +40,12 @@ public class NewProgramsViewAddProgramTest {
     private ProgramDirectoryViewPage programDirectoryViewPage;
     private String existingSymbol = "SYMBOL_1";
     private String expectedSymbol = "SYMBOL_2";
-    private String expectedMessage = "Symbol już istnieje - wprowadź inny";
-    private String[] expectedMessages = {"Nazwa: Wartość wymagana","Symbol: Wartość wymagana"};
-    private String existingHeader = "Nowy program";
+    private String expectedMessage = Utils.getMsgFromResources("newProgramsView.symbolDuplicateMsg");
+    private List<String> expectedMessages = new ArrayList<String>() {{
+        add("Nazwa: Wartość wymagana");
+        add("Symbol: Wartość wymagana");
+    }};
+    private String existingHeader = Utils.getMsgFromResources("newProgramsView.title");
 
     @Before
     public void setUp() {
@@ -78,12 +83,7 @@ public class NewProgramsViewAddProgramTest {
         List<String> foundSymbols = programDirectoryViewPage.getAllProgramsSymbols();
         programDirectoryViewPage.close();
 
-        Boolean found = false;
-        for(String foundSymbol : foundSymbols)
-            if(foundSymbol.equals(expectedSymbol))
-                found = true;
-
-        assertTrue("New program symbol should be on list", found);
+        assertTrue("New program symbol should be on list", foundSymbols.contains(expectedSymbol));
 
     }
 
@@ -93,15 +93,7 @@ public class NewProgramsViewAddProgramTest {
         newProgramsViewPage.clickSaveNewProgram();
         List<String> controlMessages = newProgramsViewPage.getShowedMessages();
         assertEquals("Message list should be equal empty name and symbol fields", controlMessages.size(), 2);
-
-        Boolean found;
-        for(String controlMessage : controlMessages) {
-            found = false;
-            for (String expectedMessage : expectedMessages)
-                if (expectedMessage.equals(controlMessage))
-                    found = true;
-            assertTrue("Control message should show what is empty", found);
-        }
+        assertTrue("Control message should show what is empty", controlMessages.containsAll(expectedMessages));
     }
 
     @Test
@@ -116,12 +108,7 @@ public class NewProgramsViewAddProgramTest {
         List<String> foundSymbols = programDirectoryViewPage.getAllProgramsSymbols();
         programDirectoryViewPage.close();
 
-        Boolean found = false;
-        for(String foundSymbol : foundSymbols)
-            if(foundSymbol.equals(canceledSymbol))
-                found = true;
-
-        assertFalse("Canceled program symbol should not be on list", found);
+        assertFalse("Canceled program symbol should not be on list", foundSymbols.contains(canceledSymbol));
 
     }
 

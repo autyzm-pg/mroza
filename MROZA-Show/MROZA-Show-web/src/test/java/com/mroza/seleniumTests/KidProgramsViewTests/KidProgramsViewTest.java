@@ -30,10 +30,9 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class KidProgramsViewTest {
 
@@ -70,20 +69,9 @@ public class KidProgramsViewTest {
     @Test
     public void showExpectedAssignedProgramsSymbolsTest() {
         List<String> symbolsList = kidProgramsViewPage.getProgramsSymbolsList();
+        List<String> expectedSymbols = programs.stream().map(Program::getSymbol).collect(Collectors.toList());
         assertEquals("Program list should have one program", 2, symbolsList.size());
-
-        Boolean found;
-        for(Program program : programs) {
-            found = false;
-            for (String symbol : symbolsList) {
-                if(program.getSymbol().equals(symbol))
-                    found = true;
-            }
-            if(!found)
-            {
-                fail("Expected program has not been found on list");
-            }
-        }
+        assertTrue("Expected program has not been found on list", symbolsList.containsAll(expectedSymbols));
     }
 
     @Test

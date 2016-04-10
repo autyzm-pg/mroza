@@ -21,6 +21,7 @@ import com.mroza.models.Kid;
 import com.mroza.models.Program;
 import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.SeleniumUtils;
+import com.mroza.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,7 @@ public class EditProgramViewEditTableTest {
     private DatabaseUtils databaseUtils;
     private String oldTableName;
     private List<String> oldRowsNames;
+    private String expectedErrorMessage = Utils.getMsgFromResources("editProgramView.wrongNumberOfRows");
 
     @Before
     public void setUp() {
@@ -73,7 +75,7 @@ public class EditProgramViewEditTableTest {
         editProgramViewPage.clickDeleteRow(oldTableName, oldRowsNames.get(0));
         editProgramViewPage.clickSaveTableButton(oldTableName);
         String errorMessage = editProgramViewPage.getErrorMessage();
-        assertEquals("Message should show that table with no rows cannot be save", "Liczba wierszy tabelki nie może być równa 0", errorMessage);
+        assertEquals("Message should show that table with no rows cannot be save", expectedErrorMessage, errorMessage);
 
     }
 
