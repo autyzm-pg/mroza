@@ -21,11 +21,14 @@ package com.mroza.utils;
 import com.mroza.ReflectionWrapper;
 import com.mroza.dao.*;
 import com.mroza.models.*;
+import javafx.scene.control.Tab;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Assert;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseUtils {
@@ -115,11 +118,12 @@ public class DatabaseUtils {
         return program;
     }
 
-    public void setUpTableWithRows(String tableName, List<String> rowsNames, String description, int generalization, int teaching, Program program) {
+    public Table setUpTableWithRows(String tableName, List<String> rowsNames, String description, int generalization, int teaching, Program program) {
         Table table = setUpTable(tableName, description, program);
         for(int orderNum = 0; orderNum < rowsNames.size(); orderNum++){
             setUpRowWithFields(rowsNames.get(orderNum), orderNum, generalization, teaching, table);
         }
+        return table;
 
     }
 
@@ -151,4 +155,22 @@ public class DatabaseUtils {
         return tableRow;
     }
 
+    public Period setUpPeriod(Date beginDate, Date endDate, Kid kid) {
+        Period period = new Period(beginDate, endDate, kid.getId());
+        periodsDao.insertPeriod(period);
+        utilsSqlSession.commit();
+        return period;
+    }
+
+    public KidTable setUpKidTable(Table table, Period period) {
+        KidTable kidTable = new KidTable(true, true, table, period);
+        kidTablesDao.insertKidTable(kidTable);
+        utilsSqlSession.commit();
+        List<ResolvedField> resolvedFields = kidTable.getResolvedFields();
+        for(ResolvedField resolvedField: resolvedFields){
+            resolvedFieldsDao.insertResolvedField(resolvedField);
+            utilsSqlSession.commit();
+        }
+        return kidTable;
+    }
 }
