@@ -49,11 +49,12 @@ public class KidProgramsForPeriodViewTest {
     private Program programToAssign;
     private Table tableToAssign;
     private List<String> programsSymbols;
+    private DatabaseUtils databaseUtils;
 
     @Before
     public void setUp() {
         SeleniumUtils.setUpDriverConnection();
-        DatabaseUtils databaseUtils = new DatabaseUtils();
+        databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
         kid = databaseUtils.setUpKid("CODE_1");
         program = databaseUtils.setUpProgram("SYMBOL_1", "NAME_1", "DESCTIPTION_1", kid);
@@ -129,8 +130,16 @@ public class KidProgramsForPeriodViewTest {
         List<String> assignedProgramsSymbols = kidProgramsForPeriodViewPage.getAssignedProgramsToActualPeriod();
         assertEquals("No programs should be assigned", assignedProgramsSymbols.size(), 1);
         assertEquals("No programs should be assigned", assignedProgramsSymbols.get(0), Utils.getMsgFromResources("main.emptyMessage"));
-
-
     }
+
+    @Test
+    public void deletePeriodWithTableFilledTest() {
+
+        databaseUtils.fillKidTableWithData(kidTable);
+        kidProgramsForPeriodViewPage.clickDeletePeriodButton();
+        kidProgramsForPeriodViewPage.clickYesButtonInDialogBox();
+        String notChosenPeriodMessage = kidProgramsForPeriodViewPage.getErrorMessage();
+        assertTrue("Actual chosen program should should not be deleted - filled table error message", notChosenPeriodMessage.equals(Utils.getMsgFromResources("kidProgramsView.unableToRemovePeriodWithFilledResolvedFields")));
+       }
 
 }

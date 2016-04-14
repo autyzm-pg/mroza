@@ -27,7 +27,6 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class KidProgramsForPeriodViewPage {
 
@@ -42,26 +41,22 @@ public class KidProgramsForPeriodViewPage {
     public void close() {
         driver.quit();
     }
-    public String getHeader() {
-        WebElement header = driver.findElement(By.className("b-page-header"));
-        return header.getText();
-    }
 
     public void turnToProgramsForPeriodPagePart() {
-        turnToOtherPagePart(Utils.getMsgFromResources("kidProgramsView.programsForPeriod"));
-        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-    }
-
-    private void turnToOtherPagePart(String pagePartName) {
         WebElement  navigationArea = driver.findElement(By.className("ui-tabs-nav"));
         List<WebElement> navigationButtons = navigationArea.findElements(By.tagName("li"));
         for(WebElement navigationButton : navigationButtons){
-            if(navigationButton.findElement(By.tagName("a")).getText().equals(pagePartName)){
+            if(navigationButton.findElement(By.tagName("a")).getText().equals(Utils.getMsgFromResources("kidProgramsView.programsForPeriod"))){
                 navigationButton.click();
                 break;
             }
         }
+        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+    }
 
+    public String getHeader() {
+        WebElement header = driver.findElement(By.className("b-page-header"));
+        return header.getText();
     }
 
     public List<String> getPeriodDateLabel() {
@@ -101,14 +96,8 @@ public class KidProgramsForPeriodViewPage {
         return outputPanel.findElements(By.tagName("span"));
     }
 
-    public void clickAssignProgramButton() {
-        WebElement button = getButton(Utils.getMsgFromResources("kidProgramsView.addProgram"));
-        button.click();
-        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-    }
-
     public void chooseProgram(String symbol) {
-        WebElement dialog = getDialogWhichIsNotHidden();
+        WebElement dialog = getVisibleDialogBox();
         WebElement dialogContent = dialog.findElement(By.className("ui-dialog-content"));
         WebElement dialogForm = dialogContent.findElement(By.tagName("form"));
         WebElement tableWrapper = dialogForm.findElement(By.className("ui-datatable")).findElement(By.className("ui-datatable-tablewrapper"));
@@ -126,44 +115,8 @@ public class KidProgramsForPeriodViewPage {
         }
     }
 
-    private List<WebElement> getAssignedProgramTableRows() {
-        WebElement tableBody = driver.findElement(By.id("kid-programs-tab-view:periodProgramsForm:programsPerPeriodTab_data"));
-        return tableBody.findElements(By.tagName("tr"));
-    }
-
-    private WebElement getButton(String butttonName) {
-        WebElement form = getProgramsForPeriodFormContainer();
-        WebElement actionButtons = form.findElement(By.className("action-buttons-container"));
-        for(WebElement button : actionButtons.findElements(By.tagName("button"))){
-            if(button.findElement(By.tagName("span")).getText().equals(butttonName))
-                return button;
-        }
-        return null;
-    }
-
-
-    private WebElement getProgramsForPeriodFormContainer() {
-        WebElement mainBody = driver.findElement(By.className("b-main-content"));
-        WebElement tabs = mainBody.findElement(By.className("ui-tabs"));
-        WebElement tabsPanel = tabs.findElement(By.className("ui-tabs-panels"));
-        List<WebElement> panels = tabsPanel.findElements(By.className("ui-tabs-panel"));
-        return panels.get(1).findElement(By.tagName("form"));
-    }
-
-    private WebElement getDialogWhichIsNotHidden()
-    {
-        List<WebElement> dialogs = driver.findElements(By.className("ui-dialog"));
-        WebElement goodDialog = null;
-        SeleniumWaiter.waitForDialogBoxAppears(driver);
-        for(WebElement dialog : dialogs){
-            if(dialog.getAttribute("aria-hidden").equals("false"))
-                goodDialog = dialog;
-        }
-        return goodDialog;
-    }
-
     public void chooseTable(String name) {
-        WebElement dialog = getDialogWhichIsNotHidden();
+        WebElement dialog = getVisibleDialogBox();
         WebElement dialogContent = dialog.findElement(By.className("ui-dialog-content"));
         WebElement dialogForm = dialogContent.findElement(By.tagName("form"));
         WebElement tableWrapper = dialogForm.findElement(By.className("ui-datatable")).findElement(By.className("ui-datatable-tablewrapper"));
@@ -181,20 +134,34 @@ public class KidProgramsForPeriodViewPage {
         }
     }
 
+    private List<WebElement> getAssignedProgramTableRows() {
+        WebElement tableBody = driver.findElement(By.id("kid-programs-tab-view:periodProgramsForm:programsPerPeriodTab_data"));
+        return tableBody.findElements(By.tagName("tr"));
+    }
+
+    private WebElement getProgramsForPeriodFormContainer() {
+        WebElement mainBody = driver.findElement(By.className("b-main-content"));
+        WebElement tabs = mainBody.findElement(By.className("ui-tabs"));
+        WebElement tabsPanel = tabs.findElement(By.className("ui-tabs-panels"));
+        List<WebElement> panels = tabsPanel.findElements(By.className("ui-tabs-panel"));
+        return panels.get(1).findElement(By.tagName("form"));
+    }
+
+
     public void clickDeletePeriodButton() {
-        WebElement button = getButton(Utils.getMsgFromResources("kidProgramsView.deletePeriod"));
-        button.click();
-        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+       clickButton(Utils.getMsgFromResources("kidProgramsView.deletePeriod"));
     }
 
     public void clickYesButtonInDialogBox() {
-        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
         clickDialogButton(Utils.getMsgFromResources("main.yes"));
-        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+    }
+
+    public void clickAssignProgramButton() {
+        clickButton(Utils.getMsgFromResources("kidProgramsView.addProgram"));
     }
 
     private void clickDialogButton(String buttonName) {
-        WebElement dialog = getDialogWhichIsNotHidden();
+        WebElement dialog = getVisibleDialogBox();
         WebElement buttonPanel = dialog.findElement(By.className("ui-dialog-buttonpane"));
         List<WebElement> buttons = buttonPanel.findElements(By.tagName("button"));
 
@@ -209,11 +176,36 @@ public class KidProgramsForPeriodViewPage {
         }
     }
 
+    private void clickButton(String buttonName) {
+        WebElement form = getProgramsForPeriodFormContainer();
+        WebElement actionButtons = form.findElement(By.className("action-buttons-container"));
+        for(WebElement button : actionButtons.findElements(By.tagName("button"))){
+            if(button.findElement(By.tagName("span")).getText().equals(buttonName)) {
+                button.click();
+                SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+            }
+        }
+    }
+
     public String getActualChosenPeriodMessage() {
-        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
         WebElement form = getProgramsForPeriodFormContainer();
         WebElement outputPanel = form.findElement(By.className("ui-outputpanel"));
         return outputPanel.getText();
+    }
+
+    public String getErrorMessage() {
+        WebElement errorMessage = driver.findElement(By.className("ui-messages-error-summary"));
+        return errorMessage.getText();
+    }
+
+    private WebElement getVisibleDialogBox() {
+        List<WebElement> dialogs = driver.findElements(By.className("ui-dialog"));
+        WebElement goodDialog = null;
+        SeleniumWaiter.waitForDialogBoxAppears(driver);
+        for(WebElement dialog : dialogs){
+            if(dialog.getAttribute("aria-hidden").equals("false"))
+                goodDialog = dialog;
+        }
+        return goodDialog;
     }
 }

@@ -28,6 +28,7 @@ import org.junit.Assert;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -87,6 +88,8 @@ public class DatabaseUtils {
         kidsDao.deleteKids(kidList);
         List<Program> programList = programsDao.selectAllPrograms();
         programsDao.deletePrograms(programList);
+        List<KidTable> kidTableList = kidTablesDao.selectAllKidTables();
+        kidTableList.forEach((kidTable) -> kidTablesDao.deleteKidTableById(kidTable.getId()));
         utilsSqlSession.commit();
     }
 
@@ -120,9 +123,11 @@ public class DatabaseUtils {
 
     public Table setUpTableWithRows(String tableName, List<String> rowsNames, String description, int generalization, int teaching, Program program) {
         Table table = setUpTable(tableName, description, program);
+        List<TableRow> tableRows = new ArrayList<>();
         for(int orderNum = 0; orderNum < rowsNames.size(); orderNum++){
-            setUpRowWithFields(rowsNames.get(orderNum), orderNum, generalization, teaching, table);
+            tableRows.add(setUpRowWithFields(rowsNames.get(orderNum), orderNum, generalization, teaching, table));
         }
+        table.setTableRows(tableRows);
         return table;
 
     }
@@ -144,12 +149,11 @@ public class DatabaseUtils {
         TableRow tableRow = new TableRow(rowName,orderNumber,learningNumber,generalizationNumber);
         tableRow.setTableId(table.getId());
         tableRowsDao.insertTableRow(tableRow);
-
+        utilsSqlSession.commit();
         List<TableField> tableFields = tableRow.getRowFields();
         for(TableField field : tableFields) {
             field.setRowId(tableRow.getId());
         }
-        tableFields.addAll(tableRow.getRowFields());
         tableFieldsDao.insertTableFields(tableFields);
         utilsSqlSession.commit();
         return tableRow;
@@ -166,11 +170,28 @@ public class DatabaseUtils {
         KidTable kidTable = new KidTable(true, true, table, period);
         kidTablesDao.insertKidTable(kidTable);
         utilsSqlSession.commit();
+        return kidTable;
+    }
+
+    public KidTable fillKidTableWithData(KidTable kidTable) {
         List<ResolvedField> resolvedFields = kidTable.getResolvedFields();
-        for(ResolvedField resolvedField: resolvedFields){
-            resolvedFieldsDao.insertResolvedField(resolvedField);
+        for(ResolvedField resolvedField : resolvedFields)
+        {
+            resolvedField.setValue("OK");
+            resolvedField.setKidTableId(resolvedField.getKidTable().getId());
+            resolvedField.setTableFieldId(resolvedField.getTableField().getId());
+            resolvedFieldsDao.updateResolvedField(resolvedField);
             utilsSqlSession.commit();
         }
+        kidTable.setGeneralizationFillDate(new Date());
+        kidTable.setLearningFillDate(new Date());
+        kidTable.setCollectingGeneralization(true);
+        kidTable.setCollectingGeneralization(true);
+        kidTable.setLastModDate(new Date());
+        kidTable.setPeriodId(kidTable.getPeriod().getId());
+        kidTable.setTableId(kidTable.getTable().getId());
+        kidTablesDao.updateKidTable(kidTable);
+        utilsSqlSession.commit();
         return kidTable;
     }
 }
