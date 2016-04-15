@@ -90,6 +90,8 @@ public class DatabaseUtils {
         programsDao.deletePrograms(programList);
         List<KidTable> kidTableList = kidTablesDao.selectAllKidTables();
         kidTableList.forEach((kidTable) -> kidTablesDao.deleteKidTableById(kidTable.getId()));
+        List<Table> tableList = tablesDao.selectAllTables();
+        tablesDao.deleteTables(tableList);
         utilsSqlSession.commit();
     }
 

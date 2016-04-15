@@ -19,6 +19,7 @@
 package com.mroza.seleniumTests.NewProgramsViewTests;
 
 import com.mroza.utils.SeleniumWaiter;
+import com.mroza.utils.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -46,11 +47,11 @@ public class NewProgramsViewPage {
     }
 
     public void setAddProgramFields(String symbol, String name, String description) {
-        WebElement symbolInputField = getInputFieldNamed("Symbol");
+        WebElement symbolInputField = getInputFieldNamed(Utils.getMsgFromResources("newProgramsView.symbol"));
         symbolInputField.sendKeys(symbol);
-        WebElement nameInputField = getInputFieldNamed("Nazwa");
+        WebElement nameInputField = getInputFieldNamed(Utils.getMsgFromResources("newProgramsView.name"));
         nameInputField.sendKeys(name);
-        WebElement descriptionInputField = getTextAreaNamed("Opis");
+        WebElement descriptionInputField = getTextAreaNamed(Utils.getMsgFromResources("newProgramsView.description"));
         descriptionInputField.sendKeys(description);
     }
 
@@ -64,7 +65,7 @@ public class NewProgramsViewPage {
         return header.getText();
     }
 
-    public String getShowedMessage() {
+    public String getErrorMessage() {
         try {
             WebElement message = driver.findElement(By.className("ui-messages-error-summary"));
             return message.getText();
@@ -75,12 +76,11 @@ public class NewProgramsViewPage {
         }
     }
 
-    public List<String> getShowedMessages() {
+    public List<String> getErrorMessages() {
         try {
             List<WebElement> messageBoxes = driver.findElements(By.className("ui-messages-error-summary"));
             List<String> messages = new ArrayList<>();
-            for(WebElement messageBox : messageBoxes)
-                messages.add(messageBox.getText());
+            messageBoxes.forEach((messageBox)->messages.add(messageBox.getText()));
             return messages;
         }
         catch (Exception e)
@@ -90,18 +90,18 @@ public class NewProgramsViewPage {
     }
 
     public String getSymbol() {
-        WebElement symbolInputField = getInputFieldNamed("Symbol");
+        WebElement symbolInputField = getInputFieldNamed(Utils.getMsgFromResources("newProgramsView.symbol"));
         return symbolInputField.getAttribute("value");
     }
 
     public String getName() {
-        WebElement nameInputField = getInputFieldNamed("Nazwa");
+        WebElement nameInputField = getInputFieldNamed(Utils.getMsgFromResources("newProgramsView.name"));
         return nameInputField.getAttribute("value");
 
     }
 
     public String getDescription() {
-        WebElement descriptionInputField = getTextAreaNamed("Opis");
+        WebElement descriptionInputField = getTextAreaNamed(Utils.getMsgFromResources("newProgramsView.description"));
         return descriptionInputField.getText();
     }
 

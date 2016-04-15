@@ -18,10 +18,12 @@
 package com.mroza.seleniumTests.ProgramDirectoryViewTests;
 
 import com.mroza.utils.SeleniumWaiter;
+import com.mroza.utils.Utils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +43,7 @@ public class ProgramDirectoryViewPage {
     }
 
     public List<String> getAllProgramsSymbols() {
-        WebElement tableContent = driver.findElement(By.id("j_idt17:systemProgramsTable_data"));
-        List<WebElement> tableRows = tableContent.findElements(By.className("ui-widget-content"));
+        List<WebElement> tableRows = getTableRows();
         List<String> programSymbolsList = new ArrayList<>();
         for(WebElement tableRow : tableRows)
         {
@@ -55,8 +56,8 @@ public class ProgramDirectoryViewPage {
     }
 
     public void setSearchValue(String expectedSearchedSymbol) {
-        WebElement searchBoxInput = driver.findElement(By.id("j_idt17:textFilter"));
-        searchBoxInput.sendKeys(expectedSearchedSymbol);
+        WebElement searchBoxInput = driver.findElement(By.className("ui-outputpanel"));
+        searchBoxInput.findElement(By.tagName("input")).sendKeys(expectedSearchedSymbol);
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
@@ -71,6 +72,56 @@ public class ProgramDirectoryViewPage {
             }
         }
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+    }
+
+    public void clickDeleteButton(String symbol) {
+        List<WebElement> tableRows = getTableRows();
+        for(WebElement tableRow : tableRows)
+        {
+            List<WebElement> columns = tableRow.findElements(By.tagName("td"));
+            if(columns.get(0).getText().equals(symbol)){
+                WebElement deleteButton = columns.get(3).findElement(By.tagName("button"));
+                deleteButton.click();
+            }
+        }
+    }
+
+    private List<WebElement> getTableRows() {
+        WebElement tableContent = driver.findElement(By.tagName("table"));
+        WebElement tableBody = tableContent.findElement(By.tagName("tbody"));
+        return tableBody.findElements(By.tagName("tr"));
+    }
+
+    public void clickYesButtonInDialogBox() {
+        clickDialogButton(Utils.getMsgFromResources("main.yes"));
+    }
+
+
+    private WebElement getVisibleDialogBox() {
+        List<WebElement> dialogs = driver.findElements(By.className("ui-dialog"));
+        WebElement goodDialog = null;
+        SeleniumWaiter.waitForDialogBoxAppears(driver);
+        for(WebElement dialog : dialogs){
+            if(dialog.getAttribute("aria-hidden").equals("false"))
+                goodDialog = dialog;
+        }
+        return goodDialog;
+    }
+
+    private void clickDialogButton(String buttonName) {
+        WebElement dialog = getVisibleDialogBox();
+        WebElement buttonPanel = dialog.findElement(By.className("ui-dialog-buttonpane"));
+        List<WebElement> buttons = buttonPanel.findElements(By.tagName("button"));
+
+        for(WebElement button :  buttons){
+            List<WebElement> spanElements = button.findElements(By.tagName("span"));
+            if(spanElements.get(1).getText().equals(buttonName)) {
+                Actions actions = new Actions(driver);
+                actions.moveToElement(button).click().perform();
+                SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+                break;
+            }
+        }
     }
 
 }

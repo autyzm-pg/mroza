@@ -39,17 +39,15 @@ public class KidProgramsForPeriodViewTest {
 
     private Kid kid;
     private KidProgramsForPeriodViewPage kidProgramsForPeriodViewPage;
-    private Program program;
-    private Table table;
+    private Program program, programToAssign;
+    private Table table, tableToAssign;
     private List<String> rowsNames = new ArrayList<String>(){{add("ROW_NAME");}};
-    private Period actualPeriod;
+    private Period actualPeriod, previousPeriod;
     private KidTable kidTable;
-    private Date startDate;
-    private Date endDate;
-    private Program programToAssign;
-    private Table tableToAssign;
+    private Date startDate, endDate;
     private List<String> programsSymbols;
     private DatabaseUtils databaseUtils;
+    private Date previousStartDate, previousEndDate, expectedToSetStartDate;
 
     @Before
     public void setUp() {
@@ -68,6 +66,10 @@ public class KidProgramsForPeriodViewTest {
         startDate = Utils.getDateFromNow(-2);
         endDate = Utils.getDateFromNow(2);
         actualPeriod = databaseUtils.setUpPeriod(startDate, endDate, kid);
+        expectedToSetStartDate = Utils.getDateFromNow(-4);
+        previousStartDate = Utils.getDateFromNow(-10);
+        previousEndDate = Utils.getDateFromNow(-5);
+        previousPeriod = databaseUtils.setUpPeriod(previousStartDate, previousEndDate, kid);
         kidTable = databaseUtils.setUpKidTable(table, actualPeriod);
         kidProgramsForPeriodViewPage = PageFactory.initElements(new ChromeDriver(), KidProgramsForPeriodViewPage.class);
         kidProgramsForPeriodViewPage.open(SeleniumUtils.kidProgramsViewUrl, kid);
@@ -91,8 +93,8 @@ public class KidProgramsForPeriodViewTest {
     public void showedPeriodShouldStartAtExpectedDaysTest() {
         List<String> periodDateLabel = kidProgramsForPeriodViewPage.getPeriodDateLabel();
         assertTrue("PeriodDateLabels list should contain one period", periodDateLabel.size() > 0);
-        assertTrue("PeriodDateLabel should contain correct start date", periodDateLabel.get(0).contains(Utils.dateToStr(startDate, "dd-MM-yyyy")));
-        assertTrue("PeriodDateLabel should contain correct start date", periodDateLabel.get(0).contains(Utils.dateToStr(endDate, "dd-MM-yyyy")));
+        assertTrue("PeriodDateLabel should contain correct start date", periodDateLabel.get(1).contains(Utils.dateToStr(startDate, "dd-MM-yyyy")));
+        assertTrue("PeriodDateLabel should contain correct end date", periodDateLabel.get(1).contains(Utils.dateToStr(endDate, "dd-MM-yyyy")));
     }
 
     @Test
@@ -122,6 +124,26 @@ public class KidProgramsForPeriodViewTest {
     }
 
     @Test
+    public void deleteAssignedProgramToPeriodTest() {
+        kidProgramsForPeriodViewPage.deleteAssignedPrograms();
+        List<String> assignedProgramsSymbols = kidProgramsForPeriodViewPage.getAssignedProgramsToActualPeriod();
+        assertEquals("Period should have empty assigned programs list", assignedProgramsSymbols.size(), 1);
+        assertTrue("Period should not have programs assigned", assignedProgramsSymbols.get(0).equals(Utils.getMsgFromResources("main.emptyMessage")));
+    }
+
+    @Test
+    public void deleteAssignedProgramWithFilledTableTest() {
+        databaseUtils.fillKidTableWithData(kidTable);
+        kidProgramsForPeriodViewPage.deleteAssignedPrograms();
+        String unableToDeleteErrorMessage = kidProgramsForPeriodViewPage.getErrorMessage();
+        assertEquals("Message should inform not to delete program assign", unableToDeleteErrorMessage,Utils.getMsgFromResources("kidProgramsView.unableToEditProgramWithFilledResolveMsg") );
+
+        List<String> assignedProgramsSymbols = kidProgramsForPeriodViewPage.getAssignedProgramsToActualPeriod();
+        assertEquals("Period should have one assigned programs", assignedProgramsSymbols.size(), 1);
+        assertTrue("Period should have correct symbols of assigned program", assignedProgramsSymbols.contains(program.getSymbol()));
+    }
+
+    @Test
     public void deletePeriodTest() {
         kidProgramsForPeriodViewPage.clickDeletePeriodButton();
         kidProgramsForPeriodViewPage.clickYesButtonInDialogBox();
@@ -134,12 +156,31 @@ public class KidProgramsForPeriodViewTest {
 
     @Test
     public void deletePeriodWithTableFilledTest() {
-
         databaseUtils.fillKidTableWithData(kidTable);
         kidProgramsForPeriodViewPage.clickDeletePeriodButton();
         kidProgramsForPeriodViewPage.clickYesButtonInDialogBox();
         String notChosenPeriodMessage = kidProgramsForPeriodViewPage.getErrorMessage();
         assertTrue("Actual chosen program should should not be deleted - filled table error message", notChosenPeriodMessage.equals(Utils.getMsgFromResources("kidProgramsView.unableToRemovePeriodWithFilledResolvedFields")));
-       }
+    }
+
+    @Test
+    public void changePeriodRange() {
+        kidProgramsForPeriodViewPage.changeActualPeriodStartDate(previousEndDate);
+        String overlapsPeriodsMessage = kidProgramsForPeriodViewPage.getErrorMessage();
+        assertTrue("Period should no be able to overlap, error message should be show up", overlapsPeriodsMessage.equals(Utils.getMsgFromResources("kidProgramsView.wrongPeriodDateMsg")));
+
+        kidProgramsForPeriodViewPage.changeActualPeriodStartDate(expectedToSetStartDate);
+        overlapsPeriodsMessage = kidProgramsForPeriodViewPage.getErrorMessage();
+        assertTrue("Period should be able to change date, no message should be shown", overlapsPeriodsMessage.equals("NOT MESSAGE HAS BEEN SHOWN"));
+
+        kidProgramsForPeriodViewPage.close();
+        kidProgramsForPeriodViewPage = PageFactory.initElements(new ChromeDriver(), KidProgramsForPeriodViewPage.class);
+        kidProgramsForPeriodViewPage.open(SeleniumUtils.kidProgramsViewUrl, kid);
+        kidProgramsForPeriodViewPage.turnToProgramsForPeriodPagePart();
+
+        String startDateString = kidProgramsForPeriodViewPage.getActualChosenPeriodStartDate();
+        assertTrue("Actual chosen period should have changed date", startDateString.contains(Utils.dateToStr(expectedToSetStartDate, "dd-MM-yyyy")));
+    }
+
 
 }

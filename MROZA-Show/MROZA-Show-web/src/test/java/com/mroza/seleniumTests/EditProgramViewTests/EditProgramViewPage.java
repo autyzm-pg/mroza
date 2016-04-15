@@ -19,6 +19,7 @@ package com.mroza.seleniumTests.EditProgramViewTests;
 
 import com.mroza.models.Program;
 import com.mroza.utils.SeleniumWaiter;
+import com.mroza.utils.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -66,7 +67,7 @@ public class EditProgramViewPage {
     }
 
     public void clickAddNewTableButton() {
-        clickButtonNamed("Dodaj tabelkę");
+        clickButtonNamed(Utils.getMsgFromResources("editProgramView.addTable"));
     }
 
     private void clickButtonNamed(String buttonName) {
@@ -102,15 +103,15 @@ public class EditProgramViewPage {
     }
 
     public void clickAddNewRowButtonForTable(String tableName) {
-        clickButtonForTable(tableName, "Dodaj wiersz", true);
+        clickButtonForTable(tableName, Utils.getMsgFromResources("editProgramView.addRow"), true);
     }
 
     public void clickSaveTableButton(String tableName) {
-        clickButtonForTable(tableName, "Zapisz", true);
+        clickButtonForTable(tableName, Utils.getMsgFromResources("main.save"), true);
     }
 
     public void clickEditTableButton(String tableName) {
-        clickButtonForTable(tableName, "Edytuj", false);
+        clickButtonForTable(tableName,  Utils.getMsgFromResources("main.edit"), false);
     }
 
     private void clickButtonForTable(String tableName, String buttonName, Boolean isEditing) {
@@ -158,7 +159,7 @@ public class EditProgramViewPage {
     }
 
     public void clickCopyTableButton(String tableName) {
-        clickButtonForTable(tableName, "Skopiuj", false);
+        clickButtonForTable(tableName, Utils.getMsgFromResources("editProgramView.copyTable"), false);
     }
 
     public List<String> getTableRowsNamesForTable(String newTableName, Boolean isEditing) {

@@ -20,12 +20,16 @@ package com.mroza.seleniumTests.KidProgramsViewTests;
 import com.mroza.models.Kid;
 import com.mroza.utils.SeleniumWaiter;
 import com.mroza.utils.Utils;
+import javassist.NotFoundException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import java.time.DateTimeException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class KidProgramsForPeriodViewPage {
@@ -67,16 +71,18 @@ public class KidProgramsForPeriodViewPage {
     }
 
     public String getActualChosenPeriodEndDate() {
-        List<WebElement> spans = getActualChosenPeriodDisplayAreaSpans();
-        WebElement endSpan = spans.get(3);
-        WebElement input = endSpan.findElement(By.tagName("input"));
+        WebElement input = getPeriodDateInput(3);
         return input.getAttribute("value");
     }
 
-    public String getActualChosenPeriodStartDate() {
+    private WebElement getPeriodDateInput(int index) {
         List<WebElement> spans = getActualChosenPeriodDisplayAreaSpans();
-        WebElement actualSpan = spans.get(1);
-        WebElement input = actualSpan.findElement(By.tagName("input"));
+        WebElement span = spans.get(index);
+        return span.findElement(By.tagName("input"));
+    }
+
+    public String getActualChosenPeriodStartDate() {
+        WebElement input = getPeriodDateInput(1);
         return input.getAttribute("value");
     }
 
@@ -194,8 +200,14 @@ public class KidProgramsForPeriodViewPage {
     }
 
     public String getErrorMessage() {
-        WebElement errorMessage = driver.findElement(By.className("ui-messages-error-summary"));
-        return errorMessage.getText();
+        try {
+            WebElement errorMessage = driver.findElement(By.className("ui-messages-error-summary"));
+            return errorMessage.getText();
+        }
+        catch (Exception ex)
+        {
+            return "NOT MESSAGE HAS BEEN SHOWN";
+        }
     }
 
     private WebElement getVisibleDialogBox() {
@@ -207,5 +219,43 @@ public class KidProgramsForPeriodViewPage {
                 goodDialog = dialog;
         }
         return goodDialog;
+    }
+
+    public void changeActualPeriodStartDate(Date date) {
+        WebElement input = getPeriodDateInput(1);
+        input.click();
+        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+        WebElement dataPicker = driver.findElement(By.className("ui-datepicker-calendar"));
+        List<WebElement> calendarFields = dataPicker.findElements(By.tagName("td"));
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+
+        for(WebElement calendarField : calendarFields){
+            List<WebElement> calendarFieldValues = calendarField.findElements(By.tagName("a"));
+            if(calendarFieldValues.size() > 0){
+               String chosenDay = calendarFieldValues.get(0).getText();
+                if(chosenDay.equals(String.valueOf(dayOfMonth))){
+                    calendarField.click();
+                    break;
+                }
+            }
+        }
+        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+    }
+
+    public void deleteAssignedPrograms() {
+        List<WebElement> tableRows = getAssignedProgramTableRows();
+        for(WebElement tableRow : tableRows){
+            List<WebElement> columns = tableRow.findElements(By.tagName("td"));
+            WebElement buttonsColumn = columns.get(3);
+            List<WebElement> buttons = buttonsColumn.findElements(By.tagName("a"));
+            buttons.get(1).click();
+            SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+            clickYesButtonInDialogBox();
+            SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+        }
+
     }
 }
