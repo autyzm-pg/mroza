@@ -93,8 +93,8 @@ public class KidProgramsForPeriodViewTest {
     public void showedPeriodShouldStartAtExpectedDaysTest() {
         List<String> periodDateLabel = kidProgramsForPeriodViewPage.getPeriodDateLabel();
         assertTrue("PeriodDateLabels list should contain one period", periodDateLabel.size() > 0);
-        assertTrue("PeriodDateLabel should contain correct start date", periodDateLabel.get(1).contains(Utils.dateToStr(startDate, "dd-MM-yyyy")));
-        assertTrue("PeriodDateLabel should contain correct end date", periodDateLabel.get(1).contains(Utils.dateToStr(endDate, "dd-MM-yyyy")));
+        assertTrue("PeriodDateLabel should contain correct start date", periodDateLabel.get(periodDateLabel.size() - 1).contains(Utils.dateToStr(startDate, "dd-MM-yyyy")));
+        assertTrue("PeriodDateLabel should contain correct end date", periodDateLabel.get(periodDateLabel.size() - 1).contains(Utils.dateToStr(endDate, "dd-MM-yyyy")));
     }
 
     @Test

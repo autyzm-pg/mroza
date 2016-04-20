@@ -212,13 +212,13 @@ public class KidProgramsForPeriodViewPage {
 
     private WebElement getVisibleDialogBox() {
         List<WebElement> dialogs = driver.findElements(By.className("ui-dialog"));
-        WebElement goodDialog = null;
+        WebElement visibleDialog = null;
         SeleniumWaiter.waitForDialogBoxAppears(driver);
         for(WebElement dialog : dialogs){
             if(dialog.getAttribute("aria-hidden").equals("false"))
-                goodDialog = dialog;
+                visibleDialog = dialog;
         }
-        return goodDialog;
+        return visibleDialog;
     }
 
     public void changeActualPeriodStartDate(Date date) {
