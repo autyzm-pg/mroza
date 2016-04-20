@@ -19,6 +19,7 @@
 package com.mroza.dao;
 
 import com.mroza.models.Table;
+import javafx.scene.control.Tab;
 import org.apache.ibatis.session.SqlSession;
 
 import javax.inject.Inject;
@@ -51,5 +52,9 @@ public class TablesDao {
 
     public void updateTable(Table table) {
         sqlSession.update("tablesMapper.updateTable", table);
+    }
+
+    public void deleteTables(List<Table> tableList) {
+      tableList.forEach((table) -> sqlSession.delete("tablesMapper.deleteTable", table));
     }
 }

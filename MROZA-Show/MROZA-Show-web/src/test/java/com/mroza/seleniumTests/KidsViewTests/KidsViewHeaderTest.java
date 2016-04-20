@@ -19,6 +19,7 @@
 package com.mroza.seleniumTests.KidsViewTests;
 import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.SeleniumUtils;
+import com.mroza.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,7 @@ public class KidsViewHeaderTest {
     public void setUp() {
         SeleniumUtils.setUpDriverConnection();
         page = PageFactory.initElements(new ChromeDriver(), KidsViewPage.class);
-        page.open("http://localhost:8080/web/faces/kidsView.xhtml");
+        page.open(SeleniumUtils.kidsViewUrl);
     }
 
     @After
@@ -47,6 +48,6 @@ public class KidsViewHeaderTest {
 
     @Test
     public void showCorrectHeaderTest() {
-        assertEquals("Headers should be the same", "Dzieci", page.getHeader());
+        assertEquals("Headers should be the same", Utils.getMsgFromResources("kidsView.kids"), page.getHeader());
     }
 }

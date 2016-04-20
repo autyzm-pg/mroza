@@ -23,6 +23,8 @@ import com.mroza.interfaces.KidsService;
 import com.mroza.models.Kid;
 import com.mroza.qualifiers.KidsServiceImpl;
 import com.mroza.viewbeans.utils.NavigationUtil;
+import com.mroza.viewbeans.utils.ViewMsg;
+import com.mroza.viewbeans.utils.ViewMsgUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,7 +54,12 @@ public class NewKidsBean implements Serializable {
     }
 
     public void saveKid() {
-        kidsService.saveKid(kid);
-        NavigationUtil.redirect("kidsView.xhtml");
+        if (kidsService.existsKidWithCode(kid.getCode())) {
+            ViewMsgUtil.setViewErrorMsg(ViewMsg.KID_CODE_DUPLICATED);
+        }
+        else {
+            kidsService.saveKid(kid);
+            NavigationUtil.redirect("kidsView.xhtml");
+        }
     }
 }

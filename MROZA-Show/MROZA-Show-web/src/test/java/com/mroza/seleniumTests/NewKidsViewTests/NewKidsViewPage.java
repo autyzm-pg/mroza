@@ -15,19 +15,20 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package com.mroza.seleniumTests.NewKidsViewTests;
 
-package com.mroza.seleniumTests.KidsViewTests;
 import com.mroza.seleniumTests.MrozaViewPage;
 import com.mroza.utils.SeleniumWaiter;
+import com.mroza.utils.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import java.util.ArrayList;
+
 import java.util.List;
 
-public class KidsViewPage extends MrozaViewPage{
+public class NewKidsViewPage extends MrozaViewPage{
 
-    public KidsViewPage(WebDriver driver) {
+    public NewKidsViewPage(WebDriver driver) {
         super(driver);
     }
     public void open(String url) {
@@ -37,25 +38,20 @@ public class KidsViewPage extends MrozaViewPage{
         driver.quit();
     }
 
-    public List<String> getKidsSymbolsList() {
-        WebElement tableContent = driver.findElement(By.className("ui-datatable-tablewrapper"));
-        WebElement tableBody = tableContent.findElement(By.tagName("tbody"));
-        List<WebElement> tableRows = tableBody.findElements(By.tagName("tr"));
-        List<String> kidsSymbolsList = new ArrayList<>();
-        for(WebElement tableRow : tableRows)
-        {
-            WebElement symbolElement = tableRow.findElement(By.tagName("td"));
-            String kidSymbol = symbolElement.getText();
-            kidsSymbolsList.add(kidSymbol);
-        }
-
-        return kidsSymbolsList;
+    public void setKidCode(String code) {
+        WebElement table = driver.findElement(By.tagName("table"));
+        List<WebElement> columns = table.findElements(By.tagName("tr")).get(0).findElements(By.tagName("td"));
+        WebElement searchBoxInput = columns.get(1).findElement(By.tagName("input"));
+        searchBoxInput.sendKeys(code);
     }
 
-    public void setSearchValue(String expectedSearchedSymbol) {
-        WebElement searchboxArea = driver.findElement(By.className("ui-datatable-header"));
-        WebElement searchBoxInput = searchboxArea.findElement(By.tagName("input"));
-        searchBoxInput.sendKeys(expectedSearchedSymbol);
+    public void clickSaveNewKid() {
+        clickButtonInButtonContainerNamed(Utils.getMsgFromResources("main.save"));
+        SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+    }
+
+    public void clickCancelNewKid() {
+        clickButtonInButtonContainerNamed(Utils.getMsgFromResources("main.cancel"));
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 

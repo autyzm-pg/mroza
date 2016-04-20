@@ -65,6 +65,11 @@ public class KidsServiceMockImpl implements Serializable, KidsService {
         kidsList.add(kid);
     }
 
+    @Override
+    public boolean existsKidWithCode(String code) {
+        return false;
+    }
+
     private <T> List<T> readObjectsListFromJson(String fileName) {
         Gson gson = new Gson();
         List<T> list = null;

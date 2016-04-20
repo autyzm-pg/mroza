@@ -58,6 +58,19 @@ public class Utils {
         sqlSession.commit();
     }
 
+    public static void initWithBasicKidWithCode(List<Kid> exampleKids, List<String> codes) {
+        for(String code : codes) {
+            Kid newKid = new Kid();
+            newKid.setCode(code);
+            exampleKids.add(newKid);
+        }
+        initUtilsDaos();
+        SqlSession sqlSession = getSqlSession();
+        exampleKids.stream().forEach(kidsDao::insertKid);
+        sqlSession.commit();
+    }
+
+
     public static void initWithBasicPrograms(List<Program> exampleProgram) {
         exampleProgram.add(new Program("ABC"));
         exampleProgram.add(new Program("QWR"));

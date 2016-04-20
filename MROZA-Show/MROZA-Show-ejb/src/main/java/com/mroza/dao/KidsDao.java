@@ -54,4 +54,8 @@ public class KidsDao {
             sqlSession.delete("kidsMapper.deleteKid", kid);
         }
     }
+
+    public List<Kid> selectKidsWithCode(String code) {
+        return sqlSession.selectList("kidsMapper.selectKidWithCode", code);
+    }
 }
