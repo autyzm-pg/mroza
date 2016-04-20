@@ -17,6 +17,7 @@
  */
 
 package com.mroza.seleniumTests.KidsViewTests;
+import com.mroza.seleniumTests.MrozaViewPage;
 import com.mroza.utils.SeleniumWaiter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -24,13 +25,10 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KidsViewPage {
-
-    protected WebDriver driver;
-    private WebElement header;
+public class KidsViewPage extends MrozaViewPage{
 
     public KidsViewPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
     public void open(String url) {
         driver.get(url);
@@ -38,11 +36,6 @@ public class KidsViewPage {
     public void close() {
         driver.quit();
     }
-    public String getHeader() {
-        header = driver.findElement(By.className("b-page-header"));
-        return header.getText();
-    }
-
 
     public List<String> getKidsSymbolsList() {
         WebElement tableContent = driver.findElement(By.className("ui-datatable-tablewrapper"));

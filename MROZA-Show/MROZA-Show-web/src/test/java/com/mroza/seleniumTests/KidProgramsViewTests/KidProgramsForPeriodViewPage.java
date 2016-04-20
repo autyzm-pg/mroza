@@ -18,6 +18,7 @@
 package com.mroza.seleniumTests.KidProgramsViewTests;
 
 import com.mroza.models.Kid;
+import com.mroza.seleniumTests.MrozaViewPage;
 import com.mroza.utils.SeleniumWaiter;
 import com.mroza.utils.Utils;
 import javassist.NotFoundException;
@@ -32,16 +33,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class KidProgramsForPeriodViewPage {
-
-    protected WebDriver driver;
+public class KidProgramsForPeriodViewPage extends MrozaViewPage{
 
     public KidProgramsForPeriodViewPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
+
     public void open(String url, Kid kid) {
         driver.get(url + kid.getId() + "&reloadData=true");
     }
+
     public void close() {
         driver.quit();
     }
@@ -56,11 +57,6 @@ public class KidProgramsForPeriodViewPage {
             }
         }
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-    }
-
-    public String getHeader() {
-        WebElement header = driver.findElement(By.className("b-page-header"));
-        return header.getText();
     }
 
     public List<String> getPeriodDateLabel() {
@@ -158,67 +154,19 @@ public class KidProgramsForPeriodViewPage {
        clickButton(Utils.getMsgFromResources("kidProgramsView.deletePeriod"));
     }
 
-    public void clickYesButtonInDialogBox() {
-        clickDialogButton(Utils.getMsgFromResources("main.yes"));
-    }
-
     public void clickAssignProgramButton() {
         clickButton(Utils.getMsgFromResources("kidProgramsView.addProgram"));
     }
 
-    private void clickDialogButton(String buttonName) {
-        WebElement dialog = getVisibleDialogBox();
-        WebElement buttonPanel = dialog.findElement(By.className("ui-dialog-buttonpane"));
-        List<WebElement> buttons = buttonPanel.findElements(By.tagName("button"));
-
-        for(WebElement button :  buttons){
-            List<WebElement> spanElements = button.findElements(By.tagName("span"));
-            if(spanElements.get(1).getText().equals(buttonName)) {
-                Actions actions = new Actions(driver);
-                actions.moveToElement(button).click().perform();
-                SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-                break;
-            }
-        }
-    }
-
     private void clickButton(String buttonName) {
         WebElement form = getProgramsForPeriodFormContainer();
-        WebElement actionButtons = form.findElement(By.className("action-buttons-container"));
-        for(WebElement button : actionButtons.findElements(By.tagName("button"))){
-            if(button.findElement(By.tagName("span")).getText().equals(buttonName)) {
-                button.click();
-                SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-            }
-        }
+        clickButtonInButtonContainerNamed(buttonName, form);
     }
 
     public String getActualChosenPeriodMessage() {
         WebElement form = getProgramsForPeriodFormContainer();
         WebElement outputPanel = form.findElement(By.className("ui-outputpanel"));
         return outputPanel.getText();
-    }
-
-    public String getErrorMessage() {
-        try {
-            WebElement errorMessage = driver.findElement(By.className("ui-messages-error-summary"));
-            return errorMessage.getText();
-        }
-        catch (Exception ex)
-        {
-            return "NOT MESSAGE HAS BEEN SHOWN";
-        }
-    }
-
-    private WebElement getVisibleDialogBox() {
-        List<WebElement> dialogs = driver.findElements(By.className("ui-dialog"));
-        WebElement visibleDialog = null;
-        SeleniumWaiter.waitForDialogBoxAppears(driver);
-        for(WebElement dialog : dialogs){
-            if(dialog.getAttribute("aria-hidden").equals("false"))
-                visibleDialog = dialog;
-        }
-        return visibleDialog;
     }
 
     public void changeActualPeriodStartDate(Date date) {
