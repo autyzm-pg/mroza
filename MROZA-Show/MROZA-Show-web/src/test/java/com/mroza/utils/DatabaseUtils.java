@@ -21,13 +21,11 @@ package com.mroza.utils;
 import com.mroza.ReflectionWrapper;
 import com.mroza.dao.*;
 import com.mroza.models.*;
-import javafx.scene.control.Tab;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Assert;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -155,8 +153,8 @@ public class DatabaseUtils {
         List<TableField> tableFields = tableRow.getRowFields();
         for(TableField field : tableFields) {
             field.setRowId(tableRow.getId());
+            tableFieldsDao.insertTableField(field);
         }
-        tableFieldsDao.insertTableFields(tableFields);
         utilsSqlSession.commit();
         return tableRow;
     }
@@ -172,6 +170,11 @@ public class DatabaseUtils {
         KidTable kidTable = new KidTable(true, true, table, period);
         kidTablesDao.insertKidTable(kidTable);
         utilsSqlSession.commit();
+        for(ResolvedField resolvedField  : kidTable.getResolvedFields()){
+
+            resolvedFieldsDao.insertResolvedField(resolvedField);
+            utilsSqlSession.commit();
+        }
         return kidTable;
     }
 
@@ -195,5 +198,10 @@ public class DatabaseUtils {
         kidTablesDao.updateKidTable(kidTable);
         utilsSqlSession.commit();
         return kidTable;
+    }
+
+    public List<KidTable> getKidTablesForTable(int tableId) {
+        List<KidTable> kidTables = kidTablesDao.selectKidTablesWithResolvedFieldsByTableId(tableId);
+        return kidTables;
     }
 }

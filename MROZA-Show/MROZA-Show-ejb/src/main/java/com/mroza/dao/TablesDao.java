@@ -57,4 +57,5 @@ public class TablesDao {
     public void deleteTables(List<Table> tableList) {
       tableList.forEach((table) -> sqlSession.delete("tablesMapper.deleteTable", table));
     }
+
 }
