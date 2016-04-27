@@ -23,6 +23,7 @@ import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.Utils;
 import com.mroza.viewbeans.ProgramEditBean;
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,9 +64,12 @@ public class ProgramEditBeanTests {
         DatabaseUtils databaseUtils = new DatabaseUtils();
         List<KidTable> kidTables = databaseUtils.getKidTablesForTable(this.assignedTable.getId());
         assertFalse("Assigned table should have kidTable after it was edited", kidTables.isEmpty());
-        assertFalse("KidTable for assigned table should have resolvedFields", kidTables.get(0).getResolvedFields().isEmpty());
-
-        kidTables.get(0).getResolvedFields().forEach((resolvedField) -> assertTrue("ResolvedField should have fieldId set", resolvedField.getTableFieldId() != null));
+        assertTrue("Assigned table should have the same number of kidTables as before edition", kidTables.size() == 2);
+        kidTables.forEach(kidTable ->
+                assertFalse("Every kidTable for assigned table should have resolvedFields", kidTable.getResolvedFields().isEmpty()));
+        kidTables.forEach(kidTable ->
+                kidTable.getResolvedFields().forEach((resolvedField) ->
+                        assertTrue("Every resolvedField should have fieldId set", resolvedField.getTableFieldId() != null)));
 
     }
 
@@ -77,9 +81,17 @@ public class ProgramEditBeanTests {
         program = databaseUtils.setUpProgram("SYMBOL", "NAME", "DESCRIPTION", kid);
         List<String> rowNames = new ArrayList<String>(){{ add(new String("ROW_1")); add(new String("ROW_2"));}};
         this.assignedTable = databaseUtils.setUpTableWithRows("TABLE_NAME", rowNames, "DESCRIPTION", 2, 2, program);
+
         Date startDate = Utils.getDateFromNow(-2);
         Date endDate = Utils.getDateFromNow(2);
         Period period = databaseUtils.setUpPeriod(startDate, endDate, kid);
-        KidTable kidTable = databaseUtils.setUpKidTable(this.assignedTable, period);
+
+        Date startDateFuture = Utils.getDateFromNow(3);
+        Date endDateFuture = Utils.getDateFromNow(5);
+        Period periodFuture = databaseUtils.setUpPeriod(startDateFuture, endDateFuture, kid);
+
+        List<KidTable> kidTables = new ArrayList<>();
+        kidTables.add(databaseUtils.setUpKidTable(this.assignedTable, period));
+        kidTables.add(databaseUtils.setUpKidTable(this.assignedTable, periodFuture));
     }
 }
