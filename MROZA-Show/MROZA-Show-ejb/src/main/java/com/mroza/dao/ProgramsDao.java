@@ -102,7 +102,7 @@ public class ProgramsDao {
             sqlSession.delete("programsMapper.deleteProgram", program);
     }
 
-    public void updateProgramsWithSymbol(Program program) {
-        sqlSession.update("programsMapper.updateProgramsWithSymbol", program);
+    public void updateProgram(Program program) {
+        sqlSession.update("programsMapper.updateProgram", program);
     }
 }

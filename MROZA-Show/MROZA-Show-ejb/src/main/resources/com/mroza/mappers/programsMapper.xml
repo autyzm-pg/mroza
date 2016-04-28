@@ -154,10 +154,10 @@
         WHERE id = #{id}
     </update>
 
-    <update id="updateProgramsWithSymbol" parameterType="Program">
+    <update id="updateProgram" parameterType="Program">
         UPDATE Program
-        SET name = #{name}, description = #{description}
-        WHERE symbol = #{symbol}
+        SET name = #{name}, symbol = #{symbol} ,description = #{description}
+        WHERE id = #{id}
     </update>
 
     <insert id="insertProgram" parameterType="Program">

@@ -57,7 +57,7 @@
                     </p:column>
                     <p:column>
                         <p:inputText id="symbolInput" value="#{newProgramsBean.program.symbol}" label="${msg['newProgramsView.symbol']}"
-                                     required="true" disabled="#{not empty newProgramsBean.program.id}">
+                                     required="true">
                             <p:ajax event="change" listener="#{newProgramsBean.validateSymbol}"/>
                         </p:inputText>
                     </p:column>

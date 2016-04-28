@@ -18,12 +18,12 @@
 
 package com.mroza.utils;
 
-import com.mroza.ReflectionWrapper;
 import com.mroza.dao.*;
 import com.mroza.models.*;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Assert;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -122,41 +122,7 @@ public class DatabaseUtils {
         return program;
     }
 
-    public void setUpTableWithRows(String tableName, List<String> rowsNames, String description, int generalization, int teaching, Program program) {
-        Table table = setUpTable(tableName, description, program);
-        for(int orderNum = 0; orderNum < rowsNames.size(); orderNum++){
-            setUpRowWithFields(rowsNames.get(orderNum), orderNum, generalization, teaching, table);
-        }
 
-    }
-
-    public Table setUpTable(String tableName, String description, Program program) {
-        Table table = new Table();
-        table.setName(tableName);
-        table.setDescription(description);
-        table.setArchived(false);
-        table.setEdited(false);
-        table.setCreateDate(LocalDate.now());
-        table.setProgram(program);
-        tablesDao.insertTable(table);
-        utilsSqlSession.commit();
-        return table;
-    }
-
-    public TableRow setUpRowWithFields(String rowName,int orderNumber, int generalizationNumber, int learningNumber, Table table){
-        TableRow tableRow = new TableRow(rowName,orderNumber,learningNumber,generalizationNumber);
-        tableRow.setTableId(table.getId());
-        tableRowsDao.insertTableRow(tableRow);
-
-        List<TableField> tableFields = tableRow.getRowFields();
-        for(TableField field : tableFields) {
-            field.setRowId(tableRow.getId());
-        }
-        tableFields.addAll(tableRow.getRowFields());
-        tableFieldsDao.insertTableFields(tableFields);
-        utilsSqlSession.commit();
-        return tableRow;
-    }
 
     public Program getProgramById(Integer id) {
         Program program = programsDao.selectProgramById(id);

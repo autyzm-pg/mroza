@@ -47,10 +47,13 @@ public class NewProgramsViewPage {
 
     public void setAddProgramFields(String symbol, String name, String description) {
         WebElement symbolInputField = getInputFieldNamed("Symbol");
+        symbolInputField.clear();
         symbolInputField.sendKeys(symbol);
         WebElement nameInputField = getInputFieldNamed("Nazwa");
+        nameInputField.clear();
         nameInputField.sendKeys(name);
         WebElement descriptionInputField = getTextAreaNamed("Opis");
+        descriptionInputField.clear();
         descriptionInputField.sendKeys(description);
     }
 

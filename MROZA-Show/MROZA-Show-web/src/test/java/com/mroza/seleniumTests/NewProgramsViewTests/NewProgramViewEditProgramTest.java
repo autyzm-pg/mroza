@@ -36,13 +36,14 @@ public class NewProgramViewEditProgramTest {
     private String existingName = "NAME";
     private String existingDescription = "DESCRIPTION";
     private String expectingHeader = Utils.getMsgFromResources("editProgramView.title");
+    private Program program;
 
     @Before
     public void setUp() {
         SeleniumUtils.setUpDriverConnection();
         DatabaseUtils databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
-        Program program = databaseUtils.setUpProgram(existingSymbol, existingName, existingDescription);
+        program = databaseUtils.setUpProgram(existingSymbol, existingName, existingDescription);
 
         newProgramsViewPage = PageFactory.initElements(new ChromeDriver(), NewProgramsViewPage.class);
         newProgramsViewPage.open(SeleniumUtils.newProgramsViewUrl + "?programId=" + program.getId());
@@ -71,6 +72,28 @@ public class NewProgramViewEditProgramTest {
         assertEquals("Symbol in field should be the same as added", existingSymbol, symbol);
         assertEquals("Name in field should be the same as added", existingName, name);
         assertEquals("Description in field should be the same as added", existingDescription, description);
+
+    }
+
+    @Test
+    public void editingProgramShouldChangeProgramsParametersTest() {
+
+        String changedSymbol = "NEW SYMBOL";
+        String changedName = "NEW_NAME";
+        String changedDescription = "NEW DESCRIPTION";
+        newProgramsViewPage.setAddProgramFields(changedSymbol, changedName, changedDescription);
+        newProgramsViewPage.clickSaveNewProgram();
+
+        newProgramsViewPage.close();
+        newProgramsViewPage = PageFactory.initElements(new ChromeDriver(), NewProgramsViewPage.class);
+        newProgramsViewPage.open(SeleniumUtils.newProgramsViewUrl + "?programId=" + program.getId());
+
+        String symbol = newProgramsViewPage.getSymbol();
+        String name = newProgramsViewPage.getName();
+        String description = newProgramsViewPage.getDescription();
+        assertEquals("Symbol in field should have been changed", changedSymbol, symbol);
+        assertEquals("Name in field should have been changed", changedName, name);
+        assertEquals("Description in field should have benn changed", changedDescription, description);
 
     }
 
