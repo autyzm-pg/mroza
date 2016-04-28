@@ -87,9 +87,9 @@ public class DatabaseUtils {
         utilsSqlSession.commit();
     }
 
-    public Kid setUpKid(String symbol)
+    public Kid setUpKid(String code)
     {
-        Kid kid = new Kid(-1, symbol, false, null, null);
+        Kid kid = new Kid(-1, code, false, null, null);
         kidsDao.insertKid(kid);
         utilsSqlSession.commit();
         return kid;
