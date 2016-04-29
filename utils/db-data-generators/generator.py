@@ -119,7 +119,7 @@ for child_id in range(numOfChildren):
         dtPrev = dtNow - timedelta(days=(7*numOfPeriods))
         numOfTablesPerProgram = math.ceil(numOfPeriods / numOfPeriodsPerTable)
         child_table_id = numOfPeriods*program_id
-        for table_id in range(numOfTablesPerProgram*program_id, numOfTablesPerProgram*(program_id + 1)):
+        for table_id in range((int)(numOfTablesPerProgram*program_id), (int)(numOfTablesPerProgram*(program_id + 1))):
             # create table
             tableName = "Krok " + str(table_id - numOfTablesPerProgram*program_id)
             tableDescription = "Opis tabelki"

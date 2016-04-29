@@ -52,7 +52,7 @@
             </div>
             <h:form>
                 <div class="b-main-content">
-                    <p:dataTable value="#{tableChartsBean.tableModel.rows}" var="row"
+                    <p:dataTable id="tableChart" value="#{tableChartsBean.tableModel.rows}" var="row"
                                  styleClass="light-dataTable">
 
                         <p:column styleClass="ui-widget-header" style="color: #4f4f4f; width: 250px; text-align: center;">
@@ -73,7 +73,16 @@
                             </f:facet>
                         </p:columns>
                     </p:dataTable>
+                    <h:commandLink>
+                        <h:graphicImage styleClass="printOption" value="/resources/img/pdf.png" />
+                        <p:dataExporter type="pdf" target="tableChart" fileName="tabelka" pageOnly="true"/>
+                     </h:commandLink>
+                    <h:commandLink>
+                        <h:graphicImage styleClass="printOption" value="/resources/img/csv.png" />
+                        <p:dataExporter type="csv" target="tableChart" fileName="tabelka" pageOnly="true" />
+                    </h:commandLink>
                 </div>
+
             </h:form>
 
             <p:dialog id="kidTableDialog" widgetVar="kidTableDialogVar"
