@@ -57,6 +57,18 @@
                         <f:param name="programId" value="#{item.id}" />
                     </p:button>
                 </p:column>
+
+                <p:column width="110" >
+                    <p:commandButton action="#{kidProgramsBean.deleteProgram(item)}"
+                                     value="${msg['main.delete']}"
+                                     update="@form">
+                        <p:confirm header="${msg['kidProgramsView.deleteProgramAssignmentMessageHeader']}" message="${msg['kidProgramsView.deleteProgramAssignmentMessage']}" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="${msg['main.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="${msg['main.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </p:column>
             </mroza:dataTable>
 
             <div class="action-buttons-container">

@@ -269,4 +269,8 @@ public class KidProgramsBean implements Serializable {
         model.setTablesInProgram(tablesInProgram);
     }
 
+    public void deleteProgram(Program program){
+
+    }
+
 }
