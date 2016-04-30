@@ -163,7 +163,7 @@ public class KidProgramsBean implements Serializable {
 
         if(!ScheduleDatesValidator.arePeriodDatesValid(currentPeriod, scheduleModel, selectedCalendarRepresentationOfPeriod)) {
             ScheduldeEventWrapper.syncPeriodDataWithDataFromCalendarRepresentation(selectedCalendarRepresentationOfPeriod);
-            ViewMsgUtil.setViewErrorMsg(ViewMsg.WRONG_PERIOD_DATA);
+            showErrorMessage(ViewMsg.WRONG_PERIOD_DATA);
             return;
         }
         ScheduldeEventWrapper.syncCalendarRepresentationDataWithDataFromPeriod(selectedCalendarRepresentationOfPeriod);
@@ -189,7 +189,7 @@ public class KidProgramsBean implements Serializable {
 
     private boolean checkAndHandleKidTableDeletionLegality(KidTable kidTable) {
         if (kidPeriodsService.hasKidTableFilledResolvedFields(kidTable)) {
-            ViewMsgUtil.setViewErrorMsg(ViewMsg.UNABLE_TO_EDIT_PROGRAM_WITH_FILLED_RESOLVE);
+            showErrorMessage(ViewMsg.UNABLE_TO_EDIT_PROGRAM_WITH_FILLED_RESOLVE);
             return false;
         }
         return true;
@@ -205,11 +205,11 @@ public class KidProgramsBean implements Serializable {
 
     private boolean checkAndHandlePeriodDeletionLegality(Period period) {
         if (period == null) {
-            ViewMsgUtil.setViewErrorMsg(ViewMsg.UNABLE_TO_REMOVE_UNSELECTED_PERIOD);
+            showErrorMessage(ViewMsg.UNABLE_TO_REMOVE_UNSELECTED_PERIOD);
             return false;
         }
         if(isAnyOfKidTableInPeriodHasFilledResolvedFields(period)) {
-            ViewMsgUtil.setViewErrorMsg(ViewMsg.UNABLE_TO_REMOVE_PERIOD_WITH_FILLED_RESOLVE);
+            showErrorMessage(ViewMsg.UNABLE_TO_REMOVE_PERIOD_WITH_FILLED_RESOLVE);
             return false;
         }
         return true;
@@ -230,7 +230,7 @@ public class KidProgramsBean implements Serializable {
     // Navigation
     public void navigateToChangeKidTable(KidTable kidTableToChange) {
         if (kidPeriodsService.hasKidTableFilledResolvedFields(kidTableToChange))
-            ViewMsgUtil.setViewErrorMsg(ViewMsg.UNABLE_TO_EDIT_PROGRAM_WITH_FILLED_RESOLVE);
+            showErrorMessage(ViewMsg.UNABLE_TO_EDIT_PROGRAM_WITH_FILLED_RESOLVE);
         else
             NavigationUtil.redirect("../kidsChooseTableView.xhtml?chosenKidTableId=" + kidTableToChange.getId());
     }
@@ -271,7 +271,20 @@ public class KidProgramsBean implements Serializable {
 
     public void deleteKidProgram(Program program){
         if(!kidProgramsService.checkIfProgramHasTables(program))
+        {
             kidProgramsService.deleteKidProgram(program);
+            refreshAssignedKidProgramsList(program);
+        }
+        else
+            showErrorMessage(ViewMsg.UNABLE_TO_DELETE_PROGRAM_ASSIGNMENT);
+    }
+
+    public void showErrorMessage(ViewMsg viewMsg) {
+        ViewMsgUtil.setViewErrorMsg(viewMsg);
+    }
+
+    public void refreshAssignedKidProgramsList(Program program) {
+        model.getAssignedPrograms().remove(program);
     }
 
 }

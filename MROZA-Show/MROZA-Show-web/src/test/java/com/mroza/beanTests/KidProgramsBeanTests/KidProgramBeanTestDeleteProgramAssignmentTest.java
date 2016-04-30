@@ -27,10 +27,13 @@ import com.mroza.service.KidProgramsServiceDbImpl;
 import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.Utils;
 import com.mroza.viewbeans.kidprograms.beans.KidProgramsBean;
+import com.mroza.viewbeans.kidprograms.model.KidProgramsModel;
+import com.mroza.viewbeans.utils.FilterableList;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +41,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 import static org.testng.AssertJUnit.assertFalse;
 
 public class KidProgramBeanTestDeleteProgramAssignmentTest {
@@ -76,19 +79,29 @@ public class KidProgramBeanTestDeleteProgramAssignmentTest {
 
     @Test
     public void deleteProgramTest() {
-        this.kidProgramsBean.deleteKidProgram(this.assignedProgram);
-        sqlSession.commit();
-        List<Program> programs = databaseUtils.getProgramAssignedToKid(this.kid);
 
-        assertFalse("Deleted program should not be assigned to kid", programs.stream().anyMatch((program -> program.getId().equals(this.assignedProgram.getId()))));
-        assertTrue("Not deleted program should be assigned to kid", programs.stream().anyMatch((program -> program.getId().equals(this.assignedProgramWithTables.getId()))));
-    }
+            KidProgramsBean kidProgramsBeanSpy = spy(this.kidProgramsBean);
+            doNothing().when(kidProgramsBeanSpy).refreshAssignedKidProgramsList(any());
+
+            kidProgramsBeanSpy.deleteKidProgram(this.assignedProgram);
+            sqlSession.commit();
+            List<Program> programs = databaseUtils.getProgramAssignedToKid(this.kid);
+
+            assertFalse("Deleted program should not be assigned to kid", programs.stream().anyMatch(
+                    program -> program.getId().equals(this.assignedProgram.getId())));
+
+            assertTrue("Not deleted program should be assigned to kid", programs.stream().anyMatch(
+                program -> program.getId().equals(this.assignedProgramWithTables.getId())));
+        }
 
 
 
     @Test
     public void deleteProgramWithTablesTest() {
-        this.kidProgramsBean.deleteKidProgram(this.assignedProgramWithTables);
+        KidProgramsBean kidProgramsBeanSpy = spy(this.kidProgramsBean);
+        doNothing().when(kidProgramsBeanSpy).showErrorMessage(any());
+
+        kidProgramsBeanSpy.deleteKidProgram(this.assignedProgramWithTables);
         sqlSession.commit();
         List<Program> programs = databaseUtils.getProgramAssignedToKid(this.kid);
         assertTrue("Program with tables should not be deleted", programs.stream().anyMatch((program -> program.getId().equals(this.assignedProgramWithTables.getId()))));
