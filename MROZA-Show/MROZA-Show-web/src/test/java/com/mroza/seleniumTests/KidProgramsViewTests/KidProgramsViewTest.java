@@ -80,7 +80,7 @@ public class KidProgramsViewTest {
         kidProgramsViewPage.setSearchValue(expectedSymbol);
         List<String> symbolsList = kidProgramsViewPage.getProgramsSymbolsList();
         assertEquals("Program list should have one program", 1, symbolsList.size());
-        assertEquals("Assigned program do kid should be on list",expectedSymbol, symbolsList.get(0));
+        assertEquals("Assigned program do kid should be on list", expectedSymbol, symbolsList.get(0));
     }
 
 
@@ -102,4 +102,5 @@ public class KidProgramsViewTest {
         assertEquals("Selected by letter filter program list should have one program", 1, symbolList.size());
         assertEquals("Selected by letter filter programs symbols assigned to kid should be on list", expectedSymbol, symbolList.get(0));
     }
+
 }

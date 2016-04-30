@@ -18,24 +18,20 @@
 
 package com.mroza.service.KidProgramServiceDbImplTests;
 
-import com.mroza.dao.ProgramsDao;
+import com.mroza.dao.TablesDao;
 import com.mroza.models.*;
 import com.mroza.service.KidProgramsServiceDbImpl;
 import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.ReflectionWrapper;
-import com.mroza.utils.Utils;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class KidProgramServiceDbImplCheckIfProgramHasAnyCollectedTablesTest {
@@ -51,10 +47,10 @@ public class KidProgramServiceDbImplCheckIfProgramHasAnyCollectedTablesTest {
         databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
         sqlSession = databaseUtils.getSqlSession();
-        ProgramsDao programsDao = new ProgramsDao();
-        ReflectionWrapper.setPrivateField(programsDao, "sqlSession", sqlSession);
+        TablesDao tablesDao = new TablesDao();
+        ReflectionWrapper.setPrivateField(tablesDao, "sqlSession", sqlSession);
         kidProgramsService = new KidProgramsServiceDbImpl();
-        ReflectionWrapper.setPrivateField(kidProgramsService, "programsDao", programsDao);
+        ReflectionWrapper.setPrivateField(kidProgramsService, "tablesDao", tablesDao);
         setUpPrograms();
     }
 
@@ -64,33 +60,18 @@ public class KidProgramServiceDbImplCheckIfProgramHasAnyCollectedTablesTest {
     }
 
     @Test
-    public void checkIfProgramHasAnyTablesWithCollectedDataTest(){
-
-        assertFalse("Program should not have any tables with collected data",kidProgramsService.checkIfProgramHasAnyCollectedTables(this.assignedProgram));
-        assertTrue("Program should have tables with collected data", kidProgramsService.checkIfProgramHasAnyCollectedTables(this.assignedProgramWithResolvedFields));
+    public void checkIfProgramHasAnyTablesTest(){
+        assertFalse("Program should not have any tables with collected data", kidProgramsService.checkIfProgramHasTables(this.assignedProgram));
+        assertTrue("Program should have tables with collected data", kidProgramsService.checkIfProgramHasTables(this.assignedProgramWithResolvedFields));
 
     }
 
     private void setUpPrograms() {
         this.kid = databaseUtils.setUpKid("CODE");
         this.assignedProgram = databaseUtils.setUpProgram("SYMBOL", "NAME", "DESCRIPTION", this.kid);
-        setUpKidTable(this.assignedProgram, this.kid);
-
         this.assignedProgramWithResolvedFields = databaseUtils.setUpProgram("SYMBOL_WITH_COLLECTED_DATA", "NAME_WITH_COLLECTED_DATA", "DESCRIPTION_WITH_COLLECTED_DATA", this.kid);
-        KidTable kidTableWithResolvedFields = setUpKidTable(this.assignedProgramWithResolvedFields, this.kid);
-
-        databaseUtils.fillKidTableWithData(kidTableWithResolvedFields);
-    }
-
-    private KidTable setUpKidTable(Program program, Kid kid) {
         List<String> rowNames = new ArrayList<String>(){{ add(new String("ROW_1")); add(new String("ROW_2"));}};
-        Table table = databaseUtils.setUpTableWithRows("TABLE_NAME", rowNames, "DESCRIPTION", 2, 2, program);
-
-        Date startDate = Utils.getDateFromNow(-2);
-        Date endDate = Utils.getDateFromNow(2);
-        Period period = databaseUtils.setUpPeriod(startDate, endDate, kid);
-
-        return databaseUtils.setUpKidTable(table, period);
+        databaseUtils.setUpTableWithRows("TABLE_NAME", rowNames, "DESCRIPTION", 2, 2, this.assignedProgramWithResolvedFields);
     }
 
 }

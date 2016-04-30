@@ -210,14 +210,19 @@ public class KidPeriodsServiceDbImplTest {
 
     @Test
     public void removePeriodTest() {
-        Period period = periodsDao.selectPeriodById(exampleKids.get(0).getPeriods().get(0).getId());
-        KidTable kidTable = kidTablesDao.selectKidTableByIdWithEdgeTable(exampleKids.get(0).getPeriods().get(0).getId());
+
+        Period periodToDelete = exampleKids.get(0).getPeriods().get(0);
+        Integer periodIdToDelete = periodToDelete.getId();
+        Integer kidTableIdToDelete = periodToDelete.getKidTables().get(0).getId();
+
+        Period period = periodsDao.selectPeriodById(periodIdToDelete);
+        KidTable kidTable = kidTablesDao.selectKidTableByIdWithEdgeTable(kidTableIdToDelete);
         Assert.assertNotNull(period);
         Assert.assertNotNull(kidTable);
 
-        kidPeriodsService.removePeriod(exampleKids.get(0).getPeriods().get(0));
-        period = periodsDao.selectPeriodById(exampleKids.get(0).getPeriods().get(0).getId());
-        kidTable = kidTablesDao.selectKidTableByIdWithEdgeTable(exampleKids.get(0).getPeriods().get(0).getId());
+        kidPeriodsService.removePeriod(periodToDelete);
+        period = periodsDao.selectPeriodById(periodIdToDelete);
+        kidTable = kidTablesDao.selectKidTableByIdWithEdgeTable(kidTableIdToDelete);
         Assert.assertNull(period);
         Assert.assertNull(kidTable);
     }

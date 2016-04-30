@@ -41,5 +41,5 @@ public interface KidProgramsService {
     List<ResolvedTabData> getProgramDataForChart(Integer programId);
     List<SimplifiedResolvedTabRow> getSimplifiedResolvedTab(Integer kidTabId, String type);
     void deleteKidProgram(Program program);
-    boolean checkIfProgramHasAnyCollectedTables(Program program);
+    boolean checkIfProgramHasTables(Program program);
 }

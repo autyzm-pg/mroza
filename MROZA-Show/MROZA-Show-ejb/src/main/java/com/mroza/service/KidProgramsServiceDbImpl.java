@@ -134,11 +134,10 @@ public class KidProgramsServiceDbImpl implements Serializable, KidProgramsServic
     }
 
     @Override
-    public boolean checkIfProgramHasAnyCollectedTables(Program program) {
-        List<Program> kidPrograms = getKidProgramsWithCollectedData(program.getKidId());
-
-        if(kidPrograms.stream().anyMatch((kidProgram) -> kidProgram.getId().equals(program.getId())))
-            return true;
-        return false;
+    public boolean checkIfProgramHasTables(Program program) {
+        List<Table> tables = tablesDao.selectTablesByProgramIdWithEdgesRowsFields(program.getId());
+        if(tables.isEmpty())
+            return false;;
+        return true;
     }
 }

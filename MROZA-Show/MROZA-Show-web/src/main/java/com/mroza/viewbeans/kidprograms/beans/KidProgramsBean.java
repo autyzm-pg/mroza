@@ -270,7 +270,7 @@ public class KidProgramsBean implements Serializable {
     }
 
     public void deleteKidProgram(Program program){
-        if(kidProgramsService.checkIfProgramHasAnyCollectedTables(program))
+        if(!kidProgramsService.checkIfProgramHasTables(program))
             kidProgramsService.deleteKidProgram(program);
     }
 

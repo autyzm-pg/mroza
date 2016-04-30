@@ -20,6 +20,7 @@ package com.mroza.beanTests.KidProgramsBeanTests;
 
 import com.mroza.ReflectionWrapper;
 import com.mroza.dao.ProgramsDao;
+import com.mroza.dao.TablesDao;
 import com.mroza.interfaces.KidProgramsService;
 import com.mroza.models.*;
 import com.mroza.service.KidProgramsServiceDbImpl;
@@ -38,7 +39,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.testng.AssertJUnit.assertFalse;
 
 public class KidProgramBeanTestDeleteProgramAssignmentTest {
@@ -46,7 +46,7 @@ public class KidProgramBeanTestDeleteProgramAssignmentTest {
     private KidProgramsBean kidProgramsBean;
     private DatabaseUtils databaseUtils;
     private Program assignedProgram;
-    private Program assignedProgramWithTableFieldsResolved;
+    private Program assignedProgramWithTables;
     private Kid kid;
     private SqlSession sqlSession;
 
@@ -57,11 +57,14 @@ public class KidProgramBeanTestDeleteProgramAssignmentTest {
         setUpAssignmentPrograms();
 
         ProgramsDao programsDao = new ProgramsDao();
+        TablesDao tablesDao = new TablesDao();
         sqlSession = databaseUtils.getSqlSession();
         ReflectionWrapper.setPrivateField(programsDao, "sqlSession", sqlSession);
+        ReflectionWrapper.setPrivateField(tablesDao, "sqlSession", sqlSession);
         KidProgramsService kidProgramsService = new KidProgramsServiceDbImpl();
 
         ReflectionWrapper.setPrivateField(kidProgramsService, "programsDao", programsDao);
+        ReflectionWrapper.setPrivateField(kidProgramsService, "tablesDao", tablesDao);
         this.kidProgramsBean = new KidProgramsBean();
         ReflectionWrapper.setPrivateField(this.kidProgramsBean, "kidProgramsService", kidProgramsService);
     }
@@ -78,17 +81,17 @@ public class KidProgramBeanTestDeleteProgramAssignmentTest {
         List<Program> programs = databaseUtils.getProgramAssignedToKid(this.kid);
 
         assertFalse("Deleted program should not be assigned to kid", programs.stream().anyMatch((program -> program.getId().equals(this.assignedProgram.getId()))));
-        assertTrue("Not deleted program should be assigned to kid", programs.stream().anyMatch((program -> program.getId().equals(this.assignedProgramWithTableFieldsResolved.getId()))));
+        assertTrue("Not deleted program should be assigned to kid", programs.stream().anyMatch((program -> program.getId().equals(this.assignedProgramWithTables.getId()))));
     }
 
 
 
     @Test
-    public void deleteProgramWithResolvedFieldsTest() {
-        this.kidProgramsBean.deleteKidProgram(this.assignedProgramWithTableFieldsResolved);
+    public void deleteProgramWithTablesTest() {
+        this.kidProgramsBean.deleteKidProgram(this.assignedProgramWithTables);
         sqlSession.commit();
         List<Program> programs = databaseUtils.getProgramAssignedToKid(this.kid);
-        assertTrue("Program with resolved fields should not be deleted", programs.stream().anyMatch((program -> program.getId().equals(this.assignedProgramWithTableFieldsResolved.getId()))));
+        assertTrue("Program with tables should not be deleted", programs.stream().anyMatch((program -> program.getId().equals(this.assignedProgramWithTables.getId()))));
 
     }
 
@@ -96,17 +99,10 @@ public class KidProgramBeanTestDeleteProgramAssignmentTest {
     private void setUpAssignmentPrograms() {
         this.kid = databaseUtils.setUpKid("CODE");
         this.assignedProgram = databaseUtils.setUpProgram("SYMBOL_WITHOUT_TABLES", "NAME_WITHOUT_TABLES", "DESCRIPTION_WITHOUT_TABLES", kid);
-        this.assignedProgramWithTableFieldsResolved = databaseUtils.setUpProgram("SYMBOL_WITH_TABLE_FIELDS_RESOLVED", "NAME_WITH_TABLE_FIELDS_RESOLVED", "DESCRIPTION_WITH_TABLE_FIELDS_RESOLVED", kid);
+        this.assignedProgramWithTables = databaseUtils.setUpProgram("SYMBOL_WITH_TABLES", "NAME_WITH_TABLES", "DESCRIPTION_WITH_TABLES", kid);
 
         List<String> rowNames = new ArrayList<String>(){{ add(new String("ROW_1")); add(new String("ROW_2"));}};
-        Table table = databaseUtils.setUpTableWithRows("TABLE_NAME", rowNames, "DESCRIPTION", 2, 2, this.assignedProgramWithTableFieldsResolved);
-
-        Date startDate = Utils.getDateFromNow(-2);
-        Date endDate = Utils.getDateFromNow(2);
-        Period period = databaseUtils.setUpPeriod(startDate, endDate, kid);
-
-        KidTable kidTable = databaseUtils.setUpKidTable(table, period);
-        databaseUtils.fillKidTableWithData(kidTable);
+       databaseUtils.setUpTableWithRows("TABLE_NAME", rowNames, "DESCRIPTION", 2, 2, this.assignedProgramWithTables);
     }
 
 
