@@ -29,7 +29,6 @@ import java.util.List;
 public class KidProgramsViewPage {
 
     protected WebDriver driver;
-    private WebElement header;
 
     public KidProgramsViewPage(WebDriver driver) {
         this.driver = driver;
@@ -41,7 +40,7 @@ public class KidProgramsViewPage {
         driver.quit();
     }
     public String getHeader() {
-        header = driver.findElement(By.className("b-page-header"));
+        WebElement header = driver.findElement(By.className("b-page-header"));
         return header.getText();
     }
 
@@ -62,8 +61,7 @@ public class KidProgramsViewPage {
     private List<WebElement> getProgramElementsList(WebElement dataTable) {
         WebElement dataTableContent =  dataTable.findElement(By.className("ui-datatable-tablewrapper"));
         WebElement dataTableContentList = dataTableContent.findElement(By.className("ui-datatable-data"));
-        List<WebElement> programElementsList = dataTableContentList.findElements(By.tagName("tr"));
-        return programElementsList;
+        return dataTableContentList.findElements(By.tagName("tr"));
     }
 
     public List<String> getProgramNamesList() {
@@ -95,4 +93,5 @@ public class KidProgramsViewPage {
         }
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
+
 }

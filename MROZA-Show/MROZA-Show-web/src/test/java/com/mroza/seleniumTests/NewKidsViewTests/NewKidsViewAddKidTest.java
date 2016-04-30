@@ -79,7 +79,6 @@ public class NewKidsViewAddKidTest {
         String controlMessage = newKidsViewPage.getShowedMessage();
 
         assertEquals("Message should show that kid symbol already exists", expectedMessage, controlMessage);
-
     }
 
     @Test
@@ -88,7 +87,6 @@ public class NewKidsViewAddKidTest {
         String controlMessage = newKidsViewPage.getShowedMessage();
 
         assertEquals("Message should show that that code is needed", expectedEmptyCodeMessage, controlMessage);
-
     }
 
     @Test

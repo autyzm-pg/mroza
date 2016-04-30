@@ -127,4 +127,18 @@ public class KidProgramsServiceDbImpl implements Serializable, KidProgramsServic
         ResolvedTabQuery query = new ResolvedTabQuery(kidTabId, type);
         return kidTablesDao.selectResolvedFieldsForKidTab(query);
     }
+
+    @Override
+    public void deleteKidProgram(Program program) {
+        programsDao.deleteProgram(program);
+    }
+
+    @Override
+    public boolean checkIfProgramHasAnyCollectedTables(Program program) {
+        List<Program> kidPrograms = getKidProgramsWithCollectedData(program.getKidId());
+
+        if(kidPrograms.stream().anyMatch((kidProgram) -> kidProgram.getId().equals(program.getId())))
+            return true;
+        return false;
+    }
 }

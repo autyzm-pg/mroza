@@ -16,8 +16,10 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mroza.dao;
+package com.mroza.dao.ProgramDaoTests;
 
+import com.mroza.dao.KidsDao;
+import com.mroza.dao.ProgramsDao;
 import com.mroza.models.Kid;
 import com.mroza.models.Program;
 import com.mroza.utils.ReflectionWrapper;

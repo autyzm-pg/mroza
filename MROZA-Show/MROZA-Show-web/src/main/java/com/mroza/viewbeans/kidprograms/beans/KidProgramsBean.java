@@ -269,8 +269,9 @@ public class KidProgramsBean implements Serializable {
         model.setTablesInProgram(tablesInProgram);
     }
 
-    public void deleteProgram(Program program){
-
+    public void deleteKidProgram(Program program){
+        if(kidProgramsService.checkIfProgramHasAnyCollectedTables(program))
+            kidProgramsService.deleteKidProgram(program);
     }
 
 }

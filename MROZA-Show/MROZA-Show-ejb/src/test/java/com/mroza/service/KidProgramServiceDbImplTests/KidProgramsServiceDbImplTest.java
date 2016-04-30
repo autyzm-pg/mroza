@@ -16,11 +16,12 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mroza.service;
+package com.mroza.service.KidProgramServiceDbImplTests;
 
 import com.mroza.dao.*;
 import com.mroza.interfaces.KidProgramsService;
 import com.mroza.models.*;
+import com.mroza.service.KidProgramsServiceDbImpl;
 import com.mroza.utils.ReflectionWrapper;
 import com.mroza.utils.Utils;
 import org.apache.ibatis.session.SqlSession;

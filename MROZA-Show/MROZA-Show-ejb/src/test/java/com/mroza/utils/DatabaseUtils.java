@@ -26,6 +26,8 @@ import org.junit.Assert;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseUtils {
@@ -115,7 +117,12 @@ public class DatabaseUtils {
         return program;
     }
 
-    public Program setUpAssignedProgram(Kid kid, Program program) {
+    public Program setUpAssignedProgram(Kid kid, Program programToAssign) {
+        Program program = new Program();
+        program.setSymbol(programToAssign.getSymbol());
+        program.setName(programToAssign.getName());
+        program.setDescription(programToAssign.getDescription());
+        program.setFinished(false);
         program.setKidId(kid.getId());
         programsDao.insertProgram(program);
         utilsSqlSession.commit();
@@ -127,5 +134,79 @@ public class DatabaseUtils {
     public Program getProgramById(Integer id) {
         Program program = programsDao.selectProgramById(id);
         return program;
+    }
+
+    public Table setUpTableWithRows(String tableName, List<String> rowsNames, String description, int generalization, int teaching, Program program) {
+        Table table = setUpTable(tableName, description, program);
+        List<TableRow> tableRows = new ArrayList<>();
+        for(int orderNum = 0; orderNum < rowsNames.size(); orderNum++){
+            tableRows.add(setUpRowWithFields(rowsNames.get(orderNum), orderNum, generalization, teaching, table));
+        }
+        table.setTableRows(tableRows);
+        return table;
+
+    }
+
+    public Table setUpTable(String tableName, String description, Program program) {
+        Table table = new Table();
+        table.setName(tableName);
+        table.setDescription(description);
+        table.setArchived(false);
+        table.setEdited(false);
+        table.setCreateDate(LocalDate.now());
+        table.setProgram(program);
+        tablesDao.insertTable(table);
+        utilsSqlSession.commit();
+        return table;
+    }
+
+    public TableRow setUpRowWithFields(String rowName, int orderNumber, int generalizationNumber, int learningNumber, Table table){
+        TableRow tableRow = new TableRow(rowName,orderNumber,learningNumber,generalizationNumber);
+        tableRow.setTableId(table.getId());
+        tableRowsDao.insertTableRow(tableRow);
+        utilsSqlSession.commit();
+        List<TableField> tableFields = tableRow.getRowFields();
+        for(TableField field : tableFields) {
+            field.setRowId(tableRow.getId());
+        }
+        tableFieldsDao.insertTableFields(tableFields);
+        utilsSqlSession.commit();
+        return tableRow;
+    }
+
+    public Period setUpPeriod(Date beginDate, Date endDate, Kid kid) {
+        Period period = new Period(beginDate, endDate, kid.getId());
+        periodsDao.insertPeriod(period);
+        utilsSqlSession.commit();
+        return period;
+    }
+
+    public KidTable setUpKidTable(Table table, Period period) {
+        KidTable kidTable = new KidTable(true, true, table, period);
+        kidTablesDao.insertKidTable(kidTable);
+        utilsSqlSession.commit();
+        return kidTable;
+    }
+
+    public KidTable fillKidTableWithData(KidTable kidTable) {
+        List<ResolvedField> resolvedFields = kidTable.getResolvedFields();
+        for(ResolvedField resolvedField : resolvedFields)
+        {
+            resolvedField.setValue("OK");
+            resolvedField.setKidTableId(resolvedField.getKidTable().getId());
+            resolvedField.setTableFieldId(resolvedField.getTableField().getId());
+            resolvedFieldsDao.updateResolvedField(resolvedField);
+            utilsSqlSession.commit();
+        }
+        kidTable.setGeneralizationFillDate(new Date());
+        kidTable.setLearningFillDate(new Date());
+        kidTable.setCollectingGeneralization(true);
+        kidTable.setCollectingGeneralization(true);
+        kidTable.setLastModDate(new Date());
+        kidTable.setPeriodId(kidTable.getPeriod().getId());
+        kidTable.setTableId(kidTable.getTable().getId());
+        kidTablesDao.updateKidTable(kidTable);
+        utilsSqlSession.commit();
+        return kidTable;
     }
 }

@@ -20,8 +20,10 @@ package com.mroza.utils;
 
 import org.junit.Assert;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,9 +40,20 @@ public class Utils {
         }
     }
 
+    public static String dateToStr(Date date, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+
     public static String getMsgFromResources(String msgKey) {
         ResourceBundle messages = ResourceBundle.getBundle("messages");
         return messages.getString(msgKey);
+    }
+
+    public static Date getDateFromNow(int deltaDays) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, deltaDays);
+        return calendar.getTime();
     }
 
 }

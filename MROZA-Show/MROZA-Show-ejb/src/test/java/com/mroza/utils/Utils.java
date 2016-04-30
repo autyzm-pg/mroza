@@ -30,6 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -255,5 +256,11 @@ public class Utils {
                 });
             });
         });
+    }
+
+    public static Date getDateFromNow(int deltaDays) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, deltaDays);
+        return calendar.getTime();
     }
 }

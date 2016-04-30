@@ -46,8 +46,8 @@ public class KidProgramsViewTest {
         DatabaseUtils databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
         kid = databaseUtils.setUpKid("CODE_1");
-        programs.add(databaseUtils.setUpProgram("A_SYMBOL_1", "NAME_1", "DESCTIPTION_1", kid));
-        programs.add(databaseUtils.setUpProgram("B_SYMBOL_2", "NAME_2", "DESCTIPTION_2", kid));
+        programs.add(databaseUtils.setUpProgram("A_SYMBOL_1", "NAME_1", "DESCRIPTION_1", kid));
+        programs.add(databaseUtils.setUpProgram("B_SYMBOL_2", "NAME_2", "DESCRIPTION_2", kid));
         kidProgramsViewPage = PageFactory.initElements(new ChromeDriver(), KidProgramsViewPage.class);
         kidProgramsViewPage.open(SeleniumUtils.kidProgramsViewUrl, kid);
     }

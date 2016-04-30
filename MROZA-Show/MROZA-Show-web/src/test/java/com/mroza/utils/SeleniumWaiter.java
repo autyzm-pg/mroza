@@ -1,14 +1,18 @@
 package com.mroza.utils;
 import com.google.common.base.Function;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.FluentWait;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Code copied form: http://stackoverflow.com/questions/23300126/selenium-wait-for-primefaces-4-0-ajax-to-process
- * Author: Jasper
+ * Code based on:
+ *      http://stackoverflow.com/questions/23300126/selenium-wait-for-primefaces-4-0-ajax-to-process
+ *      Author: Jasper
  */
 
 
@@ -49,5 +53,19 @@ public class SeleniumWaiter {
 
     private static boolean executeBooleanJavascript(WebDriver input, String javascript) {
         return (Boolean) ((JavascriptExecutor) input).executeScript(javascript);
+    }
+
+    public static void waitForDialogBoxAppears(WebDriver driver) {
+        new FluentWait(driver).withTimeout(TIME_OUT_SECONDS, TimeUnit.SECONDS)
+                .pollingEvery(POLLING_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .until(new Function<WebDriver, Boolean>() {
+                    @Override
+                    public Boolean apply(WebDriver input) {
+                        List<WebElement> dialogs = input.findElements(By.className("ui-dialog"));
+                        return dialogs.stream().anyMatch(
+                                dialog -> dialog.getAttribute("aria-hidden").equals("false")
+                        );
+                    }
+                });
     }
 }

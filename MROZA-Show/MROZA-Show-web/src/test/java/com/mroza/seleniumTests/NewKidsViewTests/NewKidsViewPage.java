@@ -18,6 +18,7 @@
 package com.mroza.seleniumTests.NewKidsViewTests;
 
 import com.mroza.utils.SeleniumWaiter;
+import com.mroza.utils.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,17 +40,19 @@ public class NewKidsViewPage {
     }
 
     public void setKidCode(String code) {
-        WebElement searchBoxInput = driver.findElement(By.id("j_idt17:j_idt24"));
+        WebElement table = driver.findElement(By.tagName("table"));
+        List<WebElement> columns = table.findElements(By.tagName("tr")).get(0).findElements(By.tagName("td"));
+        WebElement searchBoxInput = columns.get(1).findElement(By.tagName("input"));
         searchBoxInput.sendKeys(code);
     }
 
     public void clickSaveNewKid() {
-        clickButtonNamed("Zapisz");
+        clickButtonNamed(Utils.getMsgFromResources("main.save"));
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
     public void clickCancelNewKid() {
-        clickButtonNamed("Anuluj");
+        clickButtonNamed(Utils.getMsgFromResources("main.cancel"));
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 

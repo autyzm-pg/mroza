@@ -18,6 +18,7 @@
 
 package com.mroza.dao;
 
+import com.mroza.models.Kid;
 import com.mroza.models.Program;
 import com.mroza.models.charts.ResolvedTabData;
 import org.apache.ibatis.session.SqlSession;
@@ -104,5 +105,12 @@ public class ProgramsDao {
 
     public void updateProgram(Program program) {
         sqlSession.update("programsMapper.updateProgram", program);
+    }
+
+    public List<Program> selectProgramAssignedToKid(Kid kid) {
+        List<Program> programs = sqlSession.selectList("programsMapper.selectProgramsAssignedToKidByKidId", kid.getId());
+        if (programs ==  null)
+            return new ArrayList<>();
+        return programs;
     }
 }

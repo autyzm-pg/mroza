@@ -67,6 +67,12 @@
         WHERE kid_id IS NULL;
     </select>
 
+    <select id="selectProgramsAssignedToKidByKidId" resultMap="programsResult" parameterType="java.lang.Integer">
+        SELECT *
+        FROM Program
+        WHERE kid_id = #{value};
+    </select>
+
     <select id="selectUnusedProgramsByKidId" resultMap="programsResult">
         SELECT program.*
         FROM Program program
