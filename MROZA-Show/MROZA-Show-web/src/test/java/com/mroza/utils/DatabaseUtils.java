@@ -123,7 +123,6 @@ public class DatabaseUtils {
         return program;
     }
 
-   
     public Table setUpTableWithRows(String tableName, List<String> rowsNames, String description, int generalization, int teaching, Program program) {
         Table table = setUpTable(tableName, description, program);
         List<TableRow> tableRows = new ArrayList<>();
@@ -148,7 +147,7 @@ public class DatabaseUtils {
         return table;
     }
 
-    public TableRow setUpRowWithFields(String rowName, int orderNumber, int generalizationNumber, int learningNumber, Table table){
+    public TableRow setUpRowWithFields(String rowName,int orderNumber, int generalizationNumber, int learningNumber, Table table){
         TableRow tableRow = new TableRow(rowName,orderNumber,learningNumber,generalizationNumber);
         tableRow.setTableId(table.getId());
         tableRowsDao.insertTableRow(tableRow);
@@ -156,8 +155,8 @@ public class DatabaseUtils {
         List<TableField> tableFields = tableRow.getRowFields();
         for(TableField field : tableFields) {
             field.setRowId(tableRow.getId());
+            tableFieldsDao.insertTableField(field);
         }
-        tableFieldsDao.insertTableFields(tableFields);
         utilsSqlSession.commit();
         return tableRow;
     }
@@ -173,6 +172,11 @@ public class DatabaseUtils {
         KidTable kidTable = new KidTable(true, true, table, period);
         kidTablesDao.insertKidTable(kidTable);
         utilsSqlSession.commit();
+        for(ResolvedField resolvedField  : kidTable.getResolvedFields()){
+
+            resolvedFieldsDao.insertResolvedField(resolvedField);
+            utilsSqlSession.commit();
+        }
         return kidTable;
     }
 
@@ -201,5 +205,10 @@ public class DatabaseUtils {
     public List<Program> getProgramAssignedToKid(Kid kid) {
         List<Program> programs = programsDao.selectProgramAssignedToKid(kid);
         return programs;
+    }
+
+    public List<KidTable> getKidTablesForTable(int tableId) {
+        List<KidTable> kidTables = kidTablesDao.selectKidTablesWithResolvedFieldsByTableId(tableId);
+        return kidTables;
     }
 }

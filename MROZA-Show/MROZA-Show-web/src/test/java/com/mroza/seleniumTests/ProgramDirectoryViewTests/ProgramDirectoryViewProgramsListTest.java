@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import javax.naming.CompoundName;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -91,7 +90,7 @@ public class ProgramDirectoryViewProgramsListTest {
 
     @Test
     public void deleteProgramTest() {
-        programDirectoryViewPage.clickDeleteButton(expectedPrograms.get(0).getSymbol());
+        programDirectoryViewPage.clickDeleteProgramButtonForProgramWithSymbol(expectedPrograms.get(0).getSymbol());
         programDirectoryViewPage.clickYesButtonInDialogBox();
         List<String> programSymbols = programDirectoryViewPage.getAllProgramsSymbols();
         assertEquals("ProgramSymbols after delete should have smaller size", 1 ,programSymbols.size());

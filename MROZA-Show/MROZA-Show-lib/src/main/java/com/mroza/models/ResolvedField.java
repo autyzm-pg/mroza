@@ -43,8 +43,8 @@ public class ResolvedField implements Serializable {
     public ResolvedField(String value, KidTable kidTable, TableField tableField) {
         this.id = null;
         this.value = value;
-        this.kidTableId = null;
-        this.tableFieldId = null;
+        this.kidTableId = kidTable.getId();
+        this.tableFieldId = tableField.getId();
         this.kidTable = kidTable;
         this.tableField = tableField;
     }

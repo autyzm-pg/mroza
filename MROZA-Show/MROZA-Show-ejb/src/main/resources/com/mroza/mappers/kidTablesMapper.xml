@@ -64,6 +64,12 @@
         WHERE kidtab.tab_id = tab.id AND tab.name = #{value}
     </select>
 
+    <select id="selectKidTablesByTableId" resultMap="kidTableResult" parameterType="java.lang.Integer">
+        SELECT *
+        FROM kidtab
+        WHERE kidtab.tab_id = #{value}
+    </select>
+
     <resultMap id="kidTableWithEdgeTableResult" type="KidTable">
         <result property="id" column="id"/>
         <result property="collectingLearning" column="collecting_learning"/>

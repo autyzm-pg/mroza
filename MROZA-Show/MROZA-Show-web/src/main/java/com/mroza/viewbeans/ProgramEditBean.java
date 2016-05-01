@@ -102,7 +102,7 @@ public class ProgramEditBean implements Serializable {
         }
     }
 
-    private boolean validateTable(Table table) {
+    public boolean validateTable(Table table) {
         if(StringUtils.isBlank(table.getName())) {
             ViewMsgUtil.setViewErrorMsg(ViewMsg.BLANK_TABLE_NAME);
             return false;

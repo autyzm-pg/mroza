@@ -17,6 +17,7 @@
  */
 package com.mroza.seleniumTests.NewKidsViewTests;
 
+import com.mroza.seleniumTests.MrozaViewPage;
 import com.mroza.utils.SeleniumWaiter;
 import com.mroza.utils.Utils;
 import org.openqa.selenium.By;
@@ -25,12 +26,10 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class NewKidsViewPage {
-
-    protected WebDriver driver;
+public class NewKidsViewPage extends MrozaViewPage{
 
     public NewKidsViewPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
     public void open(String url) {
         driver.get(url);
@@ -47,36 +46,13 @@ public class NewKidsViewPage {
     }
 
     public void clickSaveNewKid() {
-        clickButtonNamed(Utils.getMsgFromResources("main.save"));
+        clickButtonInButtonContainerNamed(Utils.getMsgFromResources("main.save"));
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
     public void clickCancelNewKid() {
-        clickButtonNamed(Utils.getMsgFromResources("main.cancel"));
+        clickButtonInButtonContainerNamed(Utils.getMsgFromResources("main.cancel"));
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
-    public String getShowedMessage() {
-        try {
-            WebElement message = driver.findElement(By.className("ui-messages-error-summary"));
-            return message.getText();
-        }
-        catch (Exception e)
-        {
-            return "NO MESSAGE SHOWN";
-        }
-    }
-
-    private void clickButtonNamed(String name)
-    {
-        WebElement buttonsArea = driver.findElement(By.className("action-buttons-container"));
-        List<WebElement> buttons = buttonsArea.findElements(By.tagName("button"));
-        for(WebElement button : buttons){
-            if(button.findElement(By.tagName("span")).getText().equals(name)) {
-                button.click();
-                break;
-            }
-        }
-
-    }
 }

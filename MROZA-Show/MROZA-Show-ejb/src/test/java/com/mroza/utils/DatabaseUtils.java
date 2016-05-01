@@ -168,8 +168,8 @@ public class DatabaseUtils {
         List<TableField> tableFields = tableRow.getRowFields();
         for(TableField field : tableFields) {
             field.setRowId(tableRow.getId());
+            tableFieldsDao.insertTableField(field);
         }
-        tableFieldsDao.insertTableFields(tableFields);
         utilsSqlSession.commit();
         return tableRow;
     }

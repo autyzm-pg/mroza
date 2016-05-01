@@ -50,6 +50,10 @@ public class KidProgramsServiceDbImpl implements Serializable, KidProgramsServic
     @Inject
     private ProgramsDao programsDao;
 
+    @Inject
+    private ResolvedFieldsDao resolvedFieldsDao;
+
+
     @Override
     public void saveTable(Table table) {
         if(table.getId() == -1) {
@@ -69,14 +73,31 @@ public class KidProgramsServiceDbImpl implements Serializable, KidProgramsServic
     @Override
     @Transactional
     public void updateTable(Table table) {
+
         tableFieldsDao.deleteFields(table);
         tableRowsDao.deleteRows(table);
         tablesDao.updateTable(table);
         insertRowsAndFields(table);
+        List<KidTable> kidTables = kidTablesDao.selectKidTablesWithResolvedFieldsByTableId(table.getId());
+        if(!(kidTables.isEmpty()))
+        {
+            for(KidTable kidTable : kidTables) {
+                kidTablesDao.updateKidTable(kidTable);
+                resolvedFieldsDao.deleteResolvedFieldsByKidTable(kidTable);
+                insertResolvedFields(kidTable, table);
+            }
+        }
+    }
+
+    private void insertResolvedFields(KidTable kidTable, Table table) {
+        for(TableRow row : table.getTableRows()) {
+            for(TableField field : row.getRowFields()) {
+                resolvedFieldsDao.insertResolvedField(new ResolvedField("EMPTY", kidTable, field));
+            }
+        }
     }
 
     private void insertRowsAndFields(Table table) {
-        List<TableField> fields = new ArrayList<>();
         for(TableRow row : table.getTableRows()) {
             row.setTableId(table.getId());
             tableRowsDao.insertTableRow(row);
@@ -85,10 +106,9 @@ public class KidProgramsServiceDbImpl implements Serializable, KidProgramsServic
         for(TableRow row : table.getTableRows()) {
             for(TableField field : row.getRowFields()) {
                 field.setRowId(row.getId());
+                tableFieldsDao.insertTableField(field);
             }
-            fields.addAll(row.getRowFields());
         }
-        tableFieldsDao.insertTableFields(fields);
     }
 
     @Override
