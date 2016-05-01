@@ -22,6 +22,7 @@ import com.mroza.models.Kid;
 import com.mroza.models.Program;
 import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.SeleniumUtils;
+import com.mroza.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +40,7 @@ public class KidProgramsViewTest {
     private KidProgramsViewPage kidProgramsViewPage;
     private Kid kid;
     private List<Program> programs = new ArrayList<>();
+    private Program programWithTable;
 
     @Before
     public void setUp() {
@@ -47,7 +49,12 @@ public class KidProgramsViewTest {
         databaseUtils.cleanUpDatabase();
         kid = databaseUtils.setUpKid("CODE_1");
         programs.add(databaseUtils.setUpProgram("A_SYMBOL_1", "NAME_1", "DESCRIPTION_1", kid));
-        programs.add(databaseUtils.setUpProgram("B_SYMBOL_2", "NAME_2", "DESCRIPTION_2", kid));
+
+        programWithTable = databaseUtils.setUpProgram("B_SYMBOL_2", "NAME_2", "DESCRIPTION_2", kid);
+        List<String> rowNames = new ArrayList<String>(){{ add(new String("ROW_1")); add(new String("ROW_2"));}};
+        databaseUtils.setUpTableWithRows("TABLE_NAME", rowNames, "DESCRIPTION", 2, 2, programWithTable);
+        programs.add(programWithTable);
+
         kidProgramsViewPage = PageFactory.initElements(new ChromeDriver(), KidProgramsViewPage.class);
         kidProgramsViewPage.open(SeleniumUtils.kidProgramsViewUrl, kid);
     }
@@ -102,5 +109,35 @@ public class KidProgramsViewTest {
         assertEquals("Selected by letter filter program list should have one program", 1, symbolList.size());
         assertEquals("Selected by letter filter programs symbols assigned to kid should be on list", expectedSymbol, symbolList.get(0));
     }
+
+    @Test
+    public void deleteProgramTest(){
+        String deleteProgramSymbol = programs.get(0).getSymbol();
+        String expectedSymbol = programs.get(1).getSymbol();
+
+        kidProgramsViewPage.clickDeleteButton(deleteProgramSymbol);
+        kidProgramsViewPage.clickYesButtonInDialogBox();
+
+        List<String> symbolList = kidProgramsViewPage.getProgramsSymbolsList();
+        assertEquals("After program program delete list should have only one program", 1, symbolList.size());
+        assertEquals("After program program delete list should have only expected program", expectedSymbol, symbolList.get(0));
+
+    }
+
+    @Test
+    public void deleteProgramWithTableTest(){
+        String deleteProgramSymbol = this.programWithTable.getSymbol();
+
+        kidProgramsViewPage.clickDeleteButton(deleteProgramSymbol);
+        kidProgramsViewPage.clickYesButtonInDialogBox();
+
+        String errorMessage = kidProgramsViewPage.getErrorMessage();
+        assertEquals("Error message about program is having tables should be shown", Utils.getMsgFromResources("kidProgramsView.unableToRemovePeriodAssignment") ,errorMessage);
+
+        List<String> symbolList = kidProgramsViewPage.getProgramsSymbolsList();
+        assertEquals("Program should have not been deleted, list should contain all programs", 2, symbolList.size());
+        assertTrue("Program should have not been deleted", symbolList.contains(deleteProgramSymbol));
+    }
+
 
 }

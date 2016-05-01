@@ -91,4 +91,21 @@ public class KidProgramsViewPage extends MrozaViewPage{
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
+    public void clickDeleteButton(String expectedSymbol) {
+        WebElement dataTable = getDataTableElement();
+        List<WebElement> programElements = getProgramElementsList(dataTable);
+
+        for(WebElement programElement : programElements)
+        {
+            List<WebElement> programElementColumn = programElement.findElements(By.tagName("td"));
+            if(programElementColumn.get(0).getText().equals(expectedSymbol))
+            {
+                WebElement button = programElementColumn.get(4).findElement(By.tagName("button"));
+                button.click();
+                SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+                break;
+            }
+        }
+
+    }
 }
