@@ -18,21 +18,20 @@
 
 package com.mroza.seleniumTests.NewProgramsViewTests;
 
+import com.mroza.seleniumTests.MrozaViewPage;
 import com.mroza.utils.SeleniumWaiter;
 import com.mroza.utils.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class NewProgramsViewPage {
+public class NewProgramsViewPage extends MrozaViewPage {
 
-    protected WebDriver driver;
     public NewProgramsViewPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
     public void open(String url) {
         driver.get(url);
@@ -42,7 +41,7 @@ public class NewProgramsViewPage {
     }
 
     public void clickSaveNewProgram() {
-        clickButtonNamed("Zapisz");
+        clickButtonInButtonContainerNamed(Utils.getMsgFromResources("main.save"));
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
@@ -56,37 +55,8 @@ public class NewProgramsViewPage {
     }
 
     public void clickCancelNewProgram() {
-        clickButtonNamed("Anuluj");
+        clickButtonInButtonContainerNamed(Utils.getMsgFromResources("main.cancel"));
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-    }
-
-    public String getHeader() {
-        WebElement header = driver.findElement(By.className("b-page-header"));
-        return header.getText();
-    }
-
-    public String getErrorMessage() {
-        try {
-            WebElement message = driver.findElement(By.className("ui-messages-error-summary"));
-            return message.getText();
-        }
-        catch (Exception e)
-        {
-            return "NO MESSAGE SHOWN";
-        }
-    }
-
-    public List<String> getErrorMessages() {
-        try {
-            List<WebElement> messageBoxes = driver.findElements(By.className("ui-messages-error-summary"));
-            List<String> messages = new ArrayList<>();
-            messageBoxes.forEach((messageBox)->messages.add(messageBox.getText()));
-            return messages;
-        }
-        catch (Exception e)
-        {
-            return new ArrayList<String>(){{add("NO MESSAGE SHOWN");}};
-        }
     }
 
     public String getSymbol() {
@@ -129,16 +99,5 @@ public class NewProgramsViewPage {
         return null;
     }
 
-    private void clickButtonNamed(String name)
-    {
-        WebElement buttonsArea = driver.findElement(By.className("action-buttons-container"));
-        List<WebElement> buttons = buttonsArea.findElements(By.tagName("button"));
-        for(WebElement button : buttons){
-            if(button.findElement(By.tagName("span")).getText().equals(name)) {
-                button.click();
-                break;
-            }
-        }
 
-    }
 }

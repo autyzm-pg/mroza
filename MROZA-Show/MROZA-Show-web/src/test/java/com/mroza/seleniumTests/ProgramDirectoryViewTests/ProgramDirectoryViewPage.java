@@ -17,6 +17,7 @@
  */
 package com.mroza.seleniumTests.ProgramDirectoryViewTests;
 
+import com.mroza.seleniumTests.MrozaViewPage;
 import com.mroza.utils.SeleniumWaiter;
 import com.mroza.utils.Utils;
 import org.openqa.selenium.Alert;
@@ -28,13 +29,12 @@ import org.openqa.selenium.interactions.Actions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProgramDirectoryViewPage {
-
-    protected WebDriver driver;
+public class ProgramDirectoryViewPage extends MrozaViewPage {
 
     public ProgramDirectoryViewPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
+
     public void open(String url) {
         driver.get(url);
     }
@@ -74,12 +74,12 @@ public class ProgramDirectoryViewPage {
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
-    public void clickDeleteButton(String symbol) {
+    public void clickDeleteProgramButtonForProgramWithSymbol(String programSymbol) {
         List<WebElement> tableRows = getTableRows();
         for(WebElement tableRow : tableRows)
         {
             List<WebElement> columns = tableRow.findElements(By.tagName("td"));
-            if(columns.get(0).getText().equals(symbol)){
+            if(columns.get(0).getText().equals(programSymbol)){
                 WebElement deleteButton = columns.get(3).findElement(By.tagName("button"));
                 deleteButton.click();
             }
@@ -92,36 +92,5 @@ public class ProgramDirectoryViewPage {
         return tableBody.findElements(By.tagName("tr"));
     }
 
-    public void clickYesButtonInDialogBox() {
-        clickDialogButton(Utils.getMsgFromResources("main.yes"));
-    }
-
-
-    private WebElement getVisibleDialogBox() {
-        List<WebElement> dialogs = driver.findElements(By.className("ui-dialog"));
-        WebElement goodDialog = null;
-        SeleniumWaiter.waitForDialogBoxAppears(driver);
-        for(WebElement dialog : dialogs){
-            if(dialog.getAttribute("aria-hidden").equals("false"))
-                goodDialog = dialog;
-        }
-        return goodDialog;
-    }
-
-    private void clickDialogButton(String buttonName) {
-        WebElement dialog = getVisibleDialogBox();
-        WebElement buttonPanel = dialog.findElement(By.className("ui-dialog-buttonpane"));
-        List<WebElement> buttons = buttonPanel.findElements(By.tagName("button"));
-
-        for(WebElement button :  buttons){
-            List<WebElement> spanElements = button.findElements(By.tagName("span"));
-            if(spanElements.get(1).getText().equals(buttonName)) {
-                Actions actions = new Actions(driver);
-                actions.moveToElement(button).click().perform();
-                SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-                break;
-            }
-        }
-    }
 
 }

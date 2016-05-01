@@ -76,7 +76,7 @@ public class NewKidsViewAddKidTest {
     public void addNewKidWithTheSameCodeTest() {
         newKidsViewPage.setKidCode(existedSymbol);
         newKidsViewPage.clickSaveNewKid();
-        String controlMessage = newKidsViewPage.getShowedMessage();
+        String controlMessage = newKidsViewPage.getErrorMessage();
 
         assertEquals("Message should show that kid symbol already exists", expectedMessage, controlMessage);
     }
@@ -84,7 +84,7 @@ public class NewKidsViewAddKidTest {
     @Test
     public void addNewKidWithEmptyCodeTest() {
         newKidsViewPage.clickSaveNewKid();
-        String controlMessage = newKidsViewPage.getShowedMessage();
+        String controlMessage = newKidsViewPage.getErrorMessage();
 
         assertEquals("Message should show that that code is needed", expectedEmptyCodeMessage, controlMessage);
     }
