@@ -46,13 +46,13 @@ public class NewProgramsViewPage extends MrozaViewPage {
     }
 
     public void setAddProgramFields(String symbol, String name, String description) {
-        WebElement symbolInputField = getInputFieldNamed("Symbol");
+        WebElement symbolInputField = getInputFieldNamed(Utils.getMsgFromResources("newProgramsView.symbol"));
         symbolInputField.clear();
         symbolInputField.sendKeys(symbol);
-        WebElement nameInputField = getInputFieldNamed("Nazwa");
+        WebElement nameInputField = getInputFieldNamed(Utils.getMsgFromResources("newProgramsView.name"));
         nameInputField.clear();
         nameInputField.sendKeys(name);
-        WebElement descriptionInputField = getTextAreaNamed("Opis");
+        WebElement descriptionInputField = getTextAreaNamed(Utils.getMsgFromResources("newProgramsView.description"));
         descriptionInputField.clear();
         descriptionInputField.sendKeys(description);
     }

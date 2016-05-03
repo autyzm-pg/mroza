@@ -173,12 +173,11 @@ public class KidProgramsForPeriodViewPage extends MrozaViewPage{
         WebElement input = getPeriodDateInput(1);
         input.click();
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-        WebElement dataPicker = driver.findElement(By.className("ui-datepicker-calendar"));
-        List<WebElement> calendarFields = dataPicker.findElements(By.tagName("td"));
+        setDatePickerForProperMonth(date);
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+        int dayOfMonth = getPartOfDate(date, Calendar.DAY_OF_MONTH);
+        WebElement datePicker = driver.findElement(By.className("ui-datepicker-calendar"));
+        List<WebElement> calendarFields = datePicker.findElements(By.tagName("td"));
 
         for(WebElement calendarField : calendarFields){
             List<WebElement> calendarFieldValues = calendarField.findElements(By.tagName("a"));
@@ -191,6 +190,31 @@ public class KidProgramsForPeriodViewPage extends MrozaViewPage{
             }
         }
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
+    }
+
+    private void setDatePickerForProperMonth(Date date) {
+        WebElement dataPickerPrev = driver.findElement(By.className("ui-datepicker-prev"));
+        WebElement dataPickerNext = driver.findElement(By.className("ui-datepicker-next"));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+
+        int month = calendar.get(Calendar.MONTH);
+
+        calendar.setTime(new Date());
+        int currentMonth = calendar.get(Calendar.MONTH);
+
+        if (currentMonth > month)
+            dataPickerPrev.click();
+        else if (currentMonth < month)
+            dataPickerNext.click();
+    }
+
+    private int getPartOfDate(Date date, int calendarPartOfDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(calendarPartOfDate);
     }
 
     public void deleteAssignedPrograms() {
