@@ -87,7 +87,7 @@ public class KidProgramsViewTest {
         kidProgramsViewPage.setSearchValue(expectedSymbol);
         List<String> symbolsList = kidProgramsViewPage.getProgramsSymbolsList();
         assertEquals("Program list should have one program", 1, symbolsList.size());
-        assertEquals("Assigned program do kid should be on list", expectedSymbol, symbolsList.get(0));
+        assertEquals("Program assigned to kid should be on list", expectedSymbol, symbolsList.get(0));
     }
 
 
@@ -119,8 +119,8 @@ public class KidProgramsViewTest {
         kidProgramsViewPage.clickYesButtonInDialogBox();
 
         List<String> symbolList = kidProgramsViewPage.getProgramsSymbolsList();
-        assertEquals("After program program delete list should have only one program", 1, symbolList.size());
-        assertEquals("After program program delete list should have only expected program", expectedSymbol, symbolList.get(0));
+        assertEquals("After program delete list should have only one program", 1, symbolList.size());
+        assertEquals("After program delete list should have only expected program", expectedSymbol, symbolList.get(0));
 
     }
 
@@ -132,7 +132,7 @@ public class KidProgramsViewTest {
         kidProgramsViewPage.clickYesButtonInDialogBox();
 
         String errorMessage = kidProgramsViewPage.getErrorMessage();
-        assertEquals("Error message about program is having tables should be shown", Utils.getMsgFromResources("kidProgramsView.unableToRemovePeriodAssignment") ,errorMessage);
+        assertEquals("Error message about program is having tables should be shown", Utils.getMsgFromResources("kidProgramsView.unableToRemoveProgramAssignment") ,errorMessage);
 
         List<String> symbolList = kidProgramsViewPage.getProgramsSymbolsList();
         assertEquals("Program should have not been deleted, list should contain all programs", 2, symbolList.size());

@@ -121,6 +121,13 @@ public class DatabaseUtils {
         return program;
     }
 
+    public Program setUpAssignedProgram(Kid kid, Program program) {
+        program.setKidId(kid.getId());
+        programsDao.insertProgram(program);
+        utilsSqlSession.commit();
+        return program;
+    }
+
     public Table setUpTableWithRows(String tableName, List<String> rowsNames, String description, int generalization, int teaching, Program program) {
         Table table = setUpTable(tableName, description, program);
         List<TableRow> tableRows = new ArrayList<>();
@@ -208,5 +215,10 @@ public class DatabaseUtils {
     public List<KidTable> getKidTablesForTable(int tableId) {
         List<KidTable> kidTables = kidTablesDao.selectKidTablesWithResolvedFieldsByTableId(tableId);
         return kidTables;
+    }
+
+    public Program getProgramById(Integer id) {
+        Program program = programsDao.selectProgramById(id);
+        return program;
     }
 }

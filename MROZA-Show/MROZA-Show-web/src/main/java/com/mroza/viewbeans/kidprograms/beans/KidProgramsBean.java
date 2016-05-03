@@ -273,7 +273,7 @@ public class KidProgramsBean implements Serializable {
         if(!kidProgramsService.checkIfProgramHasTables(program))
         {
             kidProgramsService.deleteKidProgram(program);
-            refreshAssignedKidProgramsList(program);
+            deleteProgramFromKidProgramsListInView(program);
         }
         else
             showErrorMessage(ViewMsg.UNABLE_TO_DELETE_PROGRAM_ASSIGNMENT);
@@ -283,7 +283,7 @@ public class KidProgramsBean implements Serializable {
         ViewMsgUtil.setViewErrorMsg(viewMsg);
     }
 
-    public void refreshAssignedKidProgramsList(Program program) {
+    public void deleteProgramFromKidProgramsListInView(Program program) {
         model.getAssignedPrograms().remove(program);
     }
 

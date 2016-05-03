@@ -42,7 +42,7 @@ public class ViewMsgUtil {
             put(ViewMsg.UNABLE_TO_REMOVE_PERIOD_WITH_FILLED_RESOLVE, "kidProgramsView.unableToRemovePeriodWithFilledResolvedFields");
             put(ViewMsg.UNABLE_TO_REMOVE_UNSELECTED_PERIOD,"kidProgramsView.unableToRemoveUnselectedPeriod");
             put(ViewMsg.KID_CODE_DUPLICATED, "newKidsView.codeDuplicatedMsg");
-            put(ViewMsg.UNABLE_TO_DELETE_PROGRAM_ASSIGNMENT, "kidProgramsView.unableToRemovePeriodAssignment");
+            put(ViewMsg.UNABLE_TO_DELETE_PROGRAM_ASSIGNMENT, "kidProgramsView.unableToRemoveProgramAssignment");
         }
     };
 

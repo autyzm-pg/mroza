@@ -75,7 +75,7 @@ public class KidProgramBeanTestDeleteProgramAssignmentTest {
     public void deleteProgramTest() {
 
         KidProgramsBean kidProgramsBeanSpy = spy(this.kidProgramsBean);
-        doNothing().when(kidProgramsBeanSpy).refreshAssignedKidProgramsList(any());
+        doNothing().when(kidProgramsBeanSpy).deleteProgramFromKidProgramsListInView(any());
 
         kidProgramsBeanSpy.deleteKidProgram(this.assignedProgram);
         sqlSession.commit();
