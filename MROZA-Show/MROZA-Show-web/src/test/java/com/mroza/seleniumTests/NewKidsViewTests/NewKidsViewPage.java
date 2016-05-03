@@ -17,19 +17,19 @@
  */
 package com.mroza.seleniumTests.NewKidsViewTests;
 
+import com.mroza.seleniumTests.MrozaViewPage;
 import com.mroza.utils.SeleniumWaiter;
+import com.mroza.utils.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class NewKidsViewPage {
-
-    protected WebDriver driver;
+public class NewKidsViewPage extends MrozaViewPage{
 
     public NewKidsViewPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
     public void open(String url) {
         driver.get(url);
@@ -39,41 +39,20 @@ public class NewKidsViewPage {
     }
 
     public void setKidCode(String code) {
-        WebElement searchBoxInput = driver.findElement(By.id("j_idt17:j_idt24"));
+        WebElement table = driver.findElement(By.tagName("table"));
+        List<WebElement> columns = table.findElements(By.tagName("tr")).get(0).findElements(By.tagName("td"));
+        WebElement searchBoxInput = columns.get(1).findElement(By.tagName("input"));
         searchBoxInput.sendKeys(code);
     }
 
     public void clickSaveNewKid() {
-        clickButtonNamed("Zapisz");
+        clickButtonInButtonContainerNamed(Utils.getMsgFromResources("main.save"));
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
     public void clickCancelNewKid() {
-        clickButtonNamed("Anuluj");
+        clickButtonInButtonContainerNamed(Utils.getMsgFromResources("main.cancel"));
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
-    public String getShowedMessage() {
-        try {
-            WebElement message = driver.findElement(By.className("ui-messages-error-summary"));
-            return message.getText();
-        }
-        catch (Exception e)
-        {
-            return "NO MESSAGE SHOWN";
-        }
-    }
-
-    private void clickButtonNamed(String name)
-    {
-        WebElement buttonsArea = driver.findElement(By.className("action-buttons-container"));
-        List<WebElement> buttons = buttonsArea.findElements(By.tagName("button"));
-        for(WebElement button : buttons){
-            if(button.findElement(By.tagName("span")).getText().equals(name)) {
-                button.click();
-                break;
-            }
-        }
-
-    }
 }

@@ -26,8 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -35,18 +33,16 @@ import static org.junit.Assert.assertTrue;
 
 public class EditProgramViewAddTableTest {
 
-    private Kid kid;
     private Program program;
     private EditProgramViewPage editProgramViewPage;
-    private DatabaseUtils databaseUtils;
 
     @Before
     public void setUp() {
         SeleniumUtils.setUpDriverConnection();
-        databaseUtils = new DatabaseUtils();
+        DatabaseUtils databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
-        kid = databaseUtils.setUpKid("CODE_1");
-        program  = databaseUtils.setUpProgram("A_SYMBOL_1", "NAME_1", "DESCTIPTION_1", kid);
+        Kid kid = databaseUtils.setUpKid("CODE_1");
+        program  = databaseUtils.setUpProgram("A_SYMBOL_1", "NAME_1", "DESCRIPTION_1", kid);
         editProgramViewPage = PageFactory.initElements(new ChromeDriver(), EditProgramViewPage.class);
         editProgramViewPage.open(SeleniumUtils.editProgramsViewUrl, program);
     }

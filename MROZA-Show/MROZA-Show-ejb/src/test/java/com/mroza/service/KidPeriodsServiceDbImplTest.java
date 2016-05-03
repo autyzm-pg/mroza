@@ -211,7 +211,8 @@ public class KidPeriodsServiceDbImplTest {
     @Test
     public void removePeriodTest() {
         Period period = periodsDao.selectPeriodById(exampleKids.get(0).getPeriods().get(0).getId());
-        KidTable kidTable = kidTablesDao.selectKidTableByIdWithEdgeTable(exampleKids.get(0).getPeriods().get(0).getId());
+        KidTable kidTable = kidTablesDao.selectKidTableByIdWithEdgeTable(
+                exampleKids.get(0).getPeriods().get(0).getKidTables().get(0).getId());
         Assert.assertNotNull(period);
         Assert.assertNotNull(kidTable);
 

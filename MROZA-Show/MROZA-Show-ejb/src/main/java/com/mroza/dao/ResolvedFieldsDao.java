@@ -18,6 +18,7 @@
 
 package com.mroza.dao;
 
+import com.mroza.models.KidTable;
 import com.mroza.models.ResolvedField;
 import org.apache.ibatis.session.SqlSession;
 
@@ -63,5 +64,9 @@ public class ResolvedFieldsDao {
 
     public void updateResolvedField(ResolvedField resolvedField) {
         sqlSession.update("resolvedFieldsMapper.updateResolvedField", resolvedField);
+    }
+
+    public void deleteResolvedFieldsByKidTable(KidTable kidTable) {
+        sqlSession.delete("resolvedFieldsMapper.deleteResolvedFieldsByKidTableId", kidTable.getId());
     }
 }

@@ -18,6 +18,7 @@
 package com.mroza.seleniumTests.KidProgramsViewTests;
 
 import com.mroza.models.Kid;
+import com.mroza.seleniumTests.MrozaViewPage;
 import com.mroza.utils.SeleniumWaiter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -26,13 +27,11 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KidProgramsViewPage {
+public class KidProgramsViewPage extends MrozaViewPage{
 
-    protected WebDriver driver;
-    private WebElement header;
 
     public KidProgramsViewPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
     public void open(String url, Kid kid) {
         driver.get(url + kid.getId() + "&reloadData=true");
@@ -40,10 +39,7 @@ public class KidProgramsViewPage {
     public void close() {
         driver.quit();
     }
-    public String getHeader() {
-        header = driver.findElement(By.className("b-page-header"));
-        return header.getText();
-    }
+
 
     public void setSearchValue(String symbol){
         WebElement searchBoxInput = driver.findElement(By.className("ui-inputtext"));
@@ -62,8 +58,7 @@ public class KidProgramsViewPage {
     private List<WebElement> getProgramElementsList(WebElement dataTable) {
         WebElement dataTableContent =  dataTable.findElement(By.className("ui-datatable-tablewrapper"));
         WebElement dataTableContentList = dataTableContent.findElement(By.className("ui-datatable-data"));
-        List<WebElement> programElementsList = dataTableContentList.findElements(By.tagName("tr"));
-        return programElementsList;
+        return dataTableContentList.findElements(By.tagName("tr"));
     }
 
     public List<String> getProgramNamesList() {
@@ -95,4 +90,5 @@ public class KidProgramsViewPage {
         }
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
+
 }

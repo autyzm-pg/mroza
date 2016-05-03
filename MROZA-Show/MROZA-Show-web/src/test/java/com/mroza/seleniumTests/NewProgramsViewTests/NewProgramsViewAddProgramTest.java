@@ -68,7 +68,7 @@ public class NewProgramsViewAddProgramTest {
     public void addNewProgramWithExistingSymbolTest() {
         newProgramsViewPage.setAddProgramFields(existingSymbol, "NAME", "DESCRIPTION");
         newProgramsViewPage.clickSaveNewProgram();
-        String controlMessage = newProgramsViewPage.getShowedMessage();
+        String controlMessage = newProgramsViewPage.getErrorMessage();
         assertEquals("Message should show that program symbol already exists", expectedMessage, controlMessage);
     }
 
@@ -91,7 +91,7 @@ public class NewProgramsViewAddProgramTest {
     public void saveNewProgramWhenFieldsAreEmptyTest() {
 
         newProgramsViewPage.clickSaveNewProgram();
-        List<String> controlMessages = newProgramsViewPage.getShowedMessages();
+        List<String> controlMessages = newProgramsViewPage.getErrorMessages();
         assertEquals("Message list should be equal empty name and symbol fields", controlMessages.size(), 2);
         assertTrue("Control message should show what is empty", controlMessages.containsAll(expectedMessages));
     }

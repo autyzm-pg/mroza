@@ -50,13 +50,6 @@
         </selectKey>
     </insert>
 
-    <insert id="insertTableFields" parameterType="java.util.List">
-        INSERT INTO TabField (type, ord, row_id) VALUES 
-        <foreach collection="list" item="element" index="index" separator=",">
-          (#{element.type}::fieldtype, #{element.orderNum}, #{element.rowId})
-        </foreach>
-    </insert>
-
     <delete id="deleteTableFields" parameterType="java.lang.Integer">
         DELETE FROM TabField
         WHERE id IN

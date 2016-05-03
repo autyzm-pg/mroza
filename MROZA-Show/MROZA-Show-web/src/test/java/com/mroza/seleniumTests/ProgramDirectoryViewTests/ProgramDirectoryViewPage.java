@@ -17,22 +17,24 @@
  */
 package com.mroza.seleniumTests.ProgramDirectoryViewTests;
 
+import com.mroza.seleniumTests.MrozaViewPage;
 import com.mroza.utils.SeleniumWaiter;
+import com.mroza.utils.Utils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProgramDirectoryViewPage {
-
-    protected WebDriver driver;
+public class ProgramDirectoryViewPage extends MrozaViewPage {
 
     public ProgramDirectoryViewPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
+
     public void open(String url) {
         driver.get(url);
     }
@@ -41,8 +43,7 @@ public class ProgramDirectoryViewPage {
     }
 
     public List<String> getAllProgramsSymbols() {
-        WebElement tableContent = driver.findElement(By.id("j_idt17:systemProgramsTable_data"));
-        List<WebElement> tableRows = tableContent.findElements(By.className("ui-widget-content"));
+        List<WebElement> tableRows = getTableRows();
         List<String> programSymbolsList = new ArrayList<>();
         for(WebElement tableRow : tableRows)
         {
@@ -55,8 +56,8 @@ public class ProgramDirectoryViewPage {
     }
 
     public void setSearchValue(String expectedSearchedSymbol) {
-        WebElement searchBoxInput = driver.findElement(By.id("j_idt17:textFilter"));
-        searchBoxInput.sendKeys(expectedSearchedSymbol);
+        WebElement searchBoxInput = driver.findElement(By.className("ui-outputpanel"));
+        searchBoxInput.findElement(By.tagName("input")).sendKeys(expectedSearchedSymbol);
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
 
@@ -72,5 +73,24 @@ public class ProgramDirectoryViewPage {
         }
         SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
     }
+
+    public void clickDeleteProgramButtonForProgramWithSymbol(String programSymbol) {
+        List<WebElement> tableRows = getTableRows();
+        for(WebElement tableRow : tableRows)
+        {
+            List<WebElement> columns = tableRow.findElements(By.tagName("td"));
+            if(columns.get(0).getText().equals(programSymbol)){
+                WebElement deleteButton = columns.get(3).findElement(By.tagName("button"));
+                deleteButton.click();
+            }
+        }
+    }
+
+    private List<WebElement> getTableRows() {
+        WebElement tableContent = driver.findElement(By.tagName("table"));
+        WebElement tableBody = tableContent.findElement(By.tagName("tbody"));
+        return tableBody.findElements(By.tagName("tr"));
+    }
+
 
 }
