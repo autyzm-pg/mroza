@@ -61,7 +61,7 @@ public class TestUtils {
 
 
 
-    private static DaoSession getDaoSession(Context context) {
+    public static DaoSession getDaoSession(Context context) {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "mroza-db", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
@@ -200,7 +200,7 @@ public class TestUtils {
         }
    }
 
-    public static List<Program> setUpProgramToTermSolution(Context context, int numberOfPrograms, TermSolution termSolutionActual, String programName, String programSymbol) {
+    public static List<Program> setUpProgramToTermSolution(Context context, int numberOfPrograms, TermSolution termSolution, String programName, String programSymbol) {
 
         List<Program> programs = new ArrayList<>();
         DaoSession daoSession =  getDaoSession(context);
@@ -211,7 +211,7 @@ public class TestUtils {
             for(int programId=0; programId< numberOfPrograms; programId++)
             {
                 Program program = new Program();
-                program.setChild(termSolutionActual.getChild());
+                program.setChild(termSolution.getChild());
                 program.setCreateDate(new Date());
                 program.setDescription("Opis dlugi");
                 program.setIsFinished(false);
@@ -239,7 +239,7 @@ public class TestUtils {
                 childTable.setIsPretest(false);
                 childTable.setNote("Jest ok");
                 childTable.setTableTemplate(tabletemplate);
-                childTable.setTermSolution(termSolutionActual);
+                childTable.setTermSolution(termSolution);
                 childTableDao.insertOrReplace(childTable);
 
                 setUpTableContent(context, tabletemplate, childTable, 2, 2, 1);

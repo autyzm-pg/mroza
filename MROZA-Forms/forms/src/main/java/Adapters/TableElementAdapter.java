@@ -46,7 +46,6 @@ public class TableElementAdapter extends ArrayAdapter<TableElement> {
     final int LAYOUT_PADDING_VERTICAL = 5;
     final int LAYOUT_PADDING_HORIZONTAL = 10;
     int screenWidth;
-    private boolean areAllButtonsEnable;
 
     public TableElementAdapter(Context context, TableElement[] resource, int teachingFieldsNumber, int generalizationFieldsNumber) {
         super(context, -1, resource); //solution for dynamically created layout from: http://stackoverflow.com/a/12795518
@@ -154,8 +153,7 @@ public class TableElementAdapter extends ArrayAdapter<TableElement> {
 
             //disable button if teaching / generalization is finished or if it;s not actual term
             if((i < teachingFieldsNumber && isTeachingFinished) ||
-                    (i >= teachingFieldsNumber && isGeneralizationFinished) ||
-                    !areAllButtonsEnable)
+                    (i >= teachingFieldsNumber && isGeneralizationFinished))
                 imageButton.setEnabled(false);
 
             layout.addView(imageButton);
@@ -200,8 +198,5 @@ public class TableElementAdapter extends ArrayAdapter<TableElement> {
         return images[index];
     }
 
-    public void setAreAllButtonsEnabled(boolean areAllButtonsEnabled) {
-        this.areAllButtonsEnable = areAllButtonsEnabled;
-    }
 }
 

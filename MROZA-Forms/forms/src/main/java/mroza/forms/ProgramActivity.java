@@ -69,7 +69,6 @@ public class ProgramActivity extends AppCompatActivity {
         adapter = new TableElementAdapter(this, tableElements, fieldsNumber.get("U"), fieldsNumber.get("G"));
         adapter.setTeachingFinished(childTable.getIsTeachingFinished());
         adapter.setGeneralizationFinished(childTable.getIsGeneralizationFinished());
-        adapter.setAreAllButtonsEnabled(isTableContentEnabled());
         adapter.setPretest(childTable.getIsPretest());
         ListView programElementsListView = (ListView) findViewById(R.id.tableContent);
         programElementsListView.addHeaderView(adapter.createHeaderLayout(childTable.getTableTemplate().getName()));
@@ -77,8 +76,6 @@ public class ProgramActivity extends AppCompatActivity {
 
         EditText noteText = (EditText) findViewById(R.id.noteText);
         noteText.setText(childTable.getNote());
-        if(!isTableContentEnabled())
-            noteText.setEnabled(false);
 
         handleButtonsBehaviors();
     }
@@ -190,9 +187,6 @@ public class ProgramActivity extends AppCompatActivity {
     private void handleButtonsBehaviors() {
         Button buttonSave = (Button) findViewById(R.id.buttonSave);
 
-        if(!isTableContentEnabled())
-            buttonSave.setEnabled(false);
-
         buttonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 saveChangesInTable(true, true);
@@ -202,8 +196,7 @@ public class ProgramActivity extends AppCompatActivity {
         });
 
         Button buttonEndTeaching = (Button) findViewById(R.id.buttonEndTeaching);
-        if(childTable.getIsTeachingFinished() || !childTable.getIsTeachingCollected()
-                || !isTableContentEnabled())
+        if(childTable.getIsTeachingFinished() || !childTable.getIsTeachingCollected())
             buttonEndTeaching.setEnabled(false);
 
         buttonEndTeaching.setOnClickListener(new View.OnClickListener() {
@@ -229,8 +222,7 @@ public class ProgramActivity extends AppCompatActivity {
         });
 
         Button buttonEndGeneral = (Button) findViewById(R.id.buttonEndGeneral);
-        if(childTable.getIsGeneralizationFinished() || !childTable.getIsGeneralizationCollected()
-                || !isTableContentEnabled())
+        if(childTable.getIsGeneralizationFinished() || !childTable.getIsGeneralizationCollected())
             buttonEndGeneral.setEnabled(false);
 
         buttonEndGeneral.setOnClickListener(new View.OnClickListener() {
@@ -257,7 +249,7 @@ public class ProgramActivity extends AppCompatActivity {
 
         Button buttonRestart = (Button) findViewById(R.id.buttonRestart);
         //disable restart button if it's not actual term, table is IOA or if neither teaching nor generalization is collected
-        if(!isTableContentEnabled() || childTable.getIsIOA() ||
+        if(childTable.getIsIOA() ||
                 (!childTable.getIsTeachingFinished()) && !childTable.getIsGeneralizationFinished())
             buttonRestart.setEnabled(false);
 
@@ -649,14 +641,6 @@ public class ProgramActivity extends AppCompatActivity {
     //method necessary for tests
     public AlertDialog getLastAlertDialog(){
         return alertDialog;
-    }
-
-    private boolean isTableContentEnabled() {
-        Date actualDate = getActualTime();
-        if(childTable.getTermSolution().getEndDate().before(actualDate)) //historical term
-            return false;
-
-        return true;
     }
 
     private class SendSyncTask extends AsyncTask<Void, Void, ReceiveSyncModel> {

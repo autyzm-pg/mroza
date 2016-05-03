@@ -44,16 +44,7 @@ import java.util.List;
 
 public class ProgramActivityForFutureTest extends ActivityInstrumentationTestCase2<ProgramActivity> {
 
-        DaoMaster daoMaster;
-        Child child;
-        ChildTable childTable;
-        Intent intent;
-
-        final int rowsNumber = 3;
-        final int teachingNumber = 2;
-        final int generalizationNumber = 1;
-    private Context targetContext;
-
+    private ChildTable childTable;
 
     public ProgramActivityForFutureTest() {
         super(ProgramActivity.class);
@@ -62,118 +53,22 @@ public class ProgramActivityForFutureTest extends ActivityInstrumentationTestCas
     protected void setUp() throws Exception {
         super.setUp();
 
-        targetContext = getInstrumentation().getTargetContext();
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(targetContext, "mroza-db", null);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        daoMaster = new DaoMaster(db);
+        Context targetContext = getInstrumentation().getTargetContext();
         TestUtils.cleanUpDatabase(targetContext);
         TestUtils.setUpSyncDateLaterThenTestExecute(targetContext);
-        setUpChild("AK123", child = new Child((long) 1), childTable = new ChildTable((long) 1));
 
-        intent = new Intent();
+        List<Child> children = TestUtils.setUpChildren(targetContext,1, "CODE");
+        TermSolution historyTermSolution = TestUtils.setUpTermSolution(targetContext, children.get(0), 10, 15);
+        List<Program> programs = TestUtils.setUpProgramToTermSolution(targetContext, 1, historyTermSolution, "Uczenie literek", "A123");
+        this.childTable = programs.get(0).getTableTemplateList().get(0).getChildTableList().get(0);
+
+        Intent intent = new Intent();
         intent.putExtra("CHILD_TABLE_ID", (long) 1);
         intent.putExtra("CHILD_ID", (long) 1);
         setActivityIntent(intent);
     }
 
-    private void setUpChild(String code, Child child, ChildTable childTable) throws ParseException {
-        DaoSession daoSession = daoMaster.newSession();
-        child.setCode(code);
-        child.setIsArchived(false);
-        ChildDao childDao = daoSession.getChildDao();
-        childDao.insertOrReplace(child);
-
-        TermSolution futureTermSolution = new TermSolution();
-        Calendar c = Calendar.getInstance();
-        futureTermSolution.setChild(child);
-        int dayStart = c.get(Calendar.DAY_OF_MONTH) + 10;
-        int dayEnd = c.get(Calendar.DAY_OF_MONTH) + 15;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-        Date dateStart = formatter.parse(c.get(Calendar.YEAR) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + dayStart);
-        Date dateEnd = formatter.parse(c.get(Calendar.YEAR) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + dayEnd);
-        futureTermSolution.setStartDate(dateStart);
-        futureTermSolution.setEndDate(dateEnd);
-        TermSolutionDao termSolutionDao = daoSession.getTermSolutionDao();
-        termSolutionDao.insertOrReplace(futureTermSolution);
-
-        setUpProgram(child, childTable, futureTermSolution, "A123", "Uczenie literek", "C234", "Uczenie liczenia");
-    }
-
-    private void setUpProgram(Child child, ChildTable childTable, TermSolution termSolution, String programSymbol, String programName, String tableSymbol, String tableName) {
-        DaoSession daoSession = daoMaster.newSession();
-        ProgramDao programDao = daoSession.getProgramDao();
-        Program program = new Program();
-        program.setChild(child);
-        program.setCreateDate(new Date());
-        program.setDescription("Opis dlugi");
-        program.setIsFinished(false);
-        program.setName(programName);
-        program.setSymbol(programSymbol);
-        programDao.insertOrReplace(program);
-
-        TableTemplateDao tableTemplateDao = daoSession.getTableTemplateDao();
-        TableTemplate tabletemplate = new TableTemplate();
-        tabletemplate.setName(tableName);
-        tabletemplate.setCreateDate(new Date());
-        tabletemplate.setDescription("Krotki opis");
-        tabletemplate.setIsArchived(false);
-        tabletemplate.setProgram(program);
-        tableTemplateDao.insertOrReplace(tabletemplate);
-
-        ChildTableDao childTableDao = daoSession.getChildTableDao();
-        childTable.setTeachingFillOutDate(new Date());
-        childTable.setGeneralizationFillOutDate(new Date());
-        childTable.setIsGeneralizationCollected(true);
-        childTable.setIsGeneralizationFinished(false);
-        childTable.setIsTeachingCollected(true);
-        childTable.setIsTeachingFinished(false);
-        childTable.setIsIOA(false);
-        childTable.setIsPretest(false);
-        childTable.setNote("Jest ok");
-        childTable.setTableTemplate(tabletemplate);
-        childTable.setTermSolution(termSolution);
-        childTableDao.insertOrReplace(childTable);
-
-        setUpTableContent(tabletemplate, childTable);
-    }
-
-    private void setUpTableContent(TableTemplate tableTemplate, ChildTable childTable) {
-        DaoSession daoSession = daoMaster.newSession();
-        TableRowDao tableRowDao = daoSession.getTableRowDao();
-
-        for (int i = 0; i < rowsNumber; i++) {
-            TableRow tableRow = new TableRow();
-            tableRow.setValue("Row " + i);
-            tableRow.setInOrder(i);
-            tableRow.setTableTemplate(tableTemplate);
-            tableRowDao.insertOrReplace(tableRow);
-        }
-
-        List<TableRow> rows = tableRowDao.loadAll();
-        TableFieldDao tableFieldDao = daoSession.getTableFieldDao();
-        TableFieldFillingDao tableFieldFillingDao = daoSession.getTableFieldFillingDao();
-        for (TableRow row : rows) {
-            for (int i = 0; i < teachingNumber + generalizationNumber; i++) {
-                String type = (i >= teachingNumber ? "G" : "U");
-
-                TableField field = new TableField();
-                field.setType(type);
-                field.setInOrder(i);
-                field.setTableRow(row);
-                tableFieldDao.insertOrReplace(field);
-
-                TableFieldFilling tableFieldFilling = new TableFieldFilling();
-                tableFieldFilling.setContent("empty");
-                tableFieldFilling.setChildTable(childTable);
-                tableFieldFilling.setTableField(field);
-                tableFieldFillingDao.insertOrReplace(tableFieldFilling);
-            }
-
-        }
-    }
-
-
-    public void testNotBlockedTableContentAndButtonsForFuturePrograms() throws Exception {
+    public void testTableContentButtonsForTableFromFutureTermSolution() throws Exception {
         Activity mainActivity = this.getActivity();
         ListView tableListView = (ListView) mainActivity.findViewById(R.id.tableContent);
         TableElementAdapter adapter = ((TableElementAdapter) ((HeaderViewListAdapter) tableListView.getAdapter()).getWrappedAdapter());
@@ -193,8 +88,8 @@ public class ProgramActivityForFutureTest extends ActivityInstrumentationTestCas
         Button saveButton = (Button) getActivity().findViewById(R.id.buttonSave);
         assertEquals("Save button should be enabled", true, saveButton.isEnabled());
 
-        Button finishTeachingeButton = (Button) getActivity().findViewById(R.id.buttonEndTeaching);
-        assertEquals("Finish teaching button should be enabled", true, finishTeachingeButton.isEnabled());
+        Button finishTeachingButton = (Button) getActivity().findViewById(R.id.buttonEndTeaching);
+        assertEquals("Finish teaching button should be enabled", true, finishTeachingButton.isEnabled());
 
         Button finishGeneralizationButton = (Button) getActivity().findViewById(R.id.buttonEndGeneral);
         assertEquals("Finish generalization button should be enabled", true, finishGeneralizationButton.isEnabled());
