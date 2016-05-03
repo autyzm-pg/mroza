@@ -35,10 +35,8 @@ import static org.junit.Assert.assertEquals;
 
 public class EditProgramViewEditTableTest {
 
-    private Kid kid;
     private Program program;
     private EditProgramViewPage editProgramViewPage;
-    private DatabaseUtils databaseUtils;
     private String oldTableName;
     private List<String> oldRowsNames;
     private String expectedErrorMessage = Utils.getMsgFromResources("editProgramView.wrongNumberOfRows");
@@ -46,10 +44,10 @@ public class EditProgramViewEditTableTest {
     @Before
     public void setUp() {
         SeleniumUtils.setUpDriverConnection();
-        databaseUtils = new DatabaseUtils();
+        DatabaseUtils databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
-        kid = databaseUtils.setUpKid("CODE_1");
-        program  = databaseUtils.setUpProgram("A_SYMBOL_1", "NAME_1", "DESCTIPTION_1", kid);
+        Kid kid = databaseUtils.setUpKid("CODE_1");
+        program  = databaseUtils.setUpProgram("A_SYMBOL_1", "NAME_1", "DESCRIPTION_1", kid);
         oldTableName = "TABLE_NAME";
         oldRowsNames = new ArrayList<String>(){{add("ROW_NAME");}};
         databaseUtils.setUpTableWithRows(oldTableName, oldRowsNames, "DESCRIPTION", 1, 1, program);

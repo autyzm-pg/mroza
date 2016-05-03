@@ -100,4 +100,10 @@
         WHERE id = #{id}
     </update>
 
+    <delete id="deleteResolvedFieldsByKidTableId" parameterType="java.lang.Integer">
+        DELETE FROM tabfieldresolve
+        WHERE kid_tab_id = #{value}
+    </delete>
+
+
 </mapper>

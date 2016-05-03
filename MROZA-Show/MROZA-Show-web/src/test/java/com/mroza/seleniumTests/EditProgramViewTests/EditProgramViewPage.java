@@ -18,7 +18,9 @@
 package com.mroza.seleniumTests.EditProgramViewTests;
 
 import com.mroza.models.Program;
+import com.mroza.seleniumTests.MrozaViewPage;
 import com.mroza.utils.SeleniumWaiter;
+import com.mroza.utils.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,23 +28,16 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditProgramViewPage {
-
-    private final WebDriver driver;
+public class EditProgramViewPage extends MrozaViewPage{
 
     public EditProgramViewPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
     public void open(String url, Program program) {
         driver.get(url + program.getId());
     }
     public void close() {
         driver.quit();
-    }
-
-    public String getHeader() {
-        WebElement header = driver.findElement(By.className("b-page-header"));
-        return header.getText();
     }
 
     public List<String> getTablesNamesListContent() {
@@ -66,24 +61,9 @@ public class EditProgramViewPage {
     }
 
     public void clickAddNewTableButton() {
-        clickButtonNamed("Dodaj tabelkę");
+        clickButtonInButtonContainerNamed(Utils.getMsgFromResources("editProgramView.addTable"));
     }
 
-    private void clickButtonNamed(String buttonName) {
-        WebElement buttonsArea = driver.findElement(By.className("action-buttons-container"));
-        List<WebElement> buttonsList = buttonsArea.findElements(By.tagName("button"));
-
-        for(WebElement button : buttonsList)
-        {
-            if(button.findElement(By.tagName("span")).getText().equals(buttonName))
-            {
-                button.click();
-                SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-                break;
-            }
-
-        }
-    }
 
     public void inputTableName(String tableName) {
         WebElement table = getTableWithHeader("", true);
@@ -93,8 +73,8 @@ public class EditProgramViewPage {
     }
 
 
-    public void changeTableName(String tableName, String oldTbleName) {
-        WebElement table = getTableWithHeader(oldTbleName, true);
+    public void changeTableName(String tableName, String oldTableName) {
+        WebElement table = getTableWithHeader(oldTableName, true);
         WebElement tableHeader = table.findElement(By.className("ui-datatable-header"));
         tableHeader.findElement(By.tagName("input")).clear();
         tableHeader.findElement(By.tagName("input")).sendKeys(tableName);
@@ -102,26 +82,20 @@ public class EditProgramViewPage {
     }
 
     public void clickAddNewRowButtonForTable(String tableName) {
-        clickButtonForTable(tableName, "Dodaj wiersz", true);
+        clickButtonForTable(tableName, Utils.getMsgFromResources("editProgramView.addRow"), true);
     }
 
     public void clickSaveTableButton(String tableName) {
-        clickButtonForTable(tableName, "Zapisz", true);
+        clickButtonForTable(tableName, Utils.getMsgFromResources("main.save"), true);
     }
 
     public void clickEditTableButton(String tableName) {
-        clickButtonForTable(tableName, "Edytuj", false);
+        clickButtonForTable(tableName,  Utils.getMsgFromResources("main.edit"), false);
     }
 
     private void clickButtonForTable(String tableName, String buttonName, Boolean isEditing) {
         WebElement table = getTableWithHeader(tableName, isEditing);
-        List<WebElement> tableButtons = table.findElements(By.tagName("button"));
-        for(WebElement button : tableButtons)
-            if(button.findElement(By.tagName("span")).getText().equals(buttonName)) {
-                button.click();
-                SeleniumWaiter.waitForJQueryAndPrimeFaces(driver);
-                break;
-            }
+        clickButtonIn(buttonName,table);
     }
 
     public void changeTableRow(String tableName, String rowName, String oldRowName) {
@@ -158,7 +132,7 @@ public class EditProgramViewPage {
     }
 
     public void clickCopyTableButton(String tableName) {
-        clickButtonForTable(tableName, "Skopiuj", false);
+        clickButtonForTable(tableName, Utils.getMsgFromResources("editProgramView.copyTable"), false);
     }
 
     public List<String> getTableRowsNamesForTable(String newTableName, Boolean isEditing) {
@@ -179,18 +153,6 @@ public class EditProgramViewPage {
         return tableRowNames;
     }
 
-    public String getErrorMessage()
-    {
-        try{
-            WebElement messageArea = driver.findElement(By.className("ui-messages-error-summary"));
-            return messageArea.getText();
-        }
-        catch (Exception e)
-        {
-            return "MESSAGE NOT FOUND";
-        }
-
-    }
 
 
     private List<WebElement> getTablesList() {

@@ -101,4 +101,13 @@ public class KidTablesDao {
     public void deleteKidTables(List<Integer> ids) {
         sqlSession.delete("kidTablesMapper.deleteKidTables", ids);
     }
+
+    public List<KidTable> selectKidTablesWithResolvedFieldsByTableId(int tableId) {
+        List<KidTable> kidTables = sqlSession.selectList("kidTablesMapper.selectKidTablesByTableId", tableId);
+        if (kidTables == null) {
+            return new ArrayList<>();
+        }
+        kidTables.forEach(kidTable -> kidTable.setResolvedFields(sqlSession.selectList("resolvedFieldsMapper.selectResolvedFieldsByKidTableId", kidTable.getId())));
+        return kidTables;
+    }
 }

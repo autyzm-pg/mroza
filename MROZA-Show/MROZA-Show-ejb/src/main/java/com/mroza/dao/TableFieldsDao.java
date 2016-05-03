@@ -43,10 +43,6 @@ public class TableFieldsDao {
         sqlSession.insert("tableFieldsMapper.insertTableField", tableField);
     }
 
-    public void insertTableFields(List<TableField> list) {
-        sqlSession.insert("tableFieldsMapper.insertTableFields", list);
-    }
-
     public void deleteFields(Table table) {
         sqlSession.delete("tableFieldsMapper.deleteTableFields", table.getId());
     }
