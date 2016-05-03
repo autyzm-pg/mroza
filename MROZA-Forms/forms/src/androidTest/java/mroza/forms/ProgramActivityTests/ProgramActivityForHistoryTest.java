@@ -85,8 +85,8 @@ public class ProgramActivityForHistoryTest  extends ActivityInstrumentationTestC
         Button saveButton = (Button) getActivity().findViewById(R.id.buttonSave);
         assertTrue("Save button should be enabled",saveButton.isEnabled());
 
-        Button finishTeachingeButton = (Button) getActivity().findViewById(R.id.buttonEndTeaching);
-        assertTrue("Finish teaching button should be enabled", finishTeachingeButton.isEnabled());
+        Button finishTeachingButton = (Button) getActivity().findViewById(R.id.buttonEndTeaching);
+        assertTrue("Finish teaching button should be enabled", finishTeachingButton.isEnabled());
 
         Button finishGeneralizationButton = (Button) getActivity().findViewById(R.id.buttonEndGeneral);
         assertTrue("Finish generalization button should be enabled", finishGeneralizationButton.isEnabled());
