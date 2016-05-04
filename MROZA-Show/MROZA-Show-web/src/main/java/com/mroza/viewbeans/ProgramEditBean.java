@@ -150,7 +150,7 @@ public class ProgramEditBean implements Serializable {
         programTables.add(newTable);
     }
 
-    public void delete(Table table){
+    public void deleteTable(Table table){
         if(!kidProgramsService.checkIfTableIsAssignedToAnyPeriod(table)) {
             kidProgramsService.deleteProgramTable(table);
             deleteTableFromTableListInView(table);
