@@ -42,4 +42,6 @@ public interface KidProgramsService {
     List<SimplifiedResolvedTabRow> getSimplifiedResolvedTab(Integer kidTabId, String type);
     void deleteKidProgram(Program program);
     boolean checkIfProgramHasTables(Program program);
+    void deleteProgramTable(Table table);
+    boolean checkIfTableIsAssignedToAnyPeriod(Table table);
 }

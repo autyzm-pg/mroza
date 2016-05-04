@@ -221,4 +221,8 @@ public class DatabaseUtils {
         Program program = programsDao.selectProgramById(id);
         return program;
     }
+
+    public List<Table> getTablesForProgram(Program program) {
+       return tablesDao.selectTablesByProgramIdWithEdgesRowsFields(program.getId());
+    }
 }

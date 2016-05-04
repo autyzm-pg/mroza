@@ -98,6 +98,15 @@
                                          update="programEditForm:program-tables-grid" rendered="#{!table.edited}" />
                         <p:commandButton value="${msg['editProgramView.copyTable']}" action="#{programEditBean.copy(table)}"
                                          update="programEditForm:program-tables-grid" rendered="#{!table.edited}" />
+                        <p:commandButton value="${msg['main.delete']}" action="#{programEditBean.delete(table)}"
+                                         update="programEditForm:program-tables-grid">
+                            <p:confirm header="${msg['main.deleteTableMessageHeader']}" message="${msg['main.deleteTableMessage']}" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="${msg['main.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="${msg['main.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
                         <br/>
                     </p:dataGrid>
 

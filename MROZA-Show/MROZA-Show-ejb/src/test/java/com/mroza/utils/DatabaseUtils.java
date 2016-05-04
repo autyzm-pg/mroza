@@ -209,4 +209,8 @@ public class DatabaseUtils {
         utilsSqlSession.commit();
         return kidTable;
     }
+
+    public List<Table> getTablesForProgram(Program program) {
+        return tablesDao.selectTablesByProgramIdWithEdgesRowsFields(program.getId());
+    }
 }

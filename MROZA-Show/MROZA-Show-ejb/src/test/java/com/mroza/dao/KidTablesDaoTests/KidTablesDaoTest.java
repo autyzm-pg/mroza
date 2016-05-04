@@ -16,8 +16,10 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mroza.dao;
+package com.mroza.dao.KidTablesDaoTests;
 
+import com.mroza.dao.KidTablesDao;
+import com.mroza.dao.KidsDao;
 import com.mroza.models.Kid;
 import com.mroza.models.charts.SimplifiedResolvedTabRow;
 import com.mroza.models.queries.ResolvedTabQuery;

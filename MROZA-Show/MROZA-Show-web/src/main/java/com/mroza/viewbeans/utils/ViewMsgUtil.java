@@ -43,6 +43,7 @@ public class ViewMsgUtil {
             put(ViewMsg.UNABLE_TO_REMOVE_UNSELECTED_PERIOD,"kidProgramsView.unableToRemoveUnselectedPeriod");
             put(ViewMsg.KID_CODE_DUPLICATED, "newKidsView.codeDuplicatedMsg");
             put(ViewMsg.UNABLE_TO_DELETE_PROGRAM_ASSIGNMENT, "kidProgramsView.unableToRemoveProgramAssignment");
+            put(ViewMsg.UNABLE_TO_REMOVE_TABLE_ASSIGNED_TO_PERIOD, "editProgramView.unableToDeleteTable");
         }
     };
 

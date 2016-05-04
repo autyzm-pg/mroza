@@ -19,6 +19,7 @@
 package com.mroza.dao;
 
 import com.mroza.models.KidTable;
+import com.mroza.models.Table;
 import com.mroza.models.charts.SimplifiedResolvedTabRow;
 import com.mroza.models.queries.ResolvedTabQuery;
 import org.apache.ibatis.session.SqlSession;
@@ -108,6 +109,14 @@ public class KidTablesDao {
             return new ArrayList<>();
         }
         kidTables.forEach(kidTable -> kidTable.setResolvedFields(sqlSession.selectList("resolvedFieldsMapper.selectResolvedFieldsByKidTableId", kidTable.getId())));
+        return kidTables;
+    }
+
+    public List<KidTable> selectKidTablesByTable(Table table) {
+        List<KidTable> kidTables = sqlSession.selectList("kidTablesMapper.selectKidTablesByTableId", table.getId());
+        if (kidTables == null) {
+            return new ArrayList<>();
+        }
         return kidTables;
     }
 }

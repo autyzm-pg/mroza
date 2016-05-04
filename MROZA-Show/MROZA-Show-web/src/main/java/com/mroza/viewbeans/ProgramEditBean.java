@@ -104,20 +104,20 @@ public class ProgramEditBean implements Serializable {
 
     public boolean validateTable(Table table) {
         if(StringUtils.isBlank(table.getName())) {
-            ViewMsgUtil.setViewErrorMsg(ViewMsg.BLANK_TABLE_NAME);
+            showErrorMessage(ViewMsg.BLANK_TABLE_NAME);
             return false;
         }
         if(table.getNumberOfGeneralizationCols() == 0 && table.getNumberOfLearningCols() == 0) {
-            ViewMsgUtil.setViewErrorMsg(ViewMsg.WRONG_NUMBER_OF_COLUMNS);
+            showErrorMessage(ViewMsg.WRONG_NUMBER_OF_COLUMNS);
             return false;
         }
         if(table.getTableRows() == null || table.getTableRows().isEmpty()) {
-            ViewMsgUtil.setViewErrorMsg(ViewMsg.WRONG_NUMBER_OF_ROWS);
+            showErrorMessage(ViewMsg.WRONG_NUMBER_OF_ROWS);
             return false;
         }
         for(TableRow row : table.getTableRows()) {
             if(StringUtils.isBlank(row.getName())) {
-                ViewMsgUtil.setViewErrorMsg(ViewMsg.EMPTY_ROW_NAME);
+                showErrorMessage(ViewMsg.EMPTY_ROW_NAME);
                 return false;
             }
         }
@@ -126,7 +126,7 @@ public class ProgramEditBean implements Serializable {
 
     public void edit(Table table) {
         if (kidPeriodsService.hasTableFilledResolvedFields(table)) {
-            ViewMsgUtil.setViewErrorMsg(ViewMsg.UNABLE_TO_EDIT_TABLE);
+            showErrorMessage(ViewMsg.UNABLE_TO_EDIT_TABLE);
         } else {
             table.setNumberOfLearningCols(table.getNumberOfLearningCols());
             table.setNumberOfGeneralizationCols(table.getNumberOfGeneralizationCols());
@@ -148,5 +148,23 @@ public class ProgramEditBean implements Serializable {
         }
 
         programTables.add(newTable);
+    }
+
+    public void delete(Table table){
+        if(!kidProgramsService.checkIfTableIsAssignedToAnyPeriod(table)) {
+            kidProgramsService.deleteProgramTable(table);
+            deleteTableFromTableListInView(table);
+        }
+        else{
+            showErrorMessage(ViewMsg.UNABLE_TO_REMOVE_TABLE_ASSIGNED_TO_PERIOD);
+        }
+    }
+
+    public void showErrorMessage(ViewMsg unableToRemoveTableAssignedToPeriod) {
+        ViewMsgUtil.setViewErrorMsg(unableToRemoveTableAssignedToPeriod);
+    }
+
+    public void deleteTableFromTableListInView(Table table) {
+        programTables.remove(table);
     }
 }

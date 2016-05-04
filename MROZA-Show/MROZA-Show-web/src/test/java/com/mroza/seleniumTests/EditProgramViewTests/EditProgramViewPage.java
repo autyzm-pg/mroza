@@ -95,7 +95,7 @@ public class EditProgramViewPage extends MrozaViewPage{
 
     private void clickButtonForTable(String tableName, String buttonName, Boolean isEditing) {
         WebElement table = getTableWithHeader(tableName, isEditing);
-        clickButtonIn(buttonName,table);
+        clickButtonIn(buttonName, table);
     }
 
     public void changeTableRow(String tableName, String rowName, String oldRowName) {
@@ -202,5 +202,9 @@ public class EditProgramViewPage extends MrozaViewPage{
 
         }
         return null;
+    }
+
+    public void clickDeleteButton(String tableName) {
+        clickButtonForTable(tableName,  Utils.getMsgFromResources("main.delete"), false);
     }
 }

@@ -160,4 +160,18 @@ public class KidProgramsServiceDbImpl implements Serializable, KidProgramsServic
             return false;;
         return true;
     }
+
+    @Override
+    public void deleteProgramTable(Table table) {
+        tablesDao.deleteTable(table);
+    }
+
+    @Override
+    public boolean checkIfTableIsAssignedToAnyPeriod(Table table) {
+        List<KidTable> kidTablesAssignedToTable = kidTablesDao.selectKidTablesByTable(table);
+
+        if(kidTablesAssignedToTable.isEmpty())
+            return false;
+        return true;
+    }
 }
