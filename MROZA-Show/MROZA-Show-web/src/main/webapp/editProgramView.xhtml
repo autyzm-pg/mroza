@@ -98,7 +98,7 @@
                                          update="programEditForm:program-tables-grid" rendered="#{!table.edited}" />
                         <p:commandButton value="${msg['editProgramView.copyTable']}" action="#{programEditBean.copy(table)}"
                                          update="programEditForm:program-tables-grid" rendered="#{!table.edited}" />
-                        <p:commandButton value="${msg['main.delete']}" action="#{programEditBean.delete(table)}"
+                        <p:commandButton value="${msg['main.delete']}" action="#{programEditBean.deleteTable(table)}"
                                          update="programEditForm:program-tables-grid">
                             <p:confirm header="${msg['main.deleteTableMessageHeader']}" message="${msg['main.deleteTableMessage']}" icon="ui-icon-alert" />
                         </p:commandButton>

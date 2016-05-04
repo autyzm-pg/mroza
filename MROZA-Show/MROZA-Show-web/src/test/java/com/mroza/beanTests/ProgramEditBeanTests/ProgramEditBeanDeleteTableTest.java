@@ -77,7 +77,7 @@ public class ProgramEditBeanDeleteTableTest {
         ProgramEditBean programEditBeanSpy = spy(programEditBean);
         doNothing().when(programEditBeanSpy).deleteTableFromTableListInView(any());
 
-        programEditBeanSpy.delete(programTable);
+        programEditBeanSpy.deleteTable(programTable);
         List<Table> tables = databaseUtils.getTablesForProgram(program);
         assertFalse("Program table should have deleted", tables.stream()
                 .anyMatch(table -> programTable.getId() == table.getId()));
@@ -88,7 +88,7 @@ public class ProgramEditBeanDeleteTableTest {
         ProgramEditBean programEditBeanSpy = spy(programEditBean);
         doNothing().when(programEditBeanSpy).showErrorMessage(any());
 
-        programEditBeanSpy.delete(programTableAssignedToPeriod);
+        programEditBeanSpy.deleteTable(programTableAssignedToPeriod);
         List<Table> tables = databaseUtils.getTablesForProgram(program);
         assertTrue("Assigned program table should have not deleted", tables.stream()
                 .anyMatch(table -> programTableAssignedToPeriod.getId() == table.getId()));
