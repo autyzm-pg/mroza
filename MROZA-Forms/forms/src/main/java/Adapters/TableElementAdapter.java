@@ -151,7 +151,6 @@ public class TableElementAdapter extends ArrayAdapter<TableElement> {
                 }
             });
 
-            //disable button if teaching / generalization is finished or if it;s not actual term
             if((i < teachingFieldsNumber && isTeachingFinished) ||
                     (i >= teachingFieldsNumber && isGeneralizationFinished))
                 imageButton.setEnabled(false);
