@@ -44,13 +44,6 @@
                 <p:messages autoUpdate="true" closable="true" />
 
                 <p:panelGrid columns="2" styleClass="customPanel">
-                    <p:column>
-                        <p:outputLabel value="${msg['newProgramsView.name']}" />
-                    </p:column>
-                    <p:column>
-                        <p:inputText value="#{newProgramsBean.program.name}" label="${msg['newProgramsView.name']}"
-                                     required="true"/>
-                    </p:column>
 
                     <p:column>
                         <p:outputLabel value="${msg['newProgramsView.symbol']}" />
@@ -60,6 +53,14 @@
                                      required="true">
                             <p:ajax event="change" listener="#{newProgramsBean.validateSymbol}"/>
                         </p:inputText>
+                    </p:column>
+
+                    <p:column>
+                        <p:outputLabel value="${msg['newProgramsView.name']}" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{newProgramsBean.program.name}" label="${msg['newProgramsView.name']}"
+                                     required="true"/>
                     </p:column>
 
                     <p:column>
