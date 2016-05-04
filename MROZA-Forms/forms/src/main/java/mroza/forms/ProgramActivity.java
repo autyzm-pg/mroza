@@ -248,7 +248,6 @@ public class ProgramActivity extends AppCompatActivity {
         });
 
         Button buttonRestart = (Button) findViewById(R.id.buttonRestart);
-        //disable restart button if it's not actual term, table is IOA or if neither teaching nor generalization is collected
         if(childTable.getIsIOA() ||
                 (!childTable.getIsTeachingFinished()) && !childTable.getIsGeneralizationFinished())
             buttonRestart.setEnabled(false);
