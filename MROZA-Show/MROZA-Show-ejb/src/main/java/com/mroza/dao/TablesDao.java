@@ -19,7 +19,6 @@
 package com.mroza.dao;
 
 import com.mroza.models.Table;
-import javafx.scene.control.Tab;
 import org.apache.ibatis.session.SqlSession;
 
 import javax.inject.Inject;
