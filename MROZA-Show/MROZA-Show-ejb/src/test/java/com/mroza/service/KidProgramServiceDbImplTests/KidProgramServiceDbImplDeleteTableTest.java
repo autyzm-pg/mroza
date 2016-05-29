@@ -27,7 +27,6 @@ import com.mroza.models.Table;
 import com.mroza.service.KidProgramsServiceDbImpl;
 import com.mroza.utils.DatabaseUtils;
 import com.mroza.utils.ReflectionWrapper;
-import javafx.scene.control.Tab;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
 import org.junit.Before;
