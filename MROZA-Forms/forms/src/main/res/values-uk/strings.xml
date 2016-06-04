@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ MROZA - supporting system of behavioral therapy of people with autism
+  ~     Copyright (C) 2015-2016 autyzm-pg
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+
+    <string name="app_name">MROZA</string>
+    <string name="hello">Привіт MROZA-Forms!</string>
+    <string name="filter_settings">Фільтр</string>
+    <string name="hello_world">Привіт Світ!</string>
+    <string name="action_search">Пошук</string>
+    <string name="search_hint_kids">Введіть код дитини</string>
+    <string name="search_hint_programs">Впишіть назву програми</string>
+    <string name="show_all_programs">Показати усі програми</string>
+    <string name="show_all_kids">Показати всіх дітей</string>
+
+    <string name="teaching_not_started">Не розпочате</string>
+    <string name="teaching_saved">Записане</string>
+    <string name="teaching_ended">Закінчене</string>
+    <string name="choose_letter_settings">Абетка</string>
+    <string name="choose_letter_A">A</string>
+    <string name="choose_letter_B">B</string>
+    <string name="general_ended">Закінчено</string>
+    <string name="general_saved">Записано</string>
+    <string name="general_not_started">Не розпочато</string>
+    <string name="teaching_title">Навчання</string>
+    <string name="general_title">Генералізація</string>
+
+    <string name="warning">Увага!</string>
+    <string name="finish_teaching_warning">Чи Ви впевнені, що хочете закінчити навчання? Ви більше не зможете вносити зміни до даних, що стосуються навчання.</string>
+    <string name="finish_generalization_warning">Чи Ви впевнені, що хочете закінчити генералізацію? Ви більше не зможете вносити зміни до даних, що стосуються генералізації!</string>
+    <string name="restart_table_warning">Чи Ви впевнені, що хочете очистити таблицю? Усі введені дані будуть втрачені!</string>
+    <string name="back_button_warning">Форма містить незбережені дані. Чи Ви впевнені, що хочете закінчити редагування? Усі незаписані дані бутуть втрачені!</string>
+
+    <string name="choose_letter_D">D</string>
+    <string name="choose_letter_E">E</string>
+    <string name="choose_letter_C">C</string>
+    <string name="choose_letter_S">S</string>
+    <string name="choose_letter_R">R</string>
+    <string name="choose_letter_P">P</string>
+    <string name="choose_letter_O">O</string>
+    <string name="choose_letter_Q">Q</string>
+    <string name="choose_letter_N">N</string>
+    <string name="choose_letter_M">M</string>
+    <string name="choose_letter_L">L</string>
+    <string name="choose_letter_K">K</string>
+    <string name="choose_letter_I">I</string>
+    <string name="choose_letter_J">J</string>
+    <string name="choose_letter_H">H</string>
+    <string name="choose_letter_G">G</string>
+    <string name="choose_letter_F">F</string>
+    <string name="choose_letter_X">X</string>
+    <string name="choose_letter_Z">Z</string>
+    <string name="choose_letter_Y">Y</string>
+    <string name="choose_letter_V">V</string>
+    <string name="choose_letter_W">W</string>
+    <string name="choose_letter_U">U</string>
+    <string name="choose_letter_T">T</string>
+    <string name="generalization">Генералізація</string>
+    <string name="teaching">Навчання</string>
+    <string name="save">Записати</string>
+    <string name="finish_teaching">Закінчити навчання</string>
+    <string name="finish_generalization">Закінчити генералізацію</string>
+    <string name="restart">Почати з початку</string>
+    <string name="sync">Синхронізувати</string>
+    <string name="sync_now">Синхронізувати</string>
+    <string name="sync_title">Синхронізація</string>
+    <string name="sync_date">Дата синхронізації</string>
+    <string name="action_update">Оновлення</string>
+    <string name="settings_server_mroza">Встановити адресу сервера</string>
+    <string name="settings_server_app_update">Встановити адресу сервера оновлення</string>
+    <string name="input_url_dialog">Впишіть адресу сервера</string>
+    <string name="cancel">Скасувати</string>
+    <string name="save_changes">ОК</string>
+    <string name="sync_all_with_server">Поточний стан сервера</string>
+
+
+    <item name="show_all_programs_button_id" type="id"/>
+    <item name="show_all_kids_button_id" type="id"/>
+
+    <string name="sync_had_not_been_done_yet">Дані ще не були синхронізовані</string>
+    <string name="sync_had_been_done">Дата останньої синхронізації: </string>
+    <string name="sync_succeed">Дані були вдало синхронізовані</string>
+    <string name="application_update_error">Виникла помилка під час оновлення.</string>
+
+
+    <string name="empty_term_solution">Немає програм упродовж цього періоду</string>
+    <string name="between_dates">-</string>
+    <string name="empty"></string>
+    <string name="pretest_label"> - PRETEST</string>
+    <string name="empty_kids_list">Дітей не знайдено</string>
+    <string name="update_server_url">Адреса сервера оновлень:</string>
+</resources>
