@@ -145,7 +145,7 @@ public class ChooseProgramActivityEmptyActualList extends ActivityInstrumentatio
         childTable.setIsTeachingFinished(false);
         childTable.setIsIOA(false);
         childTable.setIsPretest(false);
-        childTable.setNote("NOTEk");
+        childTable.setNote("NOTE");
         childTable.setTableTemplate(tabletemplate);
         childTable.setTermSolution(termSolution);
 

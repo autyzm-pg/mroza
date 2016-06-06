@@ -132,7 +132,7 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
         termSolutionDao.insertOrReplace(termSolutionMoreFuture);
 
 
-        setUpProgram(child, termSolution, "Teach letter", "A123", "C234", "Teach letter");
+        setUpProgram(child, termSolution, "Teach letters", "A123", "C234", "Teach letters");
         setUpProgram(child, termSolution, "Teach toys", "B123", "D234", "Teach teddy bear");
         setUpProgram(child, termSolutionHistory, "Teach to sing", "E123", "F234", "Teach song");
         setUpProgram(child, termSolutionHistory, "Teach to play", "U123", "K234", "Teach song");
