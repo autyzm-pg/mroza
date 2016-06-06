@@ -38,6 +38,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.support.v4.content.res.TypedArrayUtils.getString;
+
 public class ChooseProgramActivityEmptyActualList extends ActivityInstrumentationTestCase2<ChooseProgramActivity> {
 
     private Button futureButton;
@@ -85,7 +87,6 @@ public class ChooseProgramActivityEmptyActualList extends ActivityInstrumentatio
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         TermSolutionDao termSolutionDao = daoSession.getTermSolutionDao();
 
-        /*Historyczny okres*/
         termSolutionHistory = new TermSolution();
         termSolutionHistory.setChild(child);
         int dayStartHistory = c.get(Calendar.DAY_OF_MONTH) - 10;
@@ -96,7 +97,6 @@ public class ChooseProgramActivityEmptyActualList extends ActivityInstrumentatio
         termSolutionHistory.setEndDate(dateEndHistory);
         termSolutionDao.insertOrReplace(termSolutionHistory);
 
-         /*Przyszły okres*/
         termSolutionFuture = new TermSolution();
         termSolutionFuture.setChild(child);
         int dayStartFuture = c.get(Calendar.DAY_OF_MONTH) + 10;
@@ -107,12 +107,10 @@ public class ChooseProgramActivityEmptyActualList extends ActivityInstrumentatio
         termSolutionFuture.setEndDate(dateEndFuture);
         termSolutionDao.insertOrReplace(termSolutionFuture);
 
-
-        /*Dodawanie programów*/
-        setUpProgram(child, termSolutionHistory, "Uczenie śpiewania ", "E123", "F234", "Uczenie piosenki");
-        setUpProgram(child, termSolutionHistory, "Uczenie grania ", "U123", "K234", "Uczenie piosenki");
-        setUpProgram(child, termSolutionFuture, "Uczenie liczenia ", "J123", "J234", "Uczenie liczenia");
-        setUpProgram(child, termSolutionFuture, "Uczenie dodawania ", "P123", "P234", "Uczenie dodawania");
+        setUpProgram(child, termSolutionHistory, "Teach to sing", "E123", "F234", "Teach song");
+        setUpProgram(child, termSolutionHistory, "Teach to play", "U123", "K234", "Teach song");
+        setUpProgram(child, termSolutionFuture, "Teach to count", "J123", "J234", "Teach to count");
+        setUpProgram(child, termSolutionFuture, "Teach to add", "P123", "P234", "Teach to add");
     }
 
     private void setUpProgram(Child child, TermSolution termSolution, String programName, String programSymbol, String tableSymbol, String tableName) {
@@ -120,7 +118,7 @@ public class ChooseProgramActivityEmptyActualList extends ActivityInstrumentatio
         Program program = new Program();
         program.setChild(child);
         program.setCreateDate(new Date());
-        program.setDescription("Opis długi");
+        program.setDescription("DESCRIPTION");
         program.setIsFinished(false);
         program.setName(programName);
         program.setSymbol(programSymbol);
@@ -131,7 +129,7 @@ public class ChooseProgramActivityEmptyActualList extends ActivityInstrumentatio
         TableTemplate tabletemplate = new TableTemplate();
         tabletemplate.setName(tableName);
         tabletemplate.setCreateDate(new Date());
-        tabletemplate.setDescription("Krótki opis");
+        tabletemplate.setDescription("DESCRIPTION");
         tabletemplate.setIsArchived(false);
         tabletemplate.setProgram(program);
 
@@ -147,7 +145,7 @@ public class ChooseProgramActivityEmptyActualList extends ActivityInstrumentatio
         childTable.setIsTeachingFinished(false);
         childTable.setIsIOA(false);
         childTable.setIsPretest(false);
-        childTable.setNote("Jest ok");
+        childTable.setNote("NOTEk");
         childTable.setTableTemplate(tabletemplate);
         childTable.setTermSolution(termSolution);
 
@@ -162,8 +160,8 @@ public class ChooseProgramActivityEmptyActualList extends ActivityInstrumentatio
         ChildTableListViewAdapter adapter = (ChildTableListViewAdapter) listActivities.getAdapter();
 
         TextView informationAboutList = (TextView) mainActivity.findViewById(R.id.termSolutionStartDate);
-        assertEquals("Powinna być wiadomość o braku aktualnych programów", "Brak programów w tym okresie", informationAboutList.getText());
-        assertEquals("Lista powinna być pusta",adapter.getCount(), 0);
+        assertEquals("Message should inform about empty programs' list", mainActivity.getString(R.string.empty_term_solution), informationAboutList.getText());
+        assertEquals("List should be empty",adapter.getCount(), 0);
 
     }
 
@@ -174,7 +172,7 @@ public class ChooseProgramActivityEmptyActualList extends ActivityInstrumentatio
         ListView listActivities = (ListView) mainActivity.findViewById(R.id.childTable_list);
         ChildTableListViewAdapter adapter = (ChildTableListViewAdapter) listActivities.getAdapter();
 
-        assertEquals("Lista powinna zawierać dwa programy", 2 ,adapter.getCount());
+        assertEquals("List should contains 2 programs", 2 ,adapter.getCount());
     }
 
 }

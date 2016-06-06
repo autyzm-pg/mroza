@@ -78,7 +78,6 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
         ChildDao childDao = daoSession.getChildDao();
         childDao.insertOrReplace(child);
 
-        /*Aktualny okres*/
         TermSolution termSolution = new TermSolution();
         Calendar c = Calendar.getInstance();
         termSolution.setChild(child);
@@ -92,7 +91,6 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
         TermSolutionDao termSolutionDao = daoSession.getTermSolutionDao();
         termSolutionDao.insertOrReplace(termSolution);
 
-        /*Historyczny okres*/
         termSolutionHistory = new TermSolution();
         termSolutionHistory.setChild(child);
         int dayStartHistory = c.get(Calendar.DAY_OF_MONTH) - 10;
@@ -103,7 +101,6 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
         termSolutionHistory.setEndDate(dateEndHistory);
         termSolutionDao.insertOrReplace(termSolutionHistory);
 
-         /*Zahistoryczny okres*/
         termSolutionMoreHistory = new TermSolution();
         termSolutionMoreHistory.setChild(child);
         int dayStartMoreHistory = c.get(Calendar.DAY_OF_MONTH) - 14;
@@ -114,7 +111,6 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
         termSolutionMoreHistory.setEndDate(dateEndMoreHistory);
         termSolutionDao.insertOrReplace(termSolutionMoreHistory);
 
-         /*Przyszły okres*/
         termSolutionFuture = new TermSolution();
         termSolutionFuture.setChild(child);
         int dayStartFuture = c.get(Calendar.DAY_OF_MONTH) + 10;
@@ -125,7 +121,6 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
         termSolutionFuture.setEndDate(dateEndFuture);
         termSolutionDao.insertOrReplace(termSolutionFuture);
 
-        /*Ponadprzyszły okres*/
         termSolutionMoreFuture = new TermSolution();
         termSolutionMoreFuture.setChild(child);
         int dayStartMoreFuture = c.get(Calendar.DAY_OF_MONTH) + 14;
@@ -136,17 +131,17 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
         termSolutionMoreFuture.setEndDate(dateEndMoreFuture);
         termSolutionDao.insertOrReplace(termSolutionMoreFuture);
 
-        /*Dodawanie programów*/
-        setUpProgram(child, termSolution, "Uczenie literek", "A123", "C234", "Uczenie alfabetu");
-        setUpProgram(child, termSolution, "Uczenie zabawek", "B123", "D234", "Uczenie misia");
-        setUpProgram(child, termSolutionHistory, "Uczenie śpiewania ", "E123", "F234", "Uczenie piosenki");
-        setUpProgram(child, termSolutionHistory, "Uczenie grania ", "U123", "K234", "Uczenie piosenki");
-        setUpProgram(child, termSolutionFuture, "Uczenie liczenia ", "J123", "J234", "Uczenie liczenia");
-        setUpProgram(child, termSolutionFuture, "Uczenie dodawania ", "P123", "P234", "Uczenie dodawania");
-        setUpProgram(child, termSolutionMoreHistory, "Uczenie sprzatania ", "Z123", "Z234", "Uczenie sprzatania");
-        setUpProgram(child, termSolutionMoreHistory, "Uczenie ganiania ", "X123", "X234", "Uczenie ganiania");
-        setUpProgram(child, termSolutionMoreFuture, "Uczenie malowania ", "M123", "M234", "Uczenie malowania");
-        setUpProgram(child, termSolutionMoreFuture, "Uczenie wycinania ", "N123", "N234", "Uczenie wycinania");
+
+        setUpProgram(child, termSolution, "Teach letter", "A123", "C234", "Teach letter");
+        setUpProgram(child, termSolution, "Teach toys", "B123", "D234", "Teach teddy bear");
+        setUpProgram(child, termSolutionHistory, "Teach to sing", "E123", "F234", "Teach song");
+        setUpProgram(child, termSolutionHistory, "Teach to play", "U123", "K234", "Teach song");
+        setUpProgram(child, termSolutionFuture, "Teach to count", "J123", "J234", "Teach number");
+        setUpProgram(child, termSolutionFuture, "Teach to add", "P123", "P234", "Teach to add");
+        setUpProgram(child, termSolutionMoreHistory, "Teach to clean", "Z123", "Z234", "Teach to clean");
+        setUpProgram(child, termSolutionMoreHistory, "Teach to run", "X123", "X234", "Teach to run");
+        setUpProgram(child, termSolutionMoreFuture, "Teach to paint", "M123", "M234", "Teach to paint");
+        setUpProgram(child, termSolutionMoreFuture, "Teach to cut", "N123", "N234", "Teach to cut");
     }
 
     private void setUpProgram(Child child, TermSolution termSolution, String programName, String programSymbol, String tableSymbol, String tableName) {
@@ -154,7 +149,7 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
         Program program = new Program();
         program.setChild(child);
         program.setCreateDate(new Date());
-        program.setDescription("Opis długi");
+        program.setDescription("DESCRIPTION");
         program.setIsFinished(false);
         program.setName(programName);
         program.setSymbol(programSymbol);
@@ -165,7 +160,7 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
         TableTemplate tabletemplate = new TableTemplate();
         tabletemplate.setName(tableName);
         tabletemplate.setCreateDate(new Date());
-        tabletemplate.setDescription("Krótki opis");
+        tabletemplate.setDescription("DESCRIPTION");
         tabletemplate.setIsArchived(false);
         tabletemplate.setProgram(program);
 
@@ -181,7 +176,7 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
         childTable.setIsTeachingFinished(false);
         childTable.setIsIOA(false);
         childTable.setIsPretest(false);
-        childTable.setNote("Jest ok");
+        childTable.setNote("NOTE");
         childTable.setTableTemplate(tabletemplate);
         childTable.setTermSolution(termSolution);
 
@@ -202,7 +197,7 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
 
         Date dateNow = getActualDate();
 
-        List<ChildTable> progrchildTablesms = new ArrayList<ChildTable>();
+        List<ChildTable> childTables = new ArrayList<ChildTable>();
         for(Program program : childMain.getProgramList() )
         {
             for(TableTemplate table : program.getTableTemplateList())
@@ -214,14 +209,14 @@ public class ChooseProgramActivityTest extends ActivityInstrumentationTestCase2<
                     {
                         if((termSolution.getEndDate().compareTo(dateNow) >= 0)  && (termSolution.getStartDate().compareTo(dateNow) <= 0) )
                         {
-                            progrchildTablesms.add(childTable);
+                            childTables.add(childTable);
                         }
                     }
                 }
             }
         }
 
-        return progrchildTablesms;
+        return childTables;
     }
 
     private List<ChildTable> getHistoricalChildTablesForChild() throws ParseException {

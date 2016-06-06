@@ -81,7 +81,6 @@ public class ColorProgramsOnListTest extends ActivityInstrumentationTestCase2<Ch
         ChildDao childDao = daoSession.getChildDao();
         childDao.insertOrReplace(child);
 
-        /*Aktualny okres*/
         termSolution = new TermSolution();
         Calendar c = Calendar.getInstance();
         termSolution.setChild(child);
@@ -95,7 +94,6 @@ public class ColorProgramsOnListTest extends ActivityInstrumentationTestCase2<Ch
         TermSolutionDao termSolutionDao = daoSession.getTermSolutionDao();
         termSolutionDao.insertOrReplace(termSolution);
 
-        /*Historyczny okres*/
         termSolutionHistory = new TermSolution();
         termSolutionHistory.setChild(child);
         int dayHistoryStart = c.get(Calendar.DAY_OF_MONTH) - 10;
@@ -106,7 +104,6 @@ public class ColorProgramsOnListTest extends ActivityInstrumentationTestCase2<Ch
         termSolutionHistory.setEndDate(dateHistoryEnd);
         termSolutionDao.insertOrReplace(termSolutionHistory);
 
-        /*Za historyczny okres*/
         termSolutionHistoryMore = new TermSolution();
         termSolutionHistoryMore.setChild(child);
         int dayHistoryMoreStart = c.get(Calendar.DAY_OF_MONTH) - 16;
@@ -117,7 +114,6 @@ public class ColorProgramsOnListTest extends ActivityInstrumentationTestCase2<Ch
         termSolutionHistoryMore.setEndDate(dateHistoryMoreEnd);
         termSolutionDao.insertOrReplace(termSolutionHistoryMore);
 
-        /*Przyszły okres*/
         termSolutionFuture = new TermSolution();
         termSolutionFuture.setChild(child);
         int dayFutureStart = c.get(Calendar.DAY_OF_MONTH) + 6;
@@ -128,7 +124,6 @@ public class ColorProgramsOnListTest extends ActivityInstrumentationTestCase2<Ch
         termSolutionFuture.setEndDate(dateFutureEnd);
         termSolutionDao.insertOrReplace(termSolutionFuture);
 
-        /*Za przyszły okres*/
         termSolutionFutureMore = new TermSolution();
         termSolutionFutureMore.setChild(child);
         int dayFutureStartMore = c.get(Calendar.DAY_OF_MONTH) + 11;
@@ -139,12 +134,11 @@ public class ColorProgramsOnListTest extends ActivityInstrumentationTestCase2<Ch
         termSolutionFutureMore.setEndDate(dateFutureMoreEnd);
         termSolutionDao.insertOrReplace(termSolutionFutureMore);
 
-        /*Dodawanie programów*/
-        setUpProgram(child, termSolution, termSolutionHistory, termSolutionHistoryMore, termSolutionFuture, termSolutionFutureMore, "Uczenie literek", "A123", "C234", "Uczenie alfabetu", "BRAK");
-        setUpProgram(child, termSolution, termSolutionHistory, termSolutionHistoryMore, termSolutionFuture, termSolutionFutureMore,  "Uczenie zabawek", "B123", "D234", "Uczenie misia", "ZAPISANE UCZENIE");
-        setUpProgram(child, termSolution, termSolutionHistory, termSolutionHistoryMore, termSolutionFuture, termSolutionFutureMore,  "Uczenie zabawek", "B123", "D234", "Uczenie misia", "ZAPISANA GENERALIZACJA");
-        setUpProgram(child, termSolution, termSolutionHistory, termSolutionHistoryMore, termSolutionFuture, termSolutionFutureMore,  "Uczenie literek", "A123", "C234", "Uczenie alfabetu", "ZAKONCZONE UCZENIE");
-        setUpProgram(child, termSolution, termSolutionHistory, termSolutionHistoryMore, termSolutionFuture, termSolutionFutureMore,  "Uczenie zabawek", "B123", "D234", "Uczenie misia", "ZAKONCZONA GENERALIZACJI");
+        setUpProgram(child, termSolution, termSolutionHistory, termSolutionHistoryMore, termSolutionFuture, termSolutionFutureMore, "Teach letters", "A123", "C234", "Teach letters", "EMPTY");
+        setUpProgram(child, termSolution, termSolutionHistory, termSolutionHistoryMore, termSolutionFuture, termSolutionFutureMore,  "Teach toys", "B123", "D234", "Teach teddy bear", "SAVED TEACHING");
+        setUpProgram(child, termSolution, termSolutionHistory, termSolutionHistoryMore, termSolutionFuture, termSolutionFutureMore,  "Teach toys", "B123", "D234", "Teach teddy bear", "SAVED GENERALIZATION");
+        setUpProgram(child, termSolution, termSolutionHistory, termSolutionHistoryMore, termSolutionFuture, termSolutionFutureMore,  "Teach letters", "A123", "C234", "Teach letters", "FINISHED TEACHING");
+        setUpProgram(child, termSolution, termSolutionHistory, termSolutionHistoryMore, termSolutionFuture, termSolutionFutureMore,  "Teach toys", "B123", "D234", "Teach teddy bear", "FINISHEED GENERALIZATION");
 
     }
 
@@ -153,7 +147,7 @@ public class ColorProgramsOnListTest extends ActivityInstrumentationTestCase2<Ch
         Program program = new Program();
         program.setChild(child);
         program.setCreateDate(new Date());
-        program.setDescription("Opis długi");
+        program.setDescription("DESCRIPTION");
         program.setIsFinished(false);
         program.setName(programName);
         program.setSymbol(programSymbol);
@@ -164,7 +158,7 @@ public class ColorProgramsOnListTest extends ActivityInstrumentationTestCase2<Ch
         TableTemplate tabletemplate = new TableTemplate();
         tabletemplate.setName(tableName);
         tabletemplate.setCreateDate(new Date());
-        tabletemplate.setDescription("Krótki opis");
+        tabletemplate.setDescription("DESCRIPTION");
         tabletemplate.setIsArchived(false);
         tabletemplate.setProgram(program);
 
@@ -174,42 +168,42 @@ public class ColorProgramsOnListTest extends ActivityInstrumentationTestCase2<Ch
         setUpChildTable(termSolution, status, tabletemplate);
         setUpChildTable(termSolutionHistory, status, tabletemplate);
         setUpChildTable(termSolutionFuture, status, tabletemplate);
-        setUpChildTable(termSolutionHistoryMore, "ZAKONCZONE UCZENIE", tabletemplate);
-        setUpChildTable(termSolutionFutureMore, "ZAKONCZONA GENERALIZACJA", tabletemplate);
+        setUpChildTable(termSolutionHistoryMore, "FINISHED TEACHING", tabletemplate);
+        setUpChildTable(termSolutionFutureMore, "FINISHED GENERALIZATION", tabletemplate);
     }
 
     private void setUpChildTable(TermSolution termSolution, String status, TableTemplate tabletemplate) {
         ChildTable childTable = new ChildTable();
 
-        if (status.equals("BRAK")) {
+        if (status.equals("EMPTY")) {
             childTable.setTeachingFillOutDate(null);
             childTable.setGeneralizationFillOutDate(null);
             childTable.setIsGeneralizationCollected(false);
             childTable.setIsGeneralizationFinished(false);
             childTable.setIsTeachingCollected(false);
             childTable.setIsTeachingFinished(false);
-        } else if (status.equals("ZAPISANE UCZENIE")) {
+        } else if (status.equals("SAVED TEACHING")) {
             childTable.setTeachingFillOutDate(new Date());
             childTable.setGeneralizationFillOutDate(null);
             childTable.setIsGeneralizationCollected(false);
             childTable.setIsGeneralizationFinished(false);
             childTable.setIsTeachingCollected(true);
             childTable.setIsTeachingFinished(false);
-        } else if (status.equals("ZAPISANA GENERALIZACJA")) {
+        } else if (status.equals("SAVED GENERALIZATION")) {
             childTable.setTeachingFillOutDate(null);
             childTable.setGeneralizationFillOutDate(new Date());
             childTable.setIsGeneralizationCollected(true);
             childTable.setIsGeneralizationFinished(false);
             childTable.setIsTeachingCollected(false);
             childTable.setIsTeachingFinished(false);
-        } else if (status.equals("ZAKONCZONE UCZENIE")) {
+        } else if (status.equals("FINISHED TEACHING")) {
             childTable.setTeachingFillOutDate(new Date());
             childTable.setGeneralizationFillOutDate(null);
             childTable.setIsGeneralizationCollected(false);
             childTable.setIsGeneralizationFinished(false);
             childTable.setIsTeachingCollected(true);
             childTable.setIsTeachingFinished(true);
-        } else if (status.equals("ZAKONCZONA GENERALIZACJI")) {
+        } else if (status.equals("FINISHED GENERALIZATION")) {
             childTable.setTeachingFillOutDate(null);
             childTable.setGeneralizationFillOutDate(new Date());
             childTable.setIsGeneralizationCollected(true);
@@ -220,7 +214,7 @@ public class ColorProgramsOnListTest extends ActivityInstrumentationTestCase2<Ch
 
         childTable.setIsIOA(false);
         childTable.setIsPretest(false);
-        childTable.setNote("Jest ok");
+        childTable.setNote("NOTE");
         childTable.setTableTemplate(tabletemplate);
         childTable.setTermSolution(termSolution);
 

@@ -69,12 +69,12 @@ public class ChooseProgramActivitySearchTest extends ActivityUnitTestCase<Choose
         TestUtils.cleanUpDatabase(targetContext);
         TestUtils.setUpSyncDateLaterThenTestExecute(targetContext);
         setUpChild("AK123");
-        setUpProgram(child, termSolution, new ChildTable(), "Uczenie literek", "A123", "C234", "Uczenie alfabetu");
-        setUpProgram(child, termSolution, expectedChildTable = new ChildTable(), "Uczenie zabawek", "B123", "D234", "Uczenie misia");
+        setUpProgram(child, termSolution, new ChildTable(), "Teach letters", "A123", "C234", "Teach letter");
+        setUpProgram(child, termSolution, expectedChildTable = new ChildTable(), "Teach toys", "B123", "D234", "Teach teddy bear");
 
         intent = new Intent(getInstrumentation().getTargetContext(), ChooseKidActivity.class);
         intent.setAction(Intent.ACTION_SEARCH);
-        intent.putExtra(SearchManager.QUERY, "Uczenie zabawek");
+        intent.putExtra(SearchManager.QUERY, "Teach toys");
         intent.putExtra("CHILD_NAME", child.getCode());
         intent.putExtra("CHILD_ID", child.getId());
 
@@ -107,7 +107,7 @@ public class ChooseProgramActivitySearchTest extends ActivityUnitTestCase<Choose
         Program program = new Program();
         program.setChild(child);
         program.setCreateDate(new Date());
-        program.setDescription("Opis dlugi");
+        program.setDescription("DESCRIPTION");
         program.setIsFinished(false);
         program.setName(programName);
         program.setSymbol(programSymbol);
@@ -119,7 +119,7 @@ public class ChooseProgramActivitySearchTest extends ActivityUnitTestCase<Choose
         tableTemplate = new TableTemplate();
         tableTemplate.setName(tableName);
         tableTemplate.setCreateDate(new Date());
-        tableTemplate.setDescription("Krotki opis");
+        tableTemplate.setDescription("DESCRIPTION");
         tableTemplate.setIsArchived(false);
         tableTemplate.setProgram(program);
 
@@ -135,7 +135,7 @@ public class ChooseProgramActivitySearchTest extends ActivityUnitTestCase<Choose
         childTable.setIsTeachingFinished(false);
         childTable.setIsIOA(false);
         childTable.setIsPretest(false);
-        childTable.setNote("Jest ok");
+        childTable.setNote("NOTE");
         childTable.setTableTemplate(tableTemplate);
         childTable.setTermSolution(termSolution);
 
