@@ -24,6 +24,7 @@ import org.primefaces.model.ScheduleEvent;
 
 import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ScheduldeEventWrapper {
@@ -53,6 +54,7 @@ public class ScheduldeEventWrapper {
         applyHackToHandlePrimefacesComponentWayHandlingCalendarDays(period);
         calendarRepresentation.setStartDate(period.getBeginDate());
         calendarRepresentation.setEndDate(period.getEndDate());
+        calendarRepresentation.setAllDay(true);
         calendarRepresentation.setTitle(getCalendarRepresentationTitleFromPeriod(period));
     }
 
@@ -61,8 +63,25 @@ public class ScheduldeEventWrapper {
         return dateFormat.format(period.getBeginDate()) + " - " + dateFormat.format(period.getEndDate());
     }
 
+    /**
+     * Primefaces schedule component doesn't show event on first/last day in case that hour is 0:00
+     * 
+     * @param period
+     */
     private static void applyHackToHandlePrimefacesComponentWayHandlingCalendarDays(Period period) {
-        period.getEndDate().setHours(12); // primefaces schedule component doesn't show event on last day in case that hour is 0:00
+    	
+    	int dayStartHour = 1;
+    	int dayEndHour = 23;
+    	
+    	Calendar cal = Calendar.getInstance();
+    	
+    	cal.setTime(period.getBeginDate());
+    	cal.set(Calendar.HOUR_OF_DAY, dayStartHour);
+    	period.setBeginDate(cal.getTime());
+    	
+    	cal.setTime(period.getEndDate());
+    	cal.set(Calendar.HOUR_OF_DAY, dayEndHour);
+        period.setEndDate(cal.getTime()); 
     }
 
 
