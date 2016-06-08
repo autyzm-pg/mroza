@@ -89,7 +89,7 @@ public class ProgramActivityRestartTableIOATest extends ActivityInstrumentationT
         TermSolutionDao termSolutionDao = daoSession.getTermSolutionDao();
         termSolutionDao.insertOrReplace(termSolution);
 
-        setUpProgram(child, childTable, termSolution, "A123", "Uczenie literek", "C234", "Uczenie liczenia");
+        setUpProgram(child, childTable, termSolution, "A123", "Teach letters", "C234", "Teach letters");
     }
 
     private void setUpProgram(Child child, ChildTable childTable, TermSolution termSolution, String programSymbol, String programName, String tableSymbol, String tableName) {
@@ -98,7 +98,7 @@ public class ProgramActivityRestartTableIOATest extends ActivityInstrumentationT
         Program program = new Program();
         program.setChild(child);
         program.setCreateDate(new Date());
-        program.setDescription("Opis dlugi");
+        program.setDescription("DESCRIPTION");
         program.setIsFinished(false);
         program.setName(programName);
         program.setSymbol(programSymbol);
@@ -108,7 +108,7 @@ public class ProgramActivityRestartTableIOATest extends ActivityInstrumentationT
         TableTemplate tabletemplate = new TableTemplate();
         tabletemplate.setName(tableName);
         tabletemplate.setCreateDate(new Date());
-        tabletemplate.setDescription("Krotki opis");
+        tabletemplate.setDescription("DESCRIPTION");
         tabletemplate.setIsArchived(false);
         tabletemplate.setProgram(program);
         tableTemplateDao.insertOrReplace(tabletemplate);
@@ -122,7 +122,7 @@ public class ProgramActivityRestartTableIOATest extends ActivityInstrumentationT
         childTable.setIsTeachingFinished(true);
         childTable.setIsIOA(true);
         childTable.setIsPretest(false);
-        childTable.setNote("Jest ok");
+        childTable.setNote("NOTE");
         childTable.setTableTemplate(tabletemplate);
         childTable.setTermSolution(termSolution);
         childTableDao.insertOrReplace(childTable);

@@ -76,7 +76,6 @@ public class ChooseProgramActivityWhenNotExistTest extends ActivityInstrumentati
         ChildDao childDao = daoSession.getChildDao();
         childDao.insertOrReplace(child);
 
-        /*Aktualny okres*/
         TermSolution termSolution = new TermSolution();
         Calendar c = Calendar.getInstance();
         termSolution.setChild(child);
@@ -90,9 +89,8 @@ public class ChooseProgramActivityWhenNotExistTest extends ActivityInstrumentati
         TermSolutionDao termSolutionDao = daoSession.getTermSolutionDao();
         termSolutionDao.insertOrReplace(termSolution);
 
-        /*Dodawanie programów*/
-        setUpProgram(child, termSolution, "Uczenie literek", "A123", "C234", "Uczenie alfabetu");
-        setUpProgram(child, termSolution, "Uczenie zabawek", "B123", "D234", "Uczenie misia");
+        setUpProgram(child, termSolution, "Teach letters", "A123", "C234", "Teach letters");
+        setUpProgram(child, termSolution, "Teach toys", "B123", "D234", "Teach toys");
     }
 
     private void setUpProgram(Child child, TermSolution termSolution, String programName, String programSymbol, String tableSymbol, String tableName) {
@@ -100,7 +98,7 @@ public class ChooseProgramActivityWhenNotExistTest extends ActivityInstrumentati
         Program program = new Program();
         program.setChild(child);
         program.setCreateDate(new Date());
-        program.setDescription("Opis długi");
+        program.setDescription("DESCRIPTION");
         program.setIsFinished(false);
         program.setName(programName);
         program.setSymbol(programSymbol);
@@ -111,7 +109,7 @@ public class ChooseProgramActivityWhenNotExistTest extends ActivityInstrumentati
         TableTemplate tabletemplate = new TableTemplate();
         tabletemplate.setName(tableName);
         tabletemplate.setCreateDate(new Date());
-        tabletemplate.setDescription("Krótki opis");
+        tabletemplate.setDescription("DESCRIPTION");
         tabletemplate.setIsArchived(false);
         tabletemplate.setProgram(program);
 
@@ -127,7 +125,7 @@ public class ChooseProgramActivityWhenNotExistTest extends ActivityInstrumentati
         childTable.setIsTeachingFinished(false);
         childTable.setIsIOA(false);
         childTable.setIsPretest(false);
-        childTable.setNote("Jest ok");
+        childTable.setNote("NOTE");
         childTable.setTableTemplate(tabletemplate);
         childTable.setTermSolution(termSolution);
 
@@ -147,7 +145,7 @@ public class ChooseProgramActivityWhenNotExistTest extends ActivityInstrumentati
 
         assertEquals("Historical childTableList should be empty", 0, count);
         final TextView periodDateStart = (TextView) mainActivity.findViewById(R.id.termSolutionStartDate);
-        assertEquals("Text message should talk about empty program","Brak programów w tym okresie", periodDateStart.getText());
+        assertEquals("Text message should talk about empty program", mainActivity.getString(R.string.empty_term_solution), periodDateStart.getText());
       }
 
     public void testProgramListForFutureTimeShouldNotContainAnyProgramsForKid() throws ParseException, InterruptedException {
@@ -160,7 +158,7 @@ public class ChooseProgramActivityWhenNotExistTest extends ActivityInstrumentati
         int count = adapter.getCount();
         assertEquals("Actual childTableList should be empty", 0, count);
         final TextView periodDateStart = (TextView) mainActivity.findViewById(R.id.termSolutionStartDate);
-        assertEquals("Text message should talk about empty program","Brak programów w tym okresie", periodDateStart.getText());
+        assertEquals("Text message should talk about empty program",mainActivity.getString(R.string.empty_term_solution), periodDateStart.getText());
 
     }
 

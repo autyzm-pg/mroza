@@ -75,7 +75,6 @@ public class ChooseProgramActivityPretestTest extends ActivityInstrumentationTes
         ChildDao childDao = daoSession.getChildDao();
         childDao.insertOrReplace(child);
 
-        /*Aktualny okres*/
         termSolution = new TermSolution();
         Calendar c = Calendar.getInstance();
         termSolution.setChild(child);
@@ -89,7 +88,6 @@ public class ChooseProgramActivityPretestTest extends ActivityInstrumentationTes
         TermSolutionDao termSolutionDao = daoSession.getTermSolutionDao();
         termSolutionDao.insertOrReplace(termSolution);
 
-        /*Przyszly okres*/
         termSolutionFuture = new TermSolution();
         termSolutionFuture.setChild(child);
         int dayFutureStart = c.get(Calendar.DAY_OF_MONTH) + 6;
@@ -100,10 +98,8 @@ public class ChooseProgramActivityPretestTest extends ActivityInstrumentationTes
         termSolutionFuture.setEndDate(dateFutureEnd);
         termSolutionDao.insertOrReplace(termSolutionFuture);
 
-
-        /*Dodawanie programow*/
-        setUpProgram(child, "Program 1", "A123", "C234", "Tabelka 1", true);
-        setUpProgram(child,  "Program 2", "B123", "D234", "Tabelka 2", false);
+        setUpProgram(child, "PROGRAM_1", "A123", "C234", "TABLE_1", true);
+        setUpProgram(child,  "PROGRAM_2", "B123", "D234", "TABLE_2", false);
 
     }
 
@@ -112,7 +108,7 @@ public class ChooseProgramActivityPretestTest extends ActivityInstrumentationTes
         Program program = new Program();
         program.setChild(child);
         program.setCreateDate(new Date());
-        program.setDescription("Opis długi");
+        program.setDescription("DESCRIPTION");
         program.setIsFinished(false);
         program.setName(programName);
         program.setSymbol(programSymbol);
@@ -123,7 +119,7 @@ public class ChooseProgramActivityPretestTest extends ActivityInstrumentationTes
         TableTemplate tabletemplate = new TableTemplate();
         tabletemplate.setName(tableName);
         tabletemplate.setCreateDate(new Date());
-        tabletemplate.setDescription("Krótki opis");
+        tabletemplate.setDescription("DESCRIPTION");
         tabletemplate.setIsArchived(false);
         tabletemplate.setProgram(program);
 
@@ -147,7 +143,7 @@ public class ChooseProgramActivityPretestTest extends ActivityInstrumentationTes
         childTable.setIsTeachingFinished(false);
         childTable.setIsIOA(false);
         childTable.setIsPretest(isPretest);
-        childTable.setNote("Jest ok");
+        childTable.setNote("NOTE");
         childTable.setTableTemplate(tabletemplate);
         childTable.setTermSolution(termSolution);
 

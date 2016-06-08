@@ -54,7 +54,7 @@ public class ProgramActivityForHistoryTest  extends ActivityInstrumentationTestC
         TestUtils.setUpSyncDateLaterThenTestExecute(targetContext);
         List<Child> children = TestUtils.setUpChildren(targetContext,1, "CODE");
         TermSolution historyTermSolution = TestUtils.setUpTermSolution(targetContext, children.get(0), -10, -5);
-        List<Program> programs = TestUtils.setUpProgramToTermSolution(targetContext, 1, historyTermSolution, "Uczenie literek", "A123");
+        List<Program> programs = TestUtils.setUpProgramToTermSolution(targetContext, 1, historyTermSolution, "Teach letters", "A123");
         this.childTable = programs.get(0).getTableTemplateList().get(0).getChildTableList().get(0);
 
         Intent intent = new Intent();
