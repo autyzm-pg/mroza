@@ -18,16 +18,15 @@
 
 package com.mroza.models;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -60,5 +59,17 @@ public class Period implements Serializable {
     public Period(Integer id) {
         this.id = id;
         this.kidTables = new ArrayList<>();
+    }
+    public void setBeginDate(Date beginDate) {
+    	this.beginDate = new Date(beginDate.getTime());
+    }
+    public Date getBeginDate() {
+    	return new Date(beginDate.getTime());
+    }
+    public void setEndDate(Date endDate) {
+    	this.endDate = new Date(endDate.getTime());
+    }
+    public Date getEndDate() {
+    	return new Date(endDate.getTime());
     }
 }
