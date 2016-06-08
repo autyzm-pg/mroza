@@ -73,31 +73,12 @@ public class ChoosProgramActivityWhenActualNotExistTest extends ActivityInstrume
         futureButton = (Button)getActivity().findViewById(R.id.buttonChangePeriodFuture);
     }
 
-    private void cleanUpDatabase() {
-        //Czyszczenie bazy
-        ChildDao childDao = daoSession.getChildDao();
-        childDao.deleteAll();
-
-        ProgramDao programDao = daoSession.getProgramDao();
-        programDao.deleteAll();
-
-        TableTemplateDao tableTemplateDao = daoSession.getTableTemplateDao();
-        tableTemplateDao.deleteAll();
-
-        ChildTableDao childTableDao = daoSession.getChildTableDao();
-        childTableDao.deleteAll();
-
-        TermSolutionDao termSolutionDao = daoSession.getTermSolutionDao();
-        termSolutionDao.deleteAll();
-    }
-
     private void setUpChild(String code, Child child) throws ParseException {
         child.setCode(code);
         child.setIsArchived(false);
         ChildDao childDao = daoSession.getChildDao();
         childDao.insertOrReplace(child);
 
-        /*Aktualny okres*/
         TermSolution termSolution = new TermSolution();
         Calendar c = Calendar.getInstance();
         termSolution.setChild(child);
@@ -111,7 +92,6 @@ public class ChoosProgramActivityWhenActualNotExistTest extends ActivityInstrume
         TermSolutionDao termSolutionDao = daoSession.getTermSolutionDao();
         termSolutionDao.insertOrReplace(termSolution);
 
-        /*Historyczny okres*/
         termSolutionHistory = new TermSolution();
         termSolutionHistory.setChild(child);
         int dayStartHistory = c.get(Calendar.DAY_OF_MONTH) - 10;
@@ -122,8 +102,6 @@ public class ChoosProgramActivityWhenActualNotExistTest extends ActivityInstrume
         termSolutionHistory.setEndDate(dateEndHistory);
         termSolutionDao.insertOrReplace(termSolutionHistory);
 
-
-         /*Przyszły okres*/
         termSolutionFuture = new TermSolution();
         termSolutionFuture.setChild(child);
         int dayStartFuture = c.get(Calendar.DAY_OF_MONTH) + 10;
@@ -135,12 +113,10 @@ public class ChoosProgramActivityWhenActualNotExistTest extends ActivityInstrume
         termSolutionDao.insertOrReplace(termSolutionFuture);
 
 
-
-        /*Dodawanie programów*/
-        setUpProgram(child, termSolutionHistory, "Uczenie śpiewania ", "E123", "F234", "Uczenie piosenki");
-        setUpProgram(child, termSolutionHistory, "Uczenie grania ", "U123", "K234", "Uczenie piosenki");
-        setUpProgram(child, termSolutionFuture, "Uczenie liczenia ", "J123", "J234", "Uczenie liczenia");
-        setUpProgram(child, termSolutionFuture, "Uczenie dodawania ", "P123", "P234", "Uczenie dodawania");
+        setUpProgram(child, termSolutionHistory, "Teach to sing ", "E123", "F234", "Teach song");
+        setUpProgram(child, termSolutionHistory, "Teach to play ", "U123", "K234", "Teach teddy bear");
+        setUpProgram(child, termSolutionFuture, "Teach to count ", "J123", "J234", "Teach to count");
+        setUpProgram(child, termSolutionFuture, "Teach to add ", "P123", "P234", "Teach to add");
 
     }
 
@@ -149,7 +125,7 @@ public class ChoosProgramActivityWhenActualNotExistTest extends ActivityInstrume
         Program program = new Program();
         program.setChild(child);
         program.setCreateDate(new Date());
-        program.setDescription("Opis długi");
+        program.setDescription("DESCRIPTION");
         program.setIsFinished(false);
         program.setName(programName);
         program.setSymbol(programSymbol);
@@ -160,7 +136,7 @@ public class ChoosProgramActivityWhenActualNotExistTest extends ActivityInstrume
         TableTemplate tabletemplate = new TableTemplate();
         tabletemplate.setName(tableName);
         tabletemplate.setCreateDate(new Date());
-        tabletemplate.setDescription("Krótki opis");
+        tabletemplate.setDescription("DESCRIPTION");
         tabletemplate.setIsArchived(false);
         tabletemplate.setProgram(program);
 
@@ -176,7 +152,7 @@ public class ChoosProgramActivityWhenActualNotExistTest extends ActivityInstrume
         childTable.setIsTeachingFinished(false);
         childTable.setIsIOA(false);
         childTable.setIsPretest(false);
-        childTable.setNote("Jest ok");
+        childTable.setNote("NOTE");
         childTable.setTableTemplate(tabletemplate);
         childTable.setTermSolution(termSolution);
 
@@ -194,7 +170,7 @@ public class ChoosProgramActivityWhenActualNotExistTest extends ActivityInstrume
         int count = adapter.getCount();
         assertEquals("Actual childTableList list should be empty",0,count);
         final TextView periodDateStart = (TextView) mainActivity.findViewById(R.id.termSolutionStartDate);
-        assertEquals("Text message should talk about empty program","Brak programów w tym okresie", periodDateStart.getText());
+        assertEquals("Text message should talk about empty program", mainActivity.getString(R.string.empty_term_solution), periodDateStart.getText());
 
 
     }

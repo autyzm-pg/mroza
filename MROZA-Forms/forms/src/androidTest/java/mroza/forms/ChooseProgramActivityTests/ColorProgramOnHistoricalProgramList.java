@@ -71,7 +71,6 @@ public class ColorProgramOnHistoricalProgramList extends ActivityInstrumentation
         ChildDao childDao = daoSession.getChildDao();
         childDao.insertOrReplace(child);
 
-        /*Aktualny okres*/
         TermSolution termSolution = new TermSolution();
         Calendar c = Calendar.getInstance();
         termSolution.setChild(child);
@@ -85,13 +84,11 @@ public class ColorProgramOnHistoricalProgramList extends ActivityInstrumentation
         TermSolutionDao termSolutionDao = daoSession.getTermSolutionDao();
         termSolutionDao.insertOrReplace(termSolution);
 
-
-        /*Dodawanie programów*/
-        setUpProgram(child, termSolution, "Uczenie literek", "A123", "C234", "Uczenie alfabetu", "BRAK");
-        setUpProgram(child, termSolution, "Uczenie zabawek", "B123", "D234", "Uczenie misia", "ZAPISANE UCZENIE");
-        setUpProgram(child, termSolution, "Uczenie zabawek", "B123", "D234", "Uczenie misia", "ZAPISANA GENERALIZACJA");
-        setUpProgram(child, termSolution, "Uczenie literek", "A123", "C234", "Uczenie alfabetu", "ZAKONCZONE UCZENIE");
-        setUpProgram(child, termSolution, "Uczenie zabawek", "B123", "D234", "Uczenie misia", "ZAKONCZONA GENERALIZACJI");
+        setUpProgram(child, termSolution, "Teach letters", "A123", "C234", "Teach letters", "EMPTY");
+        setUpProgram(child, termSolution, "Teach toys", "B123", "D234", "Teach teddy bear", "SAVE TEACHING");
+        setUpProgram(child, termSolution, "Teach toys", "B123", "D234", "Teach teddy bear", "SAVE GENERALIZATION");
+        setUpProgram(child, termSolution, "Teach letters", "A123", "C234", "Teach letters", "FINISH TEACHING");
+        setUpProgram(child, termSolution, "Teach toys", "B123", "D234", "Teach teddy bear", "FINISH GENERALIZATION");
 
     }
 
@@ -100,7 +97,7 @@ public class ColorProgramOnHistoricalProgramList extends ActivityInstrumentation
         Program program = new Program();
         program.setChild(child);
         program.setCreateDate(new Date());
-        program.setDescription("Opis długi");
+        program.setDescription("DESCRIPTION");
         program.setIsFinished(false);
         program.setName(programName);
         program.setSymbol(programSymbol);
@@ -111,7 +108,7 @@ public class ColorProgramOnHistoricalProgramList extends ActivityInstrumentation
         TableTemplate tabletemplate = new TableTemplate();
         tabletemplate.setName(tableName);
         tabletemplate.setCreateDate(new Date());
-        tabletemplate.setDescription("Krótki opis");
+        tabletemplate.setDescription("DESCRIPTION");
         tabletemplate.setIsArchived(false);
         tabletemplate.setProgram(program);
 
@@ -124,35 +121,35 @@ public class ColorProgramOnHistoricalProgramList extends ActivityInstrumentation
     private void setUpChildTable(TermSolution termSolution, String status, TableTemplate tabletemplate) {
         ChildTable childTable = new ChildTable();
 
-        if (status.equals("BRAK")) {
+        if (status.equals("EMPTY")) {
             childTable.setTeachingFillOutDate(null);
             childTable.setGeneralizationFillOutDate(null);
             childTable.setIsGeneralizationCollected(false);
             childTable.setIsGeneralizationFinished(false);
             childTable.setIsTeachingCollected(false);
             childTable.setIsTeachingFinished(false);
-        } else if (status.equals("ZAPISANE UCZENIE")) {
+        } else if (status.equals("SAVE TEACHING")) {
             childTable.setTeachingFillOutDate(new Date());
             childTable.setGeneralizationFillOutDate(null);
             childTable.setIsGeneralizationCollected(false);
             childTable.setIsGeneralizationFinished(false);
             childTable.setIsTeachingCollected(true);
             childTable.setIsTeachingFinished(false);
-        } else if (status.equals("ZAPISANA GENERALIZACJA")) {
+        } else if (status.equals("SAVE GENERALIZATION")) {
             childTable.setTeachingFillOutDate(null);
             childTable.setGeneralizationFillOutDate(new Date());
             childTable.setIsGeneralizationCollected(true);
             childTable.setIsGeneralizationFinished(false);
             childTable.setIsTeachingCollected(false);
             childTable.setIsTeachingFinished(false);
-        } else if (status.equals("ZAKONCZONE UCZENIE")) {
+        } else if (status.equals("FINISH TEACHING")) {
             childTable.setTeachingFillOutDate(new Date());
             childTable.setGeneralizationFillOutDate(null);
             childTable.setIsGeneralizationCollected(false);
             childTable.setIsGeneralizationFinished(false);
             childTable.setIsTeachingCollected(true);
             childTable.setIsTeachingFinished(true);
-        } else if (status.equals("ZAKONCZONA GENERALIZACJI")) {
+        } else if (status.equals("FINISH GENERALIZATION")) {
             childTable.setTeachingFillOutDate(null);
             childTable.setGeneralizationFillOutDate(new Date());
             childTable.setIsGeneralizationCollected(true);
@@ -163,7 +160,7 @@ public class ColorProgramOnHistoricalProgramList extends ActivityInstrumentation
 
         childTable.setIsIOA(false);
         childTable.setIsPretest(false);
-        childTable.setNote("Jest ok");
+        childTable.setNote("NOTE");
         childTable.setTableTemplate(tabletemplate);
         childTable.setTermSolution(termSolution);
 
