@@ -37,7 +37,6 @@ public class ViewMsgUtil {
             put(ViewMsg.EMPTY_ROW_NAME, "editProgramView.emptyRowName");
             put(ViewMsg.UNABLE_TO_EDIT_TABLE, "editProgramView.unableToEditTable");
             put(ViewMsg.PROGRAM_INSTANCE_EXISTS, "programsDirectoryView.programsInstanceExists");
-            put(ViewMsg.ILLEGAL_TABLE_REMOVE_ACTION, "kidProgramsView.illegalTableRemoveAction");
             put(ViewMsg.ILLEGAL_PERIOD_REMOVE_ACTION, "kidProgramsView.illegalPeriodRemoveAction");
             put(ViewMsg.UNABLE_TO_REMOVE_PERIOD_WITH_FILLED_RESOLVE, "kidProgramsView.unableToRemovePeriodWithFilledResolvedFields");
             put(ViewMsg.UNABLE_TO_REMOVE_UNSELECTED_PERIOD,"kidProgramsView.unableToRemoveUnselectedPeriod");
