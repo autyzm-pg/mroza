@@ -19,6 +19,7 @@ package com.mroza.seleniumTests.ProgramDirectoryViewTests;
 
 import com.mroza.models.*;
 import com.mroza.utils.DatabaseUtils;
+import com.mroza.utils.MrozaPageFactory;
 import com.mroza.utils.SeleniumUtils;
 import com.mroza.utils.Utils;
 import org.junit.After;
@@ -43,12 +44,11 @@ public class ProgramDirectoryViewProgramsListTest {
 
     @Before
     public void setUp() {
-        SeleniumUtils.setUpDriverConnection();
         databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
         setUpPrograms();
 
-        programDirectoryViewPage = PageFactory.initElements(new ChromeDriver(), ProgramDirectoryViewPage.class);
+        programDirectoryViewPage = MrozaPageFactory.initElements(ProgramDirectoryViewPage.class);
         programDirectoryViewPage.open(SeleniumUtils.programDirectoryViewPageUrl);
     }
 

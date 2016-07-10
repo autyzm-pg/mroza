@@ -20,6 +20,7 @@ package com.mroza.seleniumTests.EditProgramViewTests;
 import com.mroza.models.Kid;
 import com.mroza.models.Program;
 import com.mroza.utils.DatabaseUtils;
+import com.mroza.utils.MrozaPageFactory;
 import com.mroza.utils.SeleniumUtils;
 import com.mroza.utils.Utils;
 import org.junit.After;
@@ -43,7 +44,6 @@ public class EditProgramViewEditTableTest {
 
     @Before
     public void setUp() {
-        SeleniumUtils.setUpDriverConnection();
         DatabaseUtils databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
         Kid kid = databaseUtils.setUpKid("CODE_1");
@@ -51,7 +51,7 @@ public class EditProgramViewEditTableTest {
         oldTableName = "TABLE_NAME";
         oldRowsNames = new ArrayList<String>(){{add("ROW_NAME");}};
         databaseUtils.setUpTableWithRows(oldTableName, oldRowsNames, "DESCRIPTION", 1, 1, program);
-        editProgramViewPage = PageFactory.initElements(new ChromeDriver(), EditProgramViewPage.class);
+        editProgramViewPage = MrozaPageFactory.initElements(EditProgramViewPage.class);
         editProgramViewPage.open(SeleniumUtils.editProgramsViewUrl, program);
     }
 

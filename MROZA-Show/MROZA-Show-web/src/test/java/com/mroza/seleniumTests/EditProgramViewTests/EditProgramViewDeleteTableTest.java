@@ -19,6 +19,7 @@ package com.mroza.seleniumTests.EditProgramViewTests;
 
 import com.mroza.models.*;
 import com.mroza.utils.DatabaseUtils;
+import com.mroza.utils.MrozaPageFactory;
 import com.mroza.utils.SeleniumUtils;
 import com.mroza.utils.Utils;
 import org.junit.After;
@@ -44,9 +45,8 @@ public class EditProgramViewDeleteTableTest {
 
     @Before
     public void setUp() {
-        SeleniumUtils.setUpDriverConnection();
         setUpTables();
-        editProgramViewPage = PageFactory.initElements(new ChromeDriver(), EditProgramViewPage.class);
+        editProgramViewPage = MrozaPageFactory.initElements(EditProgramViewPage.class);
         editProgramViewPage.open(SeleniumUtils.editProgramsViewUrl, program);
     }
 

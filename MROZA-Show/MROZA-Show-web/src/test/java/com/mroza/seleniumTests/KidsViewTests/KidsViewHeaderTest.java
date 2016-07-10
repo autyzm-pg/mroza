@@ -18,6 +18,7 @@
 
 package com.mroza.seleniumTests.KidsViewTests;
 import com.mroza.utils.DatabaseUtils;
+import com.mroza.utils.MrozaPageFactory;
 import com.mroza.utils.SeleniumUtils;
 import com.mroza.utils.Utils;
 import org.junit.After;
@@ -34,8 +35,7 @@ public class KidsViewHeaderTest {
 
     @Before
     public void setUp() {
-        SeleniumUtils.setUpDriverConnection();
-        page = PageFactory.initElements(new ChromeDriver(), KidsViewPage.class);
+        page = MrozaPageFactory.initElements(KidsViewPage.class);
         page.open(SeleniumUtils.kidsViewUrl);
     }
 

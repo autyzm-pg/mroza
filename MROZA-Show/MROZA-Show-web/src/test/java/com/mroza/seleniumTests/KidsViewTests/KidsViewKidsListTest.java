@@ -18,6 +18,7 @@
 
 package com.mroza.seleniumTests.KidsViewTests;
 import com.mroza.utils.DatabaseUtils;
+import com.mroza.utils.MrozaPageFactory;
 import com.mroza.utils.SeleniumUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -38,11 +39,10 @@ public class KidsViewKidsListTest {
 
     @Before
     public void setUp() {
-        SeleniumUtils.setUpDriverConnection();
         DatabaseUtils databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
         setUpKids(databaseUtils);
-        page = PageFactory.initElements(new ChromeDriver(), KidsViewPage.class);
+        page = MrozaPageFactory.initElements(KidsViewPage.class);
         page.open(SeleniumUtils.kidsViewUrl);
     }
 

@@ -19,6 +19,7 @@ package com.mroza.seleniumTests.NewKidsViewTests;
 
 import com.mroza.seleniumTests.KidsViewTests.KidsViewPage;
 import com.mroza.utils.DatabaseUtils;
+import com.mroza.utils.MrozaPageFactory;
 import com.mroza.utils.SeleniumUtils;
 import com.mroza.utils.Utils;
 import org.junit.After;
@@ -43,11 +44,10 @@ public class NewKidsViewAddKidTest {
 
     @Before
     public void setUp() {
-        SeleniumUtils.setUpDriverConnection();
         DatabaseUtils databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
         databaseUtils.setUpKid(existedSymbol);
-        newKidsViewPage = PageFactory.initElements(new ChromeDriver(), NewKidsViewPage.class);
+        newKidsViewPage = MrozaPageFactory.initElements(NewKidsViewPage.class);
         newKidsViewPage.open(SeleniumUtils.newKidsViewUrl);
     }
 

@@ -19,6 +19,7 @@ package com.mroza.seleniumTests.KidProgramsViewTests;
 
 import com.mroza.models.*;
 import com.mroza.utils.DatabaseUtils;
+import com.mroza.utils.MrozaPageFactory;
 import com.mroza.utils.SeleniumUtils;
 import com.mroza.utils.Utils;
 import org.junit.After;
@@ -51,7 +52,6 @@ public class KidProgramsForPeriodViewTest {
 
     @Before
     public void setUp() {
-        SeleniumUtils.setUpDriverConnection();
         databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
         kid = databaseUtils.setUpKid("CODE_1");
@@ -71,7 +71,7 @@ public class KidProgramsForPeriodViewTest {
         previousEndDate = Utils.getDateFromNow(-5);
         previousPeriod = databaseUtils.setUpPeriod(previousStartDate, previousEndDate, kid);
         kidTable = databaseUtils.setUpKidTable(table, actualPeriod);
-        kidProgramsForPeriodViewPage = PageFactory.initElements(new ChromeDriver(), KidProgramsForPeriodViewPage.class);
+        kidProgramsForPeriodViewPage = MrozaPageFactory.initElements(KidProgramsForPeriodViewPage.class);
         kidProgramsForPeriodViewPage.open(SeleniumUtils.kidProgramsViewUrl, kid);
         kidProgramsForPeriodViewPage.turnToProgramsForPeriodPagePart();
     }

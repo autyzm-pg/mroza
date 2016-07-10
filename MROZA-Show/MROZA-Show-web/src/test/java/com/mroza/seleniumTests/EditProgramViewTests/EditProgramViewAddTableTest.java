@@ -20,6 +20,7 @@ package com.mroza.seleniumTests.EditProgramViewTests;
 import com.mroza.models.Kid;
 import com.mroza.models.Program;
 import com.mroza.utils.DatabaseUtils;
+import com.mroza.utils.MrozaPageFactory;
 import com.mroza.utils.SeleniumUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -38,12 +39,11 @@ public class EditProgramViewAddTableTest {
 
     @Before
     public void setUp() {
-        SeleniumUtils.setUpDriverConnection();
         DatabaseUtils databaseUtils = new DatabaseUtils();
         databaseUtils.cleanUpDatabase();
         Kid kid = databaseUtils.setUpKid("CODE_1");
         program  = databaseUtils.setUpProgram("A_SYMBOL_1", "NAME_1", "DESCRIPTION_1", kid);
-        editProgramViewPage = PageFactory.initElements(new ChromeDriver(), EditProgramViewPage.class);
+        editProgramViewPage = MrozaPageFactory.initElements(EditProgramViewPage.class);
         editProgramViewPage.open(SeleniumUtils.editProgramsViewUrl, program);
     }
 
