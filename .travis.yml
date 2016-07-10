@@ -1,0 +1,12 @@
+language: java
+services:
+  - postgresql
+jdk:
+  - oraclejdk8
+
+before_script:
+  - psql -c "create user mroza with password '123456';" -U postgres
+  - psql -c "create database mrozadb owner mroza encoding 'utf-8';" -U postgres
+  - psql -f "sql_scripts/show-db/create_db.sql" -d mrozadb -U mroza
+
+script: cd MROZA-Show && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V  && mvn test -e
