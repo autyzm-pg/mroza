@@ -16,8 +16,3 @@ before_script:
 
 script: cd MROZA-Show && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V  && mvn test -e
 
-addons:
-  sauce_connect:
-    username: "autyzm-pg"
-    access_key: 
-	secure: "TJFExWgHLe9k5A9lzdhr3KLwMQCkn5PntYEWkpxbuk1Awoo0mkkqtLn91W2tcD3IqFT4v96ZkQ/gmehT6IAhlEAFZLg5jKnzaP6/lXXAeRxLgCbZv75Ey+CRdVVLCJn8tgfCexXTSI+92S3HKk/uYp6HNAnYM9LARhUKkpe23eK1LAIz4EldhHS9aw/A/v2DOFVhw2OLh8MDYEhq9J4GGB68dJp769zVdzOBm/0UG3VrPxkG9oq6mvOwRdHIuihQgMqp9NH0joRxQwbKlgpH5/CfV4hcDDrFuAdzE1lrHcrZ8hBDk+uv1L35vPXnjBQ3SC88TdVQAovdi3/WH/STmleNuRmmlYYqXktV7n1/LY1r7xhDhDRFS6HcS6t6ln5yfuT3c2+93YD+bY7bekcvBz9yjymdTkioRcdZ/YSyyJFWS1o2NCRzloNyNkdUJdKrnBPDd0pOOhfDCxgUjUPsEePtcDKQmnaYT3W1bFU4WlmMyTF6lGjWDvOLMzHbUnML/U1wzk7NIXoZgFJve8YrBMJvrFrKB1SuZtX1jfALLIdINuJ9PsnC2vyAzvT2XvmvuyzFs4iL+owFZXd4NI8PxdQvVBR1GL4ZICUlLippMnGiqdP2G1biJcS+7nBBaVwVPUsMpeqAWiZPpik+mYr2JJhLTQ6xWKQTwX3OG6/RWvo="
