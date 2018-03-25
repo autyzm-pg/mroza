@@ -1,0 +1,17 @@
+version: '2'
+services:
+  db:
+    build: ./db
+    ports:
+     - "5432:5432"
+
+  web:
+    build: .
+    ports:
+     - '8080:8080'
+    volumes:
+     - './MROZA-Show-ear/target/mroza-show-ear-1.0-SNAPSHOT.ear:/opt/jboss/wildfly/standalone/deployments/mroza-show-ear-1.0-SNAPSHOT.ear'
+    links:
+     - db:db
+    environment:
+        - URL=jdbc:postgresql://db:5432/mrozadb
