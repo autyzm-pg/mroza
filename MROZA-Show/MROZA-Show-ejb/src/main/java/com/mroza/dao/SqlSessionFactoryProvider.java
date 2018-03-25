@@ -26,6 +26,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
+import java.util.Properties;
 
 @ApplicationScoped
 public class SqlSessionFactoryProvider {
@@ -35,7 +37,13 @@ public class SqlSessionFactoryProvider {
     public SqlSessionFactory produceFactory() throws IOException {
         String resource = "mybatis-config.xml";
         InputStream reader = Resources.getResourceAsStream(resource);
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        Properties dbConnectionProps = new Properties();
+        Map<String, String> environmentVars =  System.getenv();
+        dbConnectionProps.setProperty("DRIVER", environmentVars.getOrDefault("DRIVER", "org.postgresql.Driver"));
+        dbConnectionProps.setProperty("URL", environmentVars.getOrDefault("URL", "jdbc:postgresql://localhost:5432/mrozadb"));
+        dbConnectionProps.setProperty("USER", environmentVars.getOrDefault("USER", "mroza"));
+        dbConnectionProps.setProperty("PASSWORD", environmentVars.getOrDefault("PASSWORD", "123456"));
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader, dbConnectionProps);
         return sqlSessionFactory;
     }
 }

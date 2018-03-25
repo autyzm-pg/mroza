@@ -1,0 +1,7 @@
+language: java
+
+before_script:
+  - cd MROZA-Show
+  - pwd
+
+script: 'mvn install -DskipTests'

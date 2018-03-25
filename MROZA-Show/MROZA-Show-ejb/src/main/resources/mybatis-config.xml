@@ -22,7 +22,6 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-    <properties resource="jdbc.properties" />
     <typeAliases>
         <typeAlias type="com.mroza.models.Kid" alias="Kid"/>
         <typeAlias type="com.mroza.models.Program" alias="Program"/>
@@ -56,10 +55,10 @@
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="${jdbc.driverClassName}"/>
-                <property name="url" value="${jdbc.url}"/>
-                <property name="username" value="${jdbc.username}"/>
-                <property name="password" value="${jdbc.password}"/>
+                <property name="driver" value="${DRIVER}"/>
+                <property name="url" value="${URL}"/>
+                <property name="username" value="${USER}"/>
+                <property name="password" value="${PASSWORD}"/>
             </dataSource>
         </environment>
     </environments>
